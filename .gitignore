@@ -1,2 +1,9 @@
+.coverage
 .venv/
-
+__pycache__
+htmlcov/
+*.pyc
+dice/doc
+guess/doc
+build/
+coverage.xml

@@ -1,0 +1,10 @@
+[flake8]
+#cohesion-below = 50.0
+#cohesion-strict = false
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    test/
+max-line-length = 88
+

@@ -1,0 +1,32 @@
+checks:
+  python:
+    code_rating: true
+    duplicate_code: true
+build:
+  nodes:
+    coverage:
+      tests:
+        override:
+          - command: make coverage-xml
+            coverage:
+              file: 'coverage.xml'
+              #config_file: '.coveragerc'
+              format: 'clover' #'py-cc'
+
+    analysis:
+      project_setup:
+        override:
+          - 'true'
+        tests:
+          override:
+            - py-scrutinizer-run
+            -
+              command: pylint-run
+              use_website_config: false
+
+    tests: true
+filter:
+  excluded_paths:
+    - '*/test/*'
+  dependency_paths:
+    - 'lib/*'

@@ -1,0 +1,21 @@
+[MESSAGES CONTROL]
+
+#disable=locally-disabled,locally-enabled
+
+
+[FORMAT]
+
+# Maximum number of characters on a single line.
+# Use same setting as Bandit
+max-line-length=88 #79
+
+
+[REPORTS]
+
+#reports=no
+
+[MASTER]
+#ignore=*_test.py
+#ignore-patterns=*_test.py
+
+init-hook='import sys; sys.path.append(".")'

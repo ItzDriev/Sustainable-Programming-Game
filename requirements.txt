@@ -1,0 +1,23 @@
+# Code style
+black
+
+# Code analysis
+flake8
+#flake8-cohesion
+flake8-docstrings
+flake8-polyfill
+pylint
+
+# Code metrics
+bandit
+cohesion
+#metrics.pylint
+radon
+
+# Unit test and coverage
+coverage
+
+# Documentation
+pdoc3
+sphinx
+sphinx-rtd-theme # for ReadTheDocs local build
