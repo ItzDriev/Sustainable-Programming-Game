@@ -4,15 +4,15 @@
 """
 Lets play a game of "Pig, Dice Game".
 
-Your job is to beat the opposing player, reaching the
-target points before your opponent!
+Your goal is to beat the opposing player 
+by reaching the target points before them!
 
 During your turn, you can roll the dice as many times as
-you'd like, however, if you roll a single 1 all your points during
-your turn are lost. If you roll two 1's, all of you points will be reset
-to 0.
+you'd like, however, if exactly ONE of your dice roll a '1', all your points during
+that turn are lost. If you happen to roll two '1's', all of you points will be reset
+to 0, including points acquired from previous turns.
 
-Play carefully, and don't become a Pig!
+Play carefully, and don't be a PIG!
 
 """
 
