@@ -60,14 +60,18 @@ jobs:
           make html
 
       - name: Upload docs artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v1
         with:
           path: docs/build/html
 
   deploy:
     runs-on: ubuntu-latest
     needs: build-docs
-    if: github.ref == 'refs/heads/main' # Only deploy from main branch
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
 
     steps:
       - name: Checkout code
@@ -79,3 +83,6 @@ jobs:
           # Example:
           # scp dist/myapp.whl user@server:/path/to/deploy
           # ssh user@server "systemctl restart myapp"
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
