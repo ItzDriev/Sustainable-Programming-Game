@@ -21,7 +21,6 @@ class Shell(cmd.Cmd):
         """Init the object."""
         super().__init__()
         self.game = game.Game()
-
     def do_start(self, _):
         """Start the game with a new number."""
         msg = (
