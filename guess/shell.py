@@ -9,8 +9,7 @@ You can read about the cmd module in the docs:
 """
 
 import cmd
-from guess import game
-
+import game
 
 class Shell(cmd.Cmd):
     """Example of class with command actions to roll a dice."""

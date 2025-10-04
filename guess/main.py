@@ -14,8 +14,7 @@ You have 5 guesses. Then you loose.
 
 """
 
-from guess import shell
-
+import shell
 
 def main():
     """Execute the main program."""

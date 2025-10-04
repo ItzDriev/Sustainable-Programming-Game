@@ -10,3 +10,4 @@ coverage.xml
 dist/
 SigmaGame.spec
 guess/SigmaGame.spec
+*.puml
