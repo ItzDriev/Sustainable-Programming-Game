@@ -3,7 +3,7 @@ name: Python CI/CD
 on:
   push:
     branches:
-      - main        # Change to your default branch
+      - main
   pull_request:
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x' # Use whichever version you need
+          python-version: ${{ matrix.python-version }}
 
       - name: Cache pip
         uses: actions/cache@v4
