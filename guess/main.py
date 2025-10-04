@@ -18,7 +18,6 @@ import shell
 
 def main():
     """Execute the main program."""
-    
     print(__doc__)
     shell.Shell().cmdloop()
 
