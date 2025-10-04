@@ -2,15 +2,17 @@
 # -*- coding: utf-8 -*-
 
 """
-Lets play a game of "Guess my number".
+Lets play a game of "Pig, Dice Game".
 
-I will be thinking af a number between 1 and 100.
-You shall try to guess the number.
+Your goal is to beat the opposing player 
+by reaching the target points before them!
 
-I will let you know if your guess is lower or higher than
-the number that I am thinking of.
+During your turn, you can roll the dice as many times as
+you'd like, however, if exactly ONE of your dice roll a '1', all your points during
+that turn are lost. If you happen to roll two '1's', all of you points will be reset
+to 0, including points acquired from previous turns.
 
-You have 5 guesses. Then you loose.
+Play carefully, and don't be a PIG!
 
 """
 
@@ -20,7 +22,6 @@ def main():
     """Execute the main program."""
     print(__doc__)
     shell.Shell().cmdloop()
-
 
 if __name__ == "__main__":
     main()
