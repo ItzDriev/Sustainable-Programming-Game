@@ -1,5 +1,5 @@
 # Sustainable-Programming - Game
-#Documentation
+# Documentation
   <a href="https://itzdriev.github.io/Sustainable-Programming-Game/">Read</a>
 # Contributors
 <a href="https://github.com/Flurry2005/Brogress/graphs/contributors">
