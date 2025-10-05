@@ -24,12 +24,16 @@ class DataHandler:
         self.__leadboard_data_path = self.__dir_path/"LeaderboardData.json"
 
     def is_user_data_file_missing_or_empty(self):
-        if not self.__user_data_path.exists():
+        """Check for missing file or invalid content"""
+        missing_file = not self.__user_data_path.exists()
+        if not missing_file:
+            empty_file = self.__user_data_path.stat().st_size == 0
+        else:
+            empty_file = True
+        if missing_file or empty_file:
             self.write_user_data_json({})
             return True
-        if self.__user_data_path.stat().st_size == 0:
-            self.write_user_data_json({})
-            return True
+        return False
 
     def write_user_data_json(self, data):
         """Write user data to file."""
@@ -71,12 +75,16 @@ class DataHandler:
         return True
 
     def is_leaderboard_data_file_missing_or_empty(self):
-        if not self.__leadboard_data_path.exists():
+        """Check for missing file or invalid content"""
+        missing_file = not self.__leadboard_data_path.exists()
+        if not missing_file:
+            empty_file = self.__leadboard_data_path.stat().st_size == 0
+        else:
+            empty_file = True
+        if missing_file or empty_file:
             self.write_leaderboard_data_json({})
             return True
-        if self.__leadboard_data_path.stat().st_size == 0:
-            self.write_leaderboard_data_json({})
-            return True
+        return False
 
     def write_leaderboard_data_json(self, data):
         """Write leadboard data to file."""
