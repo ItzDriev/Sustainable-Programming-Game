@@ -16,7 +16,10 @@ Play carefully, and don't be a PIG!
 
 """
 
-import shell
+import os
+import sys
+
+from guess import shell
 
 def main():
     """Execute the main program."""
@@ -24,4 +27,5 @@ def main():
     shell.Shell().cmdloop()
 
 if __name__ == "__main__":
+    print(sys.path[0])
     main()

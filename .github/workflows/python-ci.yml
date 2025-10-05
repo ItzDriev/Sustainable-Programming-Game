@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.x
 
       - name: Cache pip
         uses: actions/cache@v4
@@ -47,7 +47,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: 3.x
 
       - name: Install dependencies
         run: |
@@ -60,7 +60,7 @@ jobs:
           make html
 
       - name: Upload docs artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v1
         with:
           path: docs/build/html
 
@@ -74,15 +74,5 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Deploy to production
-        run: |
-          echo "Define your deployment commands here"
-          # Example:
-          # scp dist/myapp.whl user@server:/path/to/deploy
-          # ssh user@server "systemctl restart myapp"
-
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
