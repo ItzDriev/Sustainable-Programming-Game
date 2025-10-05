@@ -39,11 +39,16 @@ jobs:
   build-and-deploy-docs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false  # important for pushing later
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -60,32 +65,10 @@ jobs:
           cd docs
           make html
 
-      - name: Deploy docs to gh-pages branch
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Upload docs artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs/build/html
 
-          # Create a temporary directory to hold docs
-          mkdir temp-docs
-
-          # Copy built docs into temp-docs
-          cp -r docs/build/html/* temp-docs/
-
-          # Fetch gh-pages branch if it exists
-          git fetch origin gh-pages || true
-          if git show-ref --verify --quiet refs/heads/gh-pages; then
-            git checkout gh-pages
-          else
-            git checkout --orphan gh-pages
-          fi
-
-          # Remove all existing files
-          git rm -rf . || true
-
-          # Copy new docs into branch root
-          cp -r temp-docs/* .
-
-          # Commit and push changes
-          git add .
-          git commit -m "Update docs [skip ci]" || echo "No changes to commit"
-          git push origin gh-pages --force
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
