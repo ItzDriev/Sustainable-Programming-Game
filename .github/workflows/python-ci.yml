@@ -65,10 +65,11 @@ jobs:
           cd docs
           make html
 
-      - name: Upload docs artifact
-        uses: actions/upload-pages-artifact@v4
+      - name: Deploy docs to branch
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: docs/build/html
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/html
+          publish_branch: gh-pages
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
