@@ -43,9 +43,7 @@ jobs:
       contents: read
       pages: write
       id-token: write
-    environment:
-      name: github-pages
-
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -65,10 +63,14 @@ jobs:
           cd docs
           make html
 
-      - name: Upload docs artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: docs/build/html
-
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+      - name: Deploy to gh-pages branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin gh-pages || true
+          git checkout gh-pages || git checkout --orphan gh-pages
+          rm -rf ./*
+          cp -r docs/build/html/* .
+          git add -A
+          git commit -m "Update docs" || true
+          git push -f origin gh-pages
