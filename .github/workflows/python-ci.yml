@@ -36,18 +36,14 @@ jobs:
       - name: Run tests
         run: make test
 
-        
   build-and-deploy-docs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-      
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false  # important for pushing later
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -64,14 +60,30 @@ jobs:
           cd docs
           make html
 
-      - name: Deploy to gh-pages branch
+      - name: Deploy docs to gh-pages branch
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Make a temporary copy of docs
+          cp -r docs/* temp-docs || true
+
+          # Fetch gh-pages branch if it exists
           git fetch origin gh-pages || true
-          git checkout gh-pages || git checkout --orphan gh-pages
-          rm -rf ./*
-          cp -r docs/build/html/* .
-          git add -A
-          git commit -m "Update docs" || true
-          git push -f origin gh-pages
+          if git show-ref --verify --quiet refs/heads/gh-pages; then
+            git checkout gh-pages
+          else
+            git checkout --orphan gh-pages
+          fi
+
+          # Remove all existing files
+          git rm -rf . || true
+
+          # Copy new docs into branch
+          mkdir -p .
+          cp -r temp-docs/* .
+
+          # Commit and push
+          git add .
+          git commit -m "Update docs [skip ci]" || echo "No changes to commit"
+          git push origin gh-pages --force
