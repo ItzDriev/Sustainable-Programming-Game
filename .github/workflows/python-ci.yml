@@ -65,8 +65,11 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Make a temporary copy of docs
-          cp -r docs/* temp-docs || true
+          # Create a temporary directory to hold docs
+          mkdir temp-docs
+
+          # Copy built docs into temp-docs
+          cp -r docs/build/html/* temp-docs/
 
           # Fetch gh-pages branch if it exists
           git fetch origin gh-pages || true
@@ -79,11 +82,10 @@ jobs:
           # Remove all existing files
           git rm -rf . || true
 
-          # Copy new docs into branch
-          mkdir -p .
+          # Copy new docs into branch root
           cp -r temp-docs/* .
 
-          # Commit and push
+          # Commit and push changes
           git add .
           git commit -m "Update docs [skip ci]" || echo "No changes to commit"
           git push origin gh-pages --force
