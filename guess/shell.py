@@ -18,7 +18,7 @@ class Shell(cmd.Cmd):
     prompt = "(Game) "
 
     def __init__(self):
-        """Init the object."""
+        """Init the object. """
         super().__init__()
         self.game = game.Game()
 
