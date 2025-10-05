@@ -36,6 +36,7 @@ jobs:
       - name: Run tests
         run: make test
 
+        
   build-and-deploy-docs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
