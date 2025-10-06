@@ -63,6 +63,12 @@ jobs:
       - name: Build docs
         run: |
           cd docs
+          cd source
+          rm -f guess.rst
+          cd ..
+          cd ..
+          sphinx-apidoc -o docs/source guess
+          cd docs
           make html
 
       - name: Upload docs artifact
