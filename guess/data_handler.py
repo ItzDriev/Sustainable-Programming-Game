@@ -12,6 +12,8 @@ from pathlib import Path
 from guess.user_data_handler import UserDataHandler
 from guess.leaderboard_data_handler import LeaderboardDataHandler
 
+# pylint: disable=too-few-public-methods,line-too-long
+# flake8: noqa
 
 class DataHandler:
     """Handles game's data."""

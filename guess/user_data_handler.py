@@ -45,6 +45,8 @@ class UserDataHandler(JSONFileHandler):
     def update_username(self, user_id, new_username):
         """Update the username for an existing user."""
         data = self.read()
+        if any(info.get("username") == new_username for info in data.values()):
+            return False
         if str(user_id) not in data:
             return False
         data[str(user_id)]["username"] = new_username
