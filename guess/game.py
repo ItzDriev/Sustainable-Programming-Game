@@ -4,21 +4,23 @@
 """This module defines a game module in which the game is initialized from"""
 
 import random
-from guess import dice_hand
+from guess.dice_hand import DiceHand
+from guess.ai_logic import AiLogic
 
 class Game:
     """Represents the game object"""
     
-    def __init__(self, players_array = ["johan","niklas"], leaderboard = None):
+    def __init__(self, players_array = ["johan"], leaderboard = None):
         
         """Initialize the game object, player and npc resources"""
         self.players = {}
 
         for player in players_array:
-            self.players[player] = {"Score" : 0, "Hand" : dice_hand.DiceHand()}
+            self.players[player] = {"Score" : 0, "Hand" : DiceHand()}
          
+        self.ai = AiLogic()
         self.npc_score = 0
-        self.npc_hand = dice_hand.DiceHand()
+        self.npc_hand = DiceHand()
         
         self.game_over = False
         
@@ -26,23 +28,29 @@ class Game:
         
         """Npc takes turn, sends result to the intelligence class."""
         while True:
-            
-            self.npc_hand.roll_dice()
-            value = self.npc_hand.get_last_roll()
-            print (f"Mr AI rolled {value}")
+            player_score = [stats["Score"] for player, stats in self.players.items]
+            if self.ai.should_roll(self.npc_score, player_score):
+                self.npc_hand.roll_dice()
+                value = self.npc_hand.get_last_roll()
+                print (f"Mr AI rolled {value}")
+            else:
+                break
 
             if self.evaluate(value):
                 self.npc_score += value
+                self.ai.increment_turn_score(value)
 
                 if (self.npc_score >= 100):
                     print ("Mr AI reached 100 points. Game over")
                     self.game_over = True
+                    self.ai.reset_turn_score()
                     break
 
                 print (f"Mr AI's total score: {self.npc_score}")
                 continue  # Placeholder for continue-logic
 
             else:
+                self.ai.reset_turn_score()
                 self.npc_score = 0
                 print ("Mr AI rolled 1. His score will be reset.")
                 break
@@ -85,9 +93,10 @@ class Game:
     def start(self):
         
         """Decide which player starts first"""
-        match random.randint(1,2):
-            case 1: return
-            case 2: self.npc_turn()
+        if len(self.players == 1): 
+            match random.randint(1,2):
+                case 1: return
+                case 2: self.npc_turn()
             
     def evaluate(self, value, ):
         
