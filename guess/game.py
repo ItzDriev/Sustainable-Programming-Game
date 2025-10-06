@@ -28,7 +28,7 @@ class Game:
         
         """Npc takes turn, sends result to the intelligence class."""
         while True:
-            player_score = [stats["Score"] for player, stats in self.players.items()]
+            player_score = next(iter(self.players.values()))["Score"]
             if self.ai.should_roll(self.npc_score, player_score):
                 self.npc_hand.roll_dice()
                 value = self.npc_hand.get_last_roll()
