@@ -93,7 +93,7 @@ class Game:
     def start(self):
         
         """Decide which player starts first"""
-        if len(self.players == 1): 
+        if len(self.players) == 1: 
             match random.randint(1,2):
                 case 1: return
                 case 2: self.npc_turn()
