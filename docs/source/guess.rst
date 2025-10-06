@@ -20,6 +20,22 @@ guess.game module
    :show-inheritance:
    :undoc-members:
 
+guess.json\_file\_handler module
+--------------------------------
+
+.. automodule:: guess.json_file_handler
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+guess.leaderboard\_data\_handler module
+---------------------------------------
+
+.. automodule:: guess.leaderboard_data_handler
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 guess.main module
 -----------------
 
@@ -40,6 +56,14 @@ guess.shell module
 ------------------
 
 .. automodule:: guess.shell
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+guess.user\_data\_handler module
+--------------------------------
+
+.. automodule:: guess.user_data_handler
    :members:
    :show-inheritance:
    :undoc-members:
