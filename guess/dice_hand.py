@@ -3,13 +3,13 @@
 
 """This module defines a hand in order to engage with a dice"""
 
-from guess import dice
+from guess.dice import Dice
 
 class DiceHand:
     """Represents a dice hand"""
     def __init__(self):
         """Initialize the dice hand object"""
-        self.dice = dice.Dice()
+        self.dice = Dice()
         self.roll_history = []
         self.last_roll = None
 
