@@ -10,6 +10,7 @@ You can read about the cmd module in the docs:
 
 import cmd
 from guess.game import Game
+from guess.player import Player
 
 class Shell(cmd.Cmd):
     """Classes that handle the terminal's user inputs"""
@@ -21,15 +22,30 @@ class Shell(cmd.Cmd):
         """Init the object. """
         super().__init__()
         self.game = Game() # Game is a singleton persistant during "program" lifespan
-    def do_start(self, _):
+    def do_start(self, mode):
         # 50/50 if computer goes first or if the human playing goes first?
 
         """Start a game versus the computer"""
-        msg = (
-            "Game Started! Start off by rolling the dice!"
-        )
-        self.game.start()
+        msg = ("Game Started! Start off by rolling the dice!")
+
+        players = []
+        for n in range(int(mode)):
+            username = input("Enter username: ")
+            self.game.data_handler.user_data.add_user(username)
+
+            
+            userid = self.game.data_handler.user_data.get_user_id(username)
+            if userid == None:
+                raise Exception("UserID Not Found!")
+
+            players.append(Player(username, userid))
+
+
+        #Prompted to select 2 player mode or VS AI
+        #Prompted to input name for player player 2 respectively
         print(msg)
+        self.game.start(players)
+        
 
     def do_cheat(self, _):
         """This will cheat the game towards the end of it for testing purposes"""
