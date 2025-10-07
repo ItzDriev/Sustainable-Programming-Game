@@ -6,6 +6,7 @@
 import random
 from guess.dice_hand import DiceHand
 from guess.ai_logic import AiLogic
+from guess.data_handler import DataHandler
 
 class Game:
     """Represents the game object"""
@@ -17,7 +18,8 @@ class Game:
 
         for player in players_array:
             self.players[player] = {"Score" : 0, "Hand" : DiceHand()}
-         
+        
+        self.data_handler = DataHandler()
         self.ai = AiLogic()
         self.npc_score = 0
         self.npc_hand = DiceHand()
