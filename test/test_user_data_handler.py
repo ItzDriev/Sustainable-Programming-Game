@@ -73,7 +73,7 @@ class TestUserDataHandlerClass(unittest.TestCase):
         self.user_data = UserDataHandler(self.test_dir+"/UserData.json",dir_path=self.test_dir)
 
         self.user_data.add_user("Test0")
-        self.user_data.update_username(0, "Test0NewUsername")
+        self.user_data.update_username("Test0","Test0NewUsername")
 
         res = self.user_data.read()
         exp = {

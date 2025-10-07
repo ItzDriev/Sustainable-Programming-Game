@@ -9,7 +9,7 @@ You can read about the cmd module in the docs:
 """
 
 import cmd
-from guess import game
+from guess.game import Game
 
 class Shell(cmd.Cmd):
     """Classes that handle the terminal's user inputs"""
@@ -18,9 +18,9 @@ class Shell(cmd.Cmd):
     prompt = "(Game) "
 
     def __init__(self):
-        """Init the object."""
+        """Init the object. """
         super().__init__()
-        self.game = game.Game()
+        self.game = Game() # Game is a singleton persistant during "program" lifespan
     def do_start(self, _):
         # 50/50 if computer goes first or if the human playing goes first?
 
@@ -45,11 +45,22 @@ class Shell(cmd.Cmd):
 
 
     #Potentially add do_namechange
-    def do_namechange(self, _):
+    def do_namechange(self, args):
         """Will perform a namechange"""
+
+        name_info = args.split()
+
+        if(len(name_info)!=2):
+            return #Arguments were incorrect
+
+        self.game.data_handler.user_data.update_username(current_username = name_info[0], new_username=name_info[1])
 
         print("You change your name lul xd")
     
+    
+    def help_namechange(self):
+        print("Usage: namechange <currentUsername> <newUsername>")
+
     def do_rules(self, _):
         """Will explain the rules once again"""
 
