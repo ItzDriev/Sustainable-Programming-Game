@@ -30,10 +30,8 @@ class AiLogic:
         
 
         if (self.__turn_score < self.__target): #Här väljs det ifall Ai'n ska slå igen eller stanna
-            print(self.__target)
             return True
         else:
-            print(self.__target)
             self.reset_turn_score()
             return False
         
