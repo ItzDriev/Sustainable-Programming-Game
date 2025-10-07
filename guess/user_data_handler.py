@@ -24,7 +24,7 @@ class UserDataHandler(JSONFileHandler):
         for user_id, user_info in data.items():
             if user_info.get("username") == username:
                 return int(user_id)
-        return False
+        return None
 
     def add_user(self, username):
         """Add a new user if username is unique."""

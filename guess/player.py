@@ -9,6 +9,7 @@ class Player:
 
     def __init__(self, username, user_id):
         """Initialize the player object."""
+        self.score = 0
         self.__user_id = user_id
         self.__username = username
 
