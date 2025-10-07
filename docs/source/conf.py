@@ -1,10 +1,14 @@
 # Configuration file for the Sphinx documentation builder.
 
-# -- Project information
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+# -- Project information
+print(sys.path[0])
+project = 'Sustainable Project'
+copyright = '2025, Anton Andersson'
+author = 'Anton Andersson'
 
 release = '0.1'
 version = '0.1.0'
@@ -18,6 +22,8 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.intersphinx',
 ]
+
+autosummary_generate = True
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3/', None),

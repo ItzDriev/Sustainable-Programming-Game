@@ -59,46 +59,64 @@ cmd — support for line-oriented command interpreters
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Shell(cmd.Cmd):
-    &#34;&#34;&#34;Example of class with command actions to roll a dice.&#34;&#34;&#34;
+    &#34;&#34;&#34;Classes that handle the terminal&#39;s user inputs&#34;&#34;&#34;
 
-    intro = &#34;Welcome to the game. Type help or ? to list commands.\n&#34;
-    prompt = &#34;(game) &#34;
+    intro = &#34;Welcome to the PIG Game!. Type help or ? to list available commands.\n&#34;
+    prompt = &#34;(Game) &#34;
 
     def __init__(self):
         &#34;&#34;&#34;Init the object.&#34;&#34;&#34;
         super().__init__()
         self.game = game.Game()
-
     def do_start(self, _):
-        &#34;&#34;&#34;Start the game with a new number.&#34;&#34;&#34;
+        # 50/50 if computer goes first or if the human playing goes first?
+
+        &#34;&#34;&#34;Start a game versus the computer&#34;&#34;&#34;
         msg = (
-            &#34;I am ready and is now thinking of a new secret number&#34;
-            &#34; between {} and {}.&#34;
+            &#34;Game Started! Start off by rolling the dice!&#34;
         )
         self.game.start()
-        print(msg.format(self.game.low(), self.game.high()))
+        print(msg)
 
     def do_cheat(self, _):
-        &#34;&#34;&#34;Cheat to view the secret number.&#34;&#34;&#34;
-        print(&#34;Cheater... the number is {}.&#34;.format(self.game.cheat()))
+        &#34;&#34;&#34;This will cheat the game towards the end of it for testing purposes&#34;&#34;&#34;
+        #Plan: Cheat the game to like 95% of the target points for both sides I guess or something?
 
-    def do_guess(self, arg):
-        &#34;&#34;&#34;Do a guess of a number.&#34;&#34;&#34;
-        msg = &#34;Missing argument on the number you are guessing. Try &#39;guess 42&#39;.&#34;
-        if not arg:
-            print(msg)
-            return
+        print(&#34;This will do some kind of cheat for the game&#34;)
 
-        a_number = int(arg)
-        try:
-            print(&#34;Your&#39;e guess is -&gt; {}&#34;.format(self.game.guess(a_number)))
-        except ValueError as error:
-            print(error)
+    def do_roll(self, _):
+        &#34;&#34;&#34;Decide to to roll the dice&#34;&#34;&#34;
+        #Guess this will call a dice class, roll the dice and add the points to the current dice hand or something 
+
+        print(&#34;You roll the dice!&#34;)
+
+
+    #Potentially add do_namechange
+    def do_namechange(self, _):
+        &#34;&#34;&#34;Will perform a namechange&#34;&#34;&#34;
+
+        print(&#34;You change your name lul xd&#34;)
+    
+    def do_rules(self, _):
+        &#34;&#34;&#34;Will explain the rules once again&#34;&#34;&#34;
+
+        rules = &#34;&#34;&#34;
+        Your goal is to beat the opposing player 
+        by reaching the target points before them!
+
+        During your turn, you can roll the dice as many times as you&#39;d like, 
+        however, if exactly ONE of your dice roll a &#39;1&#39;, all your points during that turn are lost. 
+        If you happen to roll two &#39;1&#39;s&#39;, all of you points will be reset to 0, 
+        including points acquired from previous turns.
+        &#34;&#34;&#34;
+        print(rules)
+
+    #Below are all ways to exit the game: exit, quite, q and EOF
 
     def do_exit(self, _):
         # pylint: disable=no-self-use
         &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
-        print(&#34;Bye bye - see ya soon again&#34;)
+        print(&#34;Game Exited! Cya around!&#34;)
         return True
 
     def do_quit(self, arg):
@@ -114,7 +132,7 @@ cmd — support for line-oriented command interpreters
         &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
         return self.do_exit(arg)</code></pre>
 </details>
-<div class="desc"><p>Example of class with command actions to roll a dice.</p>
+<div class="desc"><p>Classes that handle the terminal's user inputs</p>
 <p>Init the object.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -157,10 +175,12 @@ cmd — support for line-oriented command interpreters
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def do_cheat(self, _):
-    &#34;&#34;&#34;Cheat to view the secret number.&#34;&#34;&#34;
-    print(&#34;Cheater... the number is {}.&#34;.format(self.game.cheat()))</code></pre>
+    &#34;&#34;&#34;This will cheat the game towards the end of it for testing purposes&#34;&#34;&#34;
+    #Plan: Cheat the game to like 95% of the target points for both sides I guess or something?
+
+    print(&#34;This will do some kind of cheat for the game&#34;)</code></pre>
 </details>
-<div class="desc"><p>Cheat to view the secret number.</p></div>
+<div class="desc"><p>This will cheat the game towards the end of it for testing purposes</p></div>
 </dd>
 <dt id="shell.Shell.do_exit"><code class="name flex">
 <span>def <span class="ident">do_exit</span></span>(<span>self, _)</span>
@@ -173,33 +193,25 @@ cmd — support for line-oriented command interpreters
 <pre><code class="python">def do_exit(self, _):
     # pylint: disable=no-self-use
     &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
-    print(&#34;Bye bye - see ya soon again&#34;)
+    print(&#34;Game Exited! Cya around!&#34;)
     return True</code></pre>
 </details>
 <div class="desc"><p>Leave the game.</p></div>
 </dd>
-<dt id="shell.Shell.do_guess"><code class="name flex">
-<span>def <span class="ident">do_guess</span></span>(<span>self, arg)</span>
+<dt id="shell.Shell.do_namechange"><code class="name flex">
+<span>def <span class="ident">do_namechange</span></span>(<span>self, _)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def do_guess(self, arg):
-    &#34;&#34;&#34;Do a guess of a number.&#34;&#34;&#34;
-    msg = &#34;Missing argument on the number you are guessing. Try &#39;guess 42&#39;.&#34;
-    if not arg:
-        print(msg)
-        return
+<pre><code class="python">def do_namechange(self, _):
+    &#34;&#34;&#34;Will perform a namechange&#34;&#34;&#34;
 
-    a_number = int(arg)
-    try:
-        print(&#34;Your&#39;e guess is -&gt; {}&#34;.format(self.game.guess(a_number)))
-    except ValueError as error:
-        print(error)</code></pre>
+    print(&#34;You change your name lul xd&#34;)</code></pre>
 </details>
-<div class="desc"><p>Do a guess of a number.</p></div>
+<div class="desc"><p>Will perform a namechange</p></div>
 </dd>
 <dt id="shell.Shell.do_q"><code class="name flex">
 <span>def <span class="ident">do_q</span></span>(<span>self, arg)</span>
@@ -229,6 +241,46 @@ cmd — support for line-oriented command interpreters
 </details>
 <div class="desc"><p>Leave the game.</p></div>
 </dd>
+<dt id="shell.Shell.do_roll"><code class="name flex">
+<span>def <span class="ident">do_roll</span></span>(<span>self, _)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def do_roll(self, _):
+    &#34;&#34;&#34;Decide to to roll the dice&#34;&#34;&#34;
+    #Guess this will call a dice class, roll the dice and add the points to the current dice hand or something 
+
+    print(&#34;You roll the dice!&#34;)</code></pre>
+</details>
+<div class="desc"><p>Decide to to roll the dice</p></div>
+</dd>
+<dt id="shell.Shell.do_rules"><code class="name flex">
+<span>def <span class="ident">do_rules</span></span>(<span>self, _)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def do_rules(self, _):
+    &#34;&#34;&#34;Will explain the rules once again&#34;&#34;&#34;
+
+    rules = &#34;&#34;&#34;
+    Your goal is to beat the opposing player 
+    by reaching the target points before them!
+
+    During your turn, you can roll the dice as many times as you&#39;d like, 
+    however, if exactly ONE of your dice roll a &#39;1&#39;, all your points during that turn are lost. 
+    If you happen to roll two &#39;1&#39;s&#39;, all of you points will be reset to 0, 
+    including points acquired from previous turns.
+    &#34;&#34;&#34;
+    print(rules)</code></pre>
+</details>
+<div class="desc"><p>Will explain the rules once again</p></div>
+</dd>
 <dt id="shell.Shell.do_start"><code class="name flex">
 <span>def <span class="ident">do_start</span></span>(<span>self, _)</span>
 </code></dt>
@@ -238,15 +290,16 @@ cmd — support for line-oriented command interpreters
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def do_start(self, _):
-    &#34;&#34;&#34;Start the game with a new number.&#34;&#34;&#34;
+    # 50/50 if computer goes first or if the human playing goes first?
+
+    &#34;&#34;&#34;Start a game versus the computer&#34;&#34;&#34;
     msg = (
-        &#34;I am ready and is now thinking of a new secret number&#34;
-        &#34; between {} and {}.&#34;
+        &#34;Game Started! Start off by rolling the dice!&#34;
     )
     self.game.start()
-    print(msg.format(self.game.low(), self.game.high()))</code></pre>
+    print(msg)</code></pre>
 </details>
-<div class="desc"><p>Start the game with a new number.</p></div>
+<div class="desc"><p>Start a game versus the computer</p></div>
 </dd>
 </dl>
 </dd>
@@ -266,9 +319,11 @@ cmd — support for line-oriented command interpreters
 <li><code><a title="shell.Shell.do_EOF" href="#shell.Shell.do_EOF">do_EOF</a></code></li>
 <li><code><a title="shell.Shell.do_cheat" href="#shell.Shell.do_cheat">do_cheat</a></code></li>
 <li><code><a title="shell.Shell.do_exit" href="#shell.Shell.do_exit">do_exit</a></code></li>
-<li><code><a title="shell.Shell.do_guess" href="#shell.Shell.do_guess">do_guess</a></code></li>
+<li><code><a title="shell.Shell.do_namechange" href="#shell.Shell.do_namechange">do_namechange</a></code></li>
 <li><code><a title="shell.Shell.do_q" href="#shell.Shell.do_q">do_q</a></code></li>
 <li><code><a title="shell.Shell.do_quit" href="#shell.Shell.do_quit">do_quit</a></code></li>
+<li><code><a title="shell.Shell.do_roll" href="#shell.Shell.do_roll">do_roll</a></code></li>
+<li><code><a title="shell.Shell.do_rules" href="#shell.Shell.do_rules">do_rules</a></code></li>
 <li><code><a title="shell.Shell.do_start" href="#shell.Shell.do_start">do_start</a></code></li>
 <li><code><a title="shell.Shell.intro" href="#shell.Shell.intro">intro</a></code></li>
 <li><code><a title="shell.Shell.prompt" href="#shell.Shell.prompt">prompt</a></code></li>

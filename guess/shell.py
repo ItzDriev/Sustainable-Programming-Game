@@ -9,7 +9,7 @@ You can read about the cmd module in the docs:
 """
 
 import cmd
-import game
+from guess import game
 
 class Shell(cmd.Cmd):
     """Classes that handle the terminal's user inputs"""
@@ -21,7 +21,6 @@ class Shell(cmd.Cmd):
         """Init the object. """
         super().__init__()
         self.game = game.Game()
-
     def do_start(self, _):
         # 50/50 if computer goes first or if the human playing goes first?
 

@@ -1,55 +1,114 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""Guess the number I am thinking of."""
+"""This module defines a game module in which the game is initialized from"""
 
 import random
-
+from guess.dice_hand import DiceHand
+from guess.ai_logic import AiLogic
 
 class Game:
-    """Example of dice class."""
+    """Represents the game object"""
+    
+    def __init__(self, players_array = ["johan"], leaderboard = None):
+        
+        """Initialize the game object, player and npc resources"""
+        self.players = {}
 
-    low_number = 1
-    high_number = 100
-    the_number = None
+        for player in players_array:
+            self.players[player] = {"Score" : 0, "Hand" : DiceHand()}
+         
+        self.ai = AiLogic()
+        self.npc_score = 0
+        self.npc_hand = DiceHand()
+        
+        self.game_over = False
+        
+    def npc_turn(self):
+        
+        """Npc takes turn, sends result to the intelligence class."""
+        while True:
+            player_score = next(iter(self.players.values()))["Score"]
+            if self.ai.should_roll(self.npc_score, player_score):
+                self.npc_hand.roll_dice()
+                value = self.npc_hand.get_last_roll()
+                print (f"Mr AI rolled {value}")
+            else:
+                break
 
-    def __init__(self):
-        """Init the object."""
-        random.seed()
+            if self.evaluate(value):
+                self.npc_score += value
+                self.ai.increment_turn_score(value)
 
+                if (self.npc_score >= 100):
+                    print ("Mr AI reached 100 points. Game over")
+                    self.game_over = True
+                    self.ai.reset_turn_score()
+                    break
+
+                print (f"Mr AI's total score: {self.npc_score}")
+                continue  # Placeholder for continue-logic
+
+            else:
+                self.ai.reset_turn_score()
+                self.npc_score = 0
+                print ("Mr AI rolled 1. His score will be reset.")
+                break
+                  
+    def player_turn(self):
+        
+        """Player(s) takes turn rolling dice"""
+        for player, item in self.players.items():
+            if self.game_over:
+                break
+
+            while True: 
+                item["Hand"].roll_dice()
+                value = item["Hand"].get_last_roll()
+                print (f"{player} rolled {value}")
+                
+                if (self.evaluate(value)):
+                    item["Score"] += value
+                    
+                    if item["Score"] >= 100:
+                        print (f"{player} reached 100 points. {player} wins!")
+                        self.game_over = True
+                        break
+                        
+                    option = input (f"{player} Total score: {item['Score']} Continue? y/n")
+                    
+                    match option:
+                        case "y":
+                            continue
+                        case "n":
+                            break
+                        case "cheat":
+                            item["Score"] += 90
+                            continue
+                else:
+                    print (f"Dang it! {player} rolled 1. Score will be reset")
+                    item["Score"] = 0
+                    break
+                
     def start(self):
-        """Start the game and randomize a new number."""
-        self.the_number = random.randint(self.low_number, self.high_number)
-
-    def cheat(self):
-        """Get the number."""
-        return self.the_number
-
-    def low(self):
-        """Get the lowest number possible."""
-        return self.low_number
-
-    def high(self):
-        """Get the highest number possible."""
-        return self.high_number
-
-    def guess(self, a_number):
-        """
-        Check it the guess is correct, higher or lower than the actual number.
-
-        Raise an exception if the number is out of range.
-        Raise an exception if the number is not an integer.
-        """
-        if not isinstance(a_number, int):
-            raise TypeError("The number should be an integer.")
-
-        if not self.low_number <= a_number <= self.high_number:
-            raise ValueError("The number is higher/lower than max/min value.")
-
-        msg = "Too Low"
-        if a_number == self.the_number:
-            msg = "Correct"
-        elif a_number > self.the_number:
-            msg = "Too High"
-
-        return msg
+        
+        """Decide which player starts first"""
+        if len(self.players) == 1: 
+            match random.randint(1,2):
+                case 1: return
+                case 2: self.npc_turn()
+            
+    def evaluate(self, value, ):
+        
+        """Determine if player may continue or not"""
+        if value == 1:
+            return False
+        else: 
+            return True
+    
+    def game_status(self):
+        
+        """Monitor if game is finished or not"""
+        return self.game_over
+        
+    
