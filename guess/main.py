@@ -23,3 +23,5 @@ def main():
     print(__doc__)
     shell.Shell().cmdloop()
 
+if __name__ == "__name__":
+    main()
