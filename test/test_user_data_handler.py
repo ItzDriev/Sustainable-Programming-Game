@@ -40,7 +40,7 @@ class TestUserDataHandlerClass(unittest.TestCase):
         self.assertEqual(res, exp)
 
         res_not_existing = self.user_data.get_user_id("Test1")
-        exp1 = False
+        exp1 = None
         self.assertEqual(res_not_existing,exp1)
 
         # Cleanup directory

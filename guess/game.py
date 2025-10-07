@@ -13,11 +13,11 @@ from guess.player import Player
 class Game:
     """Represents the game object"""
     
-    def __init__(self, leaderboard = None):
+    def __init__(self, leaderboard = None, dir_path="./guess/GameData"):
         
         """Initialize the game object, player and npc resources"""
         
-        self.data_handler = DataHandler()
+        self.data_handler = DataHandler(dir_path)
         self.ai = AiLogic()
         self.npc_score = 0
         self.npc_hand = DiceHand()
@@ -113,15 +113,16 @@ class Game:
                 sleep(2.5)
                 break
                 
-    def start(self, players):
+    def start(self, players, test_mode=False):
         """Decide which player starts first"""
         #Temporary Score Reset for when game ends so a new game can be started, propert method for this will be implemented later
         self.game_over = False
         self.npc_score=0
         
         self.players=players
-
         who_starts = 0
+
+        if test_mode: return
 
         if len(self.players) == 1: 
             match random.randint(1,2):
