@@ -5,16 +5,17 @@
 
 class AiLogic:
     """Halloj."""
+
     def __init__(self):
         """Declares variables."""
         self.__turn_score = 0
         self.first_start_hand = 0
         self.difficulty = 2  # Bara för tillfälligt, denna ska tas bort sedan när difficulty fixats i shell
         self.__target = 0
-        self.enemy_total_rolls_this_round = 3  # Denna är också bara tillfällig, denna kommer att sedan bli inskickad från game
+        self.enemy_total_rolls_this_round = 0
         self.npc_total_rolls_this_round = 0
         self.if_under_then_hit_once_more = True
-        self.first_time_rolling = True
+        self.first_time_rolling = 0
 
     def rasmus_ai_difficulty(self, npc_score, player_score):
         """This function states how the ai acts for difficulty 1 (Rasmus difficulty)."""
@@ -33,22 +34,27 @@ class AiLogic:
                 self.__target -= 3
             elif diff <= -20:
                 self.__target += 5
-        return self.end_turn_or_keep_going()
+
+        if self.__turn_score < self.__target:  # Här väljs det ifall Ai'n ska slå igen eller stanna
+            return True
+        self.reset_turn_score()
+        return False
 
     def johan_ai_difficulty(self, npc_score, player_score):
         """This function states how the ai acts for difficulty 2 (Johans difficulty)."""
+        if self.first_time_rolling > 0:
+            self.first_time_rolling -= 1
+            return True
+        if player_score > npc_score:
+            if self.npc_total_rolls_this_round < self.enemy_total_rolls_this_round:
+                self.npc_total_rolls_this_round += 1
+                return True
+            if self.if_under_then_hit_once_more:
+                self.if_under_then_hit_once_more = False
+                return True
+        if npc_score > 90:
+            return True
         
-        if self.first_time_rolling:
-            self.first_time_rolling = False
-            return True
-        elif player_score > npc_score and self.npc_total_rolls_this_round < self.enemy_total_rolls_this_round:
-            self.npc_total_rolls_this_round += 1
-            return True
-        elif  player_score > npc_score and self.if_under_then_hit_once_more:
-            self.if_under_then_hit_once_more = False
-            return True
-        elif npc_score > 90:
-            return True
         self.reset_turn_score()
         return False
 
@@ -72,22 +78,19 @@ class AiLogic:
             case 4:
                 return self.liam_ai_difficulty(npc_score, player_score)
 
-    def end_turn_or_keep_going(self):  # Kanske sker att denna blir borttagen o skickad tbx till Rasmus difficulty
-        """Halloj."""
-        if self.__turn_score < self.__target:  # Här väljs det ifall Ai'n ska slå igen eller stanna
-            return True
-        self.reset_turn_score()
-        return False
-
     def reset_turn_score(self):
         """This function resets all variables after AI played his turn."""
         self.__turn_score = 0
         self.first_start_hand = 0
         self.npc_total_rolls_this_round = 0
-        #self.enemy_total_rolls_this_round = 0
+        self.enemy_total_rolls_this_round = 0
         self.if_under_then_hit_once_more = True
-        self.first_time_rolling = True
+        self.first_time_rolling = 2
 
     def increment_turn_score(self, score):
         """Halloj."""
         self.__turn_score += score
+
+    def increment_turn_round_for_player(self):
+        """Halloj."""
+        self.enemy_total_rolls_this_round += 1
