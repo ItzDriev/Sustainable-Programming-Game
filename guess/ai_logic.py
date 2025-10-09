@@ -10,12 +10,14 @@ class AiLogic:
         """Declares variables."""
         self.__turn_score = 0
         self.first_start_hand = 0
-        self.difficulty = 1  # Bara för tillfälligt, denna ska tas bort sedan när difficulty fixats i shell
+        self.difficulty = 3  # Bara för tillfälligt, denna ska tas bort sedan när difficulty fixats i shell
         self.__target = 0
         self.enemy_total_rolls_this_round = 0
         self.npc_total_rolls_this_round = 0
         self.if_under_then_hit_once_more = True
         self.first_time_rolling = 0
+        self.round_end_number = 100  # Bara för tillfällig siffra 90, denna ska ändras beroende ifall de vill spela för en annan end game siffra än 100
+        self.near_end_buffer = 10
 
     def rasmus_ai_difficulty(self, npc_score, player_score):
         """This function states how the ai acts for difficulty 1 (Rasmus difficulty)."""
@@ -29,7 +31,7 @@ class AiLogic:
             if self.if_under_then_hit_once_more:
                 self.if_under_then_hit_once_more = False
                 return True
-        if npc_score > 90:
+        if npc_score > self.round_end_number - self.near_end_buffer:
             return True
         
         self.reset_turn_score()
@@ -39,7 +41,7 @@ class AiLogic:
         """This function states how the ai acts for difficulty 2 (Johans difficulty)."""
         self.first_start_hand += 1
 
-        if npc_score >= 90:  # Kommer att kolla så att inte ai stannar närmare än 90+
+        if npc_score >= self.round_end_number - self.near_end_buffer:  # Kommer att kolla så att inte ai stannar närmare än 90+
             return True
 
         if self.first_start_hand == 1:
@@ -60,7 +62,31 @@ class AiLogic:
 
     def anton_ai_difficulty(self, npc_score, player_score):
         """This function states how the ai acts for difficulty 3 (Anton difficulty)."""
-        pass
+        self.first_start_hand += 1
+
+        if self.first_start_hand == 1:
+            self.__target = 16
+            self.__target -= max(min(npc_score // 20, 4), 0)
+
+            diff = npc_score - player_score 
+            if diff >= 20:
+                self.__target -= 4  
+            elif diff <= -20:
+                self.__target += 6  
+
+            if npc_score >= self.round_end_number - self.near_end_buffer:
+                self.__target -= 2
+
+            self.__target = max(6, min(self.__target, 22))
+
+        push_buffer = 3 if diff < 0 else 0
+
+        print(self.__target)
+        if self.__turn_score < self.__target + push_buffer:
+            return True
+
+        self.reset_turn_score()
+        return False
 
     def liam_ai_difficulty(self, npc_score, player_score):
         """This function states how the ai acts for difficulty 4 (Liam difficulty)."""

@@ -111,7 +111,6 @@ class Game:
                         continue
             else:
                 self.ai.reset_turn_score()
-                self.ai.increment_turn_round_for_player()
                 player.score -= turn_score
                 print (f"Dang it! {player.get_username()} rolled 1. Score will be reset down to {player.score}")
                 sleep(2.5)
