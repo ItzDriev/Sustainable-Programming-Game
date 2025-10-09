@@ -10,7 +10,7 @@ class AiLogic:
         """Declares variables."""
         self.__turn_score = 0
         self.first_start_hand = 0
-        self.difficulty = 3  # Bara för tillfälligt, denna ska tas bort sedan när difficulty fixats i shell
+        self.difficulty = 4  # Bara för tillfälligt, denna ska tas bort sedan när difficulty fixats i shell
         self.__target = 0
         self.enemy_total_rolls_this_round = 0
         self.npc_total_rolls_this_round = 0
@@ -33,7 +33,6 @@ class AiLogic:
                 return True
         if npc_score > self.round_end_number - self.near_end_buffer:
             return True
-        
         self.reset_turn_score()
         return False
 
@@ -41,21 +40,20 @@ class AiLogic:
         """This function states how the ai acts for difficulty 2 (Johans difficulty)."""
         self.first_start_hand += 1
 
-        if npc_score >= self.round_end_number - self.near_end_buffer:  # Kommer att kolla så att inte ai stannar närmare än 90+
+        if npc_score >= self.round_end_number - self.near_end_buffer:
             return True
 
         if self.first_start_hand == 1:
             self.__target = 15
-            self.__target -= max(min(npc_score // 25, 4), 0)  # Denna kommer att börja på 0, sedan efter varje 25 så kommer 1 adderas, så de gör desto nämre Ai'n är
-            # desto säkrare kommer den vara, så 25 -1, 50 -2, 75 -3
+            self.__target -= max(min(npc_score // 25, 4), 0)
 
-            diff = npc_score - player_score  # Denna kommer kolla ifall motståndaren är långt borta, är de 20+ så läggs 5 på risk, är motståndaren 20 bak, så kommer ai köra säkrare
+            diff = npc_score - player_score
             if diff >= 20:
                 self.__target -= 3
             elif diff <= -20:
                 self.__target += 5
 
-        if self.__turn_score < self.__target:  # Här väljs det ifall Ai'n ska slå igen eller stanna
+        if self.__turn_score < self.__target:
             return True
         self.reset_turn_score()
         return False
@@ -68,11 +66,11 @@ class AiLogic:
             self.__target = 16
             self.__target -= max(min(npc_score // 20, 4), 0)
 
-            diff = npc_score - player_score 
+            diff = npc_score - player_score
             if diff >= 20:
-                self.__target -= 4  
+                self.__target -= 4
             elif diff <= -20:
-                self.__target += 6  
+                self.__target += 6
 
             if npc_score >= self.round_end_number - self.near_end_buffer:
                 self.__target -= 2
@@ -81,7 +79,6 @@ class AiLogic:
 
         push_buffer = 3 if diff < 0 else 0
 
-        print(self.__target)
         if self.__turn_score < self.__target + push_buffer:
             return True
 
@@ -90,7 +87,41 @@ class AiLogic:
 
     def liam_ai_difficulty(self, npc_score, player_score):
         """This function states how the ai acts for difficulty 4 (Liam difficulty)."""
-        pass
+        needed = self.round_end_number - npc_score
+        diff = npc_score - player_score
+
+        # safe (no 1s) = 25/36, mean safe gain ≈ 8
+        # single 1 (turn bust) = 10/36  -> lose current turn score
+        # double 1 (wipe total) = 1/36  -> lose current turn score + total score
+        p_safe = 25 / 36
+        p_bust = 10 / 36
+        p_wipe = 1 / 36
+        safe_mean_gain = 8
+        max_gain = 12
+
+        if self.__turn_score + max_gain >= needed:
+            return True
+
+        # Expected value of one more roll vs banking now
+        ev_next = (
+            p_safe * safe_mean_gain
+            - p_bust * self.__turn_score
+            - p_wipe * (self.__turn_score + npc_score)
+        )
+
+        threshold = 0.02 * diff  # +0.4 at +20 lead, -0.4 at -20 behind
+
+        if needed <= self.near_end_buffer:
+            threshold += 0.2
+
+        if player_score >= self.round_end_number - self.near_end_buffer:
+            threshold -= 0.3
+
+        if ev_next > threshold:
+            return True
+
+        self.reset_turn_score()
+        return False
 
     def should_roll(self, npc_score, player_score):
         """This function decides which difficulty function that should be played."""
