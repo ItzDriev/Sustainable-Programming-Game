@@ -18,6 +18,7 @@ class DiceHand:
         self.dice.roll_dice()
         self.last_roll = self.dice.get_last_roll()
         self.roll_history.append(self.last_roll)
+        return self.last_roll #Testing purpose
 
     def get_last_roll(self):
         """Return the value of the last die throw"""  

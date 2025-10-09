@@ -4,6 +4,7 @@
 """Unit testing."""
 
 import unittest
+
 from guess import dice_hand
 
 class TestDiceHandClass(unittest.TestCase):
@@ -31,7 +32,7 @@ class TestDiceHandClass(unittest.TestCase):
         test_hand = dice_hand.DiceHand()
 
         test_hand.roll_dice()
-        value = test_hand.get_last_roll()
+        value = test_hand.dice.get_last_roll()
 
         self.assertIsInstance(value, int)
 
