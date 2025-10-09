@@ -15,20 +15,21 @@ class TestDiceHandClass(unittest.TestCase):
         res = dice_hand.DiceHand()
         exp = dice_hand.DiceHand
         self.assertIsInstance(res,exp)
-  
+
     def test_roll_dice(self):
         """Tests if the dice generates a integer between 1 and 6."""
         test_hand = dice_hand.DiceHand()
 
         value = test_hand.roll_dice()
-    
+
         self.assertIsInstance(value, int)
 
         self.assertGreaterEqual(value, 1)
         self.assertLessEqual(value, 6)
 
     def test_get_last_value(self):
-        """Tests if the get_last_value method return the expected value from roll_dice method"""
+        """Tests if the get_last_value method return the expected value 
+        from roll_dice method"""
         test_hand = dice_hand.DiceHand()
 
         test_hand.roll_dice()
