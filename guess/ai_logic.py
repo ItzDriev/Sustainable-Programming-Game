@@ -10,7 +10,7 @@ class AiLogic:
         """Declares variables."""
         self.__turn_score = 0
         self.first_start_hand = 0
-        self.difficulty = 2  # Bara för tillfälligt, denna ska tas bort sedan när difficulty fixats i shell
+        self.difficulty = 1  # Bara för tillfälligt, denna ska tas bort sedan när difficulty fixats i shell
         self.__target = 0
         self.enemy_total_rolls_this_round = 0
         self.npc_total_rolls_this_round = 0
@@ -19,6 +19,24 @@ class AiLogic:
 
     def rasmus_ai_difficulty(self, npc_score, player_score):
         """This function states how the ai acts for difficulty 1 (Rasmus difficulty)."""
+        if self.first_time_rolling > 0:
+            self.first_time_rolling -= 1
+            return True
+        if player_score > npc_score:
+            if self.npc_total_rolls_this_round < self.enemy_total_rolls_this_round:
+                self.npc_total_rolls_this_round += 1
+                return True
+            if self.if_under_then_hit_once_more:
+                self.if_under_then_hit_once_more = False
+                return True
+        if npc_score > 90:
+            return True
+        
+        self.reset_turn_score()
+        return False
+
+    def johan_ai_difficulty(self, npc_score, player_score):
+        """This function states how the ai acts for difficulty 2 (Johans difficulty)."""
         self.first_start_hand += 1
 
         if npc_score >= 90:  # Kommer att kolla så att inte ai stannar närmare än 90+
@@ -37,24 +55,6 @@ class AiLogic:
 
         if self.__turn_score < self.__target:  # Här väljs det ifall Ai'n ska slå igen eller stanna
             return True
-        self.reset_turn_score()
-        return False
-
-    def johan_ai_difficulty(self, npc_score, player_score):
-        """This function states how the ai acts for difficulty 2 (Johans difficulty)."""
-        if self.first_time_rolling > 0:
-            self.first_time_rolling -= 1
-            return True
-        if player_score > npc_score:
-            if self.npc_total_rolls_this_round < self.enemy_total_rolls_this_round:
-                self.npc_total_rolls_this_round += 1
-                return True
-            if self.if_under_then_hit_once_more:
-                self.if_under_then_hit_once_more = False
-                return True
-        if npc_score > 90:
-            return True
-        
         self.reset_turn_score()
         return False
 
