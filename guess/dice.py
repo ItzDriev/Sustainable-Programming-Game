@@ -17,6 +17,7 @@ class Dice:
         """Roll the dice and generate a random integer
         between 1 and the number of sides."""
         self.__last_roll = random.randint(1, self.__sides)
+        return self.__last_roll #Testing purpose
 
     def get_last_roll(self):
         """Return the value of the last roll."""
