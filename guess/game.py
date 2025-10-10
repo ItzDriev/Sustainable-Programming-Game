@@ -86,6 +86,7 @@ class Game:
             print(turn_history)
 
             self.dice_hand.roll_dice()
+            self.ai.increment_turn_round_for_player()
             value = self.dice_hand.get_last_roll()
             print (f"{player.get_username()} rolled {value}")
             
@@ -95,6 +96,7 @@ class Game:
                 if  player.score >= 100:
                     print (f"{player.get_username()} reached 100 points. {player.get_username()} wins!")
                     self.game_over = True
+                    self.ai.reset_turn_score()
                     break
                     
                 option = input (f"{player.get_username()}'s Total score: {player.score} \n\nContinue? y/n: ")
@@ -108,6 +110,7 @@ class Game:
                         player.score += 90
                         continue
             else:
+                self.ai.reset_turn_score()
                 player.score -= turn_score
                 print (f"Dang it! {player.get_username()} rolled 1. Score will be reset down to {player.score}")
                 sleep(2.5)
