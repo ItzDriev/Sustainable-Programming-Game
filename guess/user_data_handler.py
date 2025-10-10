@@ -52,3 +52,10 @@ class UserDataHandler(JSONFileHandler):
         data[str(self.get_user_id(current_username))]["username"] = new_username
         self.write(data)
         return True
+    
+    def get_username(self, user_id):
+        data = self.read()
+        for info in data.values():
+            if info.get("user_id") == user_id:
+                return info.get("username")
+        return None 
