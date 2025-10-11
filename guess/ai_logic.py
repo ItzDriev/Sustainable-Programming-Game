@@ -61,11 +61,15 @@ class AiLogic:
         """This function states how the ai acts for difficulty 3 (Anton difficulty)."""
         self.first_start_hand += 1
 
+        diff = npc_score - player_score
+
         if self.first_start_hand == 1:
             self.__target = 16
             self.__target -= max(min(npc_score // 20, 4), 0)
+            
+            #Comment just in case AI doesnt work properly like this although I dont see a reason why it would break
+            #diff=npc_score - player score used to be here, moved it out of if statement 
 
-            diff = npc_score - player_score
             if diff >= 20:
                 self.__target -= 4
             elif diff <= -20:
