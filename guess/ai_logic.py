@@ -4,7 +4,7 @@
 
 
 class AiLogic:
-    """Halloj."""
+    """Handles how the AI thinks."""
 
     def __init__(self):
         """Declares variables."""
@@ -148,9 +148,9 @@ class AiLogic:
         self.first_time_rolling = 2
 
     def increment_turn_score(self, score):
-        """Halloj."""
+        """This function adds each dice into another variable."""
         self.__turn_score += score
 
     def increment_turn_round_for_player(self):
-        """Halloj."""
+        """This function adds each dice thrown for player."""
         self.enemy_total_rolls_this_round += 1
