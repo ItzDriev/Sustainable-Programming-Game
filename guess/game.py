@@ -30,7 +30,7 @@ class Game:
         
         """Npc takes turn, sends result to the intelligence class."""
         turn_score = 0
-        turn_history = "----------Turn History For: Computer-AI----------\n"
+        turn_history = "🐷----------Turn History For: Computer-AI----------🐷\n"
 
         while True:
             for i in range(40):
@@ -41,7 +41,7 @@ class Game:
             if self.ai.should_roll(self.npc_score, player_score, difficulty):
                 self.npc_hand.roll_dice()
                 value = self.npc_hand.get_last_roll()
-                print (f"Mr AI rolled {value}")
+                print(f"🤖 Mr AI rolled {value} {'\u2680\u2681\u2682\u2683\u2684\u2685'[value-1]}")
             else:
                 break
 
@@ -51,7 +51,7 @@ class Game:
                 self.ai.increment_turn_score(value)
 
                 if (self.npc_score >= 100):
-                    print ("Mr AI reached 100 points. Game over")
+                    print ("🤖 Mr AI reached 100 points. Game over 🤖")
                     self.game_over = True
                     self.ai.reset_turn_score()
                     break
@@ -65,7 +65,7 @@ class Game:
             else:
                 self.ai.reset_turn_score()
                 self.npc_score -= turn_score
-                print (f"Mr AI rolled 1. His score will be reset down to {self.npc_score}")
+                print (f"❌ Mr AI rolled 1. His score will be reset down to {self.npc_score} ❌")
                 sleep(2.5)
                 break
                   
@@ -78,7 +78,7 @@ class Game:
             return
         
         turn_score = 0
-        turn_history = f"----------Turn History For: {player.get_username()}----------\n"
+        turn_history = f"🐷----------Turn History For: {player.get_username()}----------🐷\n"
 
         while True: 
             for i in range(40):
@@ -88,13 +88,13 @@ class Game:
             self.dice_hand.roll_dice()
             self.ai.increment_turn_round_for_player()
             value = self.dice_hand.get_last_roll()
-            print (f"{player.get_username()} rolled {value}")
+            print (f"{player.get_username()} rolled {value}  {'\u2680\u2681\u2682\u2683\u2684\u2685'[value-1]}")
             
             if (self.evaluate(value)):
                 player.score += value
                 turn_score += value
                 if  player.score >= 100:
-                    print (f"{player.get_username()} reached 100 points. {player.get_username()} wins!")
+                    print (f"🎉 {player.get_username()} reached 100 points. {player.get_username()} wins! 🎉")
                     self.game_over = True
                     self.ai.reset_turn_score()
                     break
@@ -112,7 +112,7 @@ class Game:
             else:
                 self.ai.reset_turn_score()
                 player.score -= turn_score
-                print (f"Dang it! {player.get_username()} rolled 1. Score will be reset down to {player.score}")
+                print (f"❌ Dang it! {player.get_username()} rolled 1. Score will be reset down to {player.score} ❌")
                 sleep(2.5)
                 break
                 

@@ -40,9 +40,8 @@ class Shell(cmd.Cmd):
 
             players.append(Player(username, userid))
         if int(mode)==1:
-            print("Difficulties (1-4):\n<---Easiest--->\n1. Rasmus\n2. Johan\n3. Anton\n4. Liam\n<---Hardest--->")
+            print("Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. Liam (Expert 😡)\n\n😈 --- Hardest --- 😈")
             difficulty = int(input("Select Preferred Difficulty: "))
-
 
         #Prompted to select 2 player mode or VS AI
         #Prompted to input name for player player 2 respectively
