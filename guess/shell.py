@@ -39,12 +39,15 @@ class Shell(cmd.Cmd):
                 raise Exception("UserID Not Found!")
 
             players.append(Player(username, userid))
+        if int(mode)==1:
+            print("Difficulties (1-4):\n<---Easiest--->\n1. Rasmus\n2. Johan\n3. Anton\n4. Liam\n<---Hardest--->")
+            difficulty = int(input("Select Preferred Difficulty: "))
 
 
         #Prompted to select 2 player mode or VS AI
         #Prompted to input name for player player 2 respectively
         print(msg)
-        self.game.start(players)
+        self.game.start(players, difficulty)
         
 
     def do_cheat(self, _):

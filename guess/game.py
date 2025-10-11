@@ -26,7 +26,7 @@ class Game:
         
         self.game_over = False
         
-    def npc_turn(self):
+    def npc_turn(self, difficulty):
         
         """Npc takes turn, sends result to the intelligence class."""
         turn_score = 0
@@ -38,7 +38,7 @@ class Game:
             print(turn_history)
             player_score = self.players[0].score
             
-            if self.ai.should_roll(self.npc_score, player_score):
+            if self.ai.should_roll(self.npc_score, player_score, difficulty):
                 self.npc_hand.roll_dice()
                 value = self.npc_hand.get_last_roll()
                 print (f"Mr AI rolled {value}")
@@ -116,7 +116,7 @@ class Game:
                 sleep(2.5)
                 break
                 
-    def start(self, players, test_mode=False):
+    def start(self, players, difficulty=1, test_mode=False):
         """Decide which player starts first"""
         #Temporary Score Reset for when game ends so a new game can be started, propert method for this will be implemented later
         self.game_over = False
@@ -133,7 +133,7 @@ class Game:
                     self.player_turn(self.players[0])
                     who_starts = 1
                 case 2: 
-                    self.npc_turn()
+                    self.npc_turn(difficulty)
                     who_starts = 2
 
             
@@ -141,7 +141,7 @@ class Game:
                 case 1:
                     while not self.game_over:
                         print("")
-                        self.npc_turn()
+                        self.npc_turn(difficulty)
                         if self.game_over:
                             break
                         print("")
@@ -153,7 +153,7 @@ class Game:
                         if self.game_over:
                             break
                         print("")
-                        self.npc_turn()
+                        self.npc_turn(difficulty)
 
                 
         else:
