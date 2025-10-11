@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Lets play a game of "Pig, Dice Game".
+Lets play a game of "PIG, the Dice Game" 🐷
 
 Your goal is to beat the opposing player 
 by reaching the target points before them!
@@ -12,8 +12,7 @@ however, if exactly ONE of your dice roll a '1', all your points during that tur
 If you happen to roll two '1's', all of you points will be reset to 0, 
 including points acquired from previous turns.
 
-Play carefully, and don't be a PIG!
-
+🐷 Play carefully, and don't be a PIG! 🐷  ⚀
 """
 
 from guess import shell

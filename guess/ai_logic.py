@@ -10,7 +10,6 @@ class AiLogic:
         """Declares variables."""
         self.__turn_score = 0
         self.first_start_hand = 0
-        self.difficulty = 4  # Bara för tillfälligt, denna ska tas bort sedan när difficulty fixats i shell
         self.__target = 0
         self.enemy_total_rolls_this_round = 0
         self.npc_total_rolls_this_round = 0
@@ -62,11 +61,15 @@ class AiLogic:
         """This function states how the ai acts for difficulty 3 (Anton difficulty)."""
         self.first_start_hand += 1
 
+        diff = npc_score - player_score
+
         if self.first_start_hand == 1:
             self.__target = 16
             self.__target -= max(min(npc_score // 20, 4), 0)
+            
+            #Comment just in case AI doesnt work properly like this although I dont see a reason why it would break
+            #diff=npc_score - player score used to be here, moved it out of if statement 
 
-            diff = npc_score - player_score
             if diff >= 20:
                 self.__target -= 4
             elif diff <= -20:
@@ -123,9 +126,9 @@ class AiLogic:
         self.reset_turn_score()
         return False
 
-    def should_roll(self, npc_score, player_score):
+    def should_roll(self, npc_score, player_score, difficulty):
         """This function decides which difficulty function that should be played."""
-        match self.difficulty:
+        match difficulty:
             case 1:
                 return self.rasmus_ai_difficulty(npc_score, player_score)
             case 2:
