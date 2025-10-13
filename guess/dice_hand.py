@@ -22,7 +22,7 @@ class DiceHand:
         for die in self.dice:
             die.roll_dice()
             self.last_roll.append(die.get_last_roll())
- 
+
         self.roll_history.append(self.last_roll)
         return self.last_roll  # Testing purpose
 

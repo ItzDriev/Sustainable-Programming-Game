@@ -17,7 +17,7 @@ class TestPlayerClass(unittest.TestCase):
         self.assertIsInstance(res, exp)
 
     def test_set_username(self):
-        """Update username and check"""
+        """Update username and check."""
         the_player = player.Player("Test", 0)
         new_username = "NewUsername"
         the_player.set_username(new_username)
@@ -27,6 +27,7 @@ class TestPlayerClass(unittest.TestCase):
         self.assertTrue(exp)
 
     def test_get_username(self):
+        """Test get username."""
         the_player = player.Player("Test", 0)
 
         res = the_player.get_username()
@@ -34,7 +35,7 @@ class TestPlayerClass(unittest.TestCase):
         self.assertTrue(exp)
 
     def test_get_user_id(self):
-        """Create player and check user_id"""
+        """Create player and check user_id."""
         the_player = player.Player("Test", 55)
 
         res = the_player.get_user_id()

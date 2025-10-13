@@ -27,19 +27,21 @@ class Shell(cmd.Cmd):
     def do_start(self, mode):
         # 50/50 if computer goes first or if the human playing goes first?
         """Start a game versus the computer."""
-        msg = ("Game Started! Start off by rolling the dice!")
+        msg = "Game Started! Start off by rolling the dice!"
 
         players = []
-        for n in range(int(mode)):
+        for _ in range(int(mode)):
             username = input("Enter username: ")
-            self.game.data_handler.user_data.add_user(username)   
+            self.game.data_handler.user_data.add_user(username)
             userid = self.game.data_handler.user_data.get_user_id(username)
             if userid is None:
                 raise Exception("UserID Not Found!")
 
             players.append(Player(username, userid))
         if int(mode) == 1:
-            print("Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. Liam (Expert 😡)\n\n😈 --- Hardest --- 😈")
+            print("Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. "
+                  "Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. "
+                  "Liam (Expert 😡)\n\n😈 --- Hardest --- 😈")
             difficulty = int(input("Select Preferred Difficulty: "))
 
         # Prompted to select 2 player mode or VS AI
@@ -54,7 +56,8 @@ class Shell(cmd.Cmd):
 
     def do_roll(self, _):
         """Decide to to roll the dice."""
-        # Guess this will call a dice class, roll the dice and add the points to the current dice hand or something
+        # Guess this will call a dice class, roll the dice and add the
+        # points to the current dice hand or something
 
         print("You roll the dice!")
 
@@ -80,16 +83,15 @@ class Shell(cmd.Cmd):
         by reaching the target points before them!
 
         During your turn, you can roll the dice as many times as you'd like,
-        however, if exactly ONE of your dice roll a '1', all your points during that turn are lost.
-        If you happen to roll two '1's', all of you points will be reset to 0,
-        including points acquired from previous turns.
+        however, if exactly ONE of your dice roll a '1', all your points
+        during that turn are lost. If you happen to roll two '1's', all of
+        you points will be reset to 0, including points acquired from previous turns.
         """
         print(rules)
 
     # Below are all ways to exit the game: exit, quite, q and EOF
 
     def do_exit(self, _):
-        # pylint: disable=no-self-use
         """Leave the game."""
         print("Game Exited! Cya around!")
         return True
@@ -107,9 +109,10 @@ class Shell(cmd.Cmd):
         """Leave the game."""
         return self.do_exit(arg)
 
-    def do_leaderboard(self, arg):
+    def do_leaderboard(self, _):
         """Show leaderboard."""
         self.game.data_handler.print_leaderboard()
         # parameters = arg.split()
-        # self.game.data_handler.leaderboard_data.register_highscore(parameters[0], parameters[1])
+        # self.game.data_handler.leaderboard_data.register_highscore(parameters[0],
+        # parameters[1])
         # print(self.game.data_handler.leaderboard_data.get_highscore(parameters[0]))

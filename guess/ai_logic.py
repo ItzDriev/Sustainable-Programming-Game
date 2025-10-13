@@ -7,7 +7,7 @@ class AiLogic:
     """Handles how the AI thinks."""
 
     def __init__(self):
-        """Declares variables."""
+        """Declare variables."""
         self.__turn_score = 0
         self.first_start_hand = 0
         self.__target = 0
@@ -15,11 +15,11 @@ class AiLogic:
         self.npc_total_rolls_this_round = 0
         self.if_under_then_hit_once_more = True
         self.first_time_rolling = 0
-        self.round_end_number = 100  # Bara för tillfällig siffra 90, denna ska ändras beroende ifall de vill spela för en annan end game siffra än 100
+        self.round_end_number = 100
         self.near_end_buffer = 10
 
     def rasmus_ai_difficulty(self, npc_score, player_score):
-        """This function states how the ai acts for difficulty 1 (Rasmus difficulty)."""
+        """Logic for difficulty 1 (Rasmus difficulty)."""
         if self.first_time_rolling > 0:
             self.first_time_rolling -= 1
             return True
@@ -36,7 +36,7 @@ class AiLogic:
         return False
 
     def johan_ai_difficulty(self, npc_score, player_score):
-        """This function states how the ai acts for difficulty 2 (Johans difficulty)."""
+        """Logic for difficulty 2 (Johans difficulty)."""
         self.first_start_hand += 1
 
         if npc_score >= self.round_end_number - self.near_end_buffer:
@@ -58,7 +58,7 @@ class AiLogic:
         return False
 
     def anton_ai_difficulty(self, npc_score, player_score):
-        """This function states how the ai acts for difficulty 3 (Anton difficulty)."""
+        """Logic for difficulty 3 (Anton difficulty)."""
         self.first_start_hand += 1
 
         diff = npc_score - player_score
@@ -66,9 +66,10 @@ class AiLogic:
         if self.first_start_hand == 1:
             self.__target = 16
             self.__target -= max(min(npc_score // 20, 4), 0)
-            
-            #Comment just in case AI doesnt work properly like this although I dont see a reason why it would break
-            #diff=npc_score - player score used to be here, moved it out of if statement 
+            # Comment just in case AI doesnt work properly
+            # like this although I dont see a reason why it would break
+            # diff=npc_score - player score used to be here,
+            # moved it out of if statement
 
             if diff >= 20:
                 self.__target -= 4
@@ -89,7 +90,7 @@ class AiLogic:
         return False
 
     def liam_ai_difficulty(self, npc_score, player_score):
-        """This function states how the ai acts for difficulty 4 (Liam difficulty)."""
+        """Logic for difficulty 4 (Liam difficulty)."""
         needed = self.round_end_number - npc_score
         diff = npc_score - player_score
 
@@ -127,7 +128,7 @@ class AiLogic:
         return False
 
     def should_roll(self, npc_score, player_score, difficulty):
-        """This function decides which difficulty function that should be played."""
+        """Dice which difficulty function that should be played."""
         match difficulty:
             case 1:
                 return self.rasmus_ai_difficulty(npc_score, player_score)
@@ -139,7 +140,7 @@ class AiLogic:
                 return self.liam_ai_difficulty(npc_score, player_score)
 
     def reset_turn_score(self):
-        """This function resets all variables after AI played his turn."""
+        """Reset all variables after AI played his turn."""
         self.__turn_score = 0
         self.first_start_hand = 0
         self.npc_total_rolls_this_round = 0
@@ -148,9 +149,9 @@ class AiLogic:
         self.first_time_rolling = 2
 
     def increment_turn_score(self, score):
-        """This function adds each dice into another variable."""
+        """Increment score for current turn."""
         self.__turn_score += score
 
     def increment_turn_round_for_player(self):
-        """This function adds each dice thrown for player."""
+        """Increments turn score for player."""
         self.enemy_total_rolls_this_round += 1

@@ -4,7 +4,7 @@
 """
 Lets play a game of "PIG, the Dice Game 🐷.
 
-Your goal is to beat the opposing player 
+Your goal is to beat the opposing player
 by reaching the target points before them!
 
 During your turn, you can roll the dice as many times as you'd like,
