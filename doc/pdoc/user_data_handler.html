@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>main API documentation</title>
-<meta name="description" content="Lets play a game of &#34;PIG, the Dice Game&#34; 🐷 …">
+<title>user_data_handler API documentation</title>
+<meta name="description" content="Module for handling UserData …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -33,44 +33,174 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>main</code></h1>
+<h1 class="title">Module <code>user_data_handler</code></h1>
 </header>
 <section id="section-intro">
-<p>Lets play a game of "PIG, the Dice Game" 🐷</p>
-<p>Your goal is to beat the opposing player
-by reaching the target points before them!</p>
-<p>During your turn, you can roll the dice as many times as you'd like,
-however, if exactly ONE of your dice roll a '1', all your points during that turn are lost.
-If you happen to roll two '1's', all of you points will be reset to 0,
-including points acquired from previous turns.</p>
-<p>🐷 Play carefully, and don't be a PIG! 🐷
-⚀</p>
+<p>Module for handling UserData.</p>
+<p>Handles user data.</p>
 </section>
 <section>
 </section>
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="main.main"><code class="name flex">
-<span>def <span class="ident">main</span></span>(<span>)</span>
+<dt id="user_data_handler.UserDataHandler"><code class="flex name class">
+<span>class <span class="ident">UserDataHandler</span></span>
+<span>(</span><span>file_path, dir_path)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def main():
-    &#34;&#34;&#34;Execute the main program.&#34;&#34;&#34;
-    print(__doc__)
-    shell.Shell().cmdloop()</code></pre>
+<pre><code class="python">class UserDataHandler(JSONFileHandler):
+    &#34;&#34;&#34;Handles writing user data to JSON file.&#34;&#34;&#34;
+
+    def __init__(self, file_path, dir_path):
+        &#34;&#34;&#34;Initialize the object.&#34;&#34;&#34;
+        super().__init__(file_path, dir_path)
+
+    def get_user_id(self, username):
+        &#34;&#34;&#34;Return user id based on username.&#34;&#34;&#34;
+        data = self.read()
+
+        for user_id, user_info in data.items():
+            if user_info.get(&#34;username&#34;) == username:
+                return int(user_id)
+        return None
+
+    def add_user(self, username):
+        &#34;&#34;&#34;Add a new user if username is unique.&#34;&#34;&#34;
+        data = self.read()
+
+        if any(info.get(&#34;username&#34;) == username for info in data.values()):
+            return False
+        user_id = len(data)
+
+        data[str(user_id)] = {
+            &#34;user_id&#34;: int(user_id),
+            &#34;username&#34;: username
+        }
+
+        self.write(data)
+        return True
+
+    def update_username(self, current_username, new_username):
+        &#34;&#34;&#34;Update the username for an existing user.&#34;&#34;&#34;
+        data = self.read()
+        if any(info.get(&#34;username&#34;) == new_username for info in data.values()):
+            return False
+        if str(self.get_user_id(current_username)) not in data:
+            return False
+        data[str(self.get_user_id(current_username))][&#34;username&#34;] = new_username
+        self.write(data)
+        return True
+    
+    def get_username(self, user_id):
+        data = self.read()
+        for info in data.values():
+            if info.get(&#34;user_id&#34;) == user_id:
+                return info.get(&#34;username&#34;)
+        return None </code></pre>
 </details>
-<div class="desc"><p>Execute the main program.</p></div>
+<div class="desc"><p>Handles writing user data to JSON file.</p>
+<p>Initialize the object.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>guess.json_file_handler.JSONFileHandler</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="user_data_handler.UserDataHandler.add_user"><code class="name flex">
+<span>def <span class="ident">add_user</span></span>(<span>self, username)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_user(self, username):
+    &#34;&#34;&#34;Add a new user if username is unique.&#34;&#34;&#34;
+    data = self.read()
+
+    if any(info.get(&#34;username&#34;) == username for info in data.values()):
+        return False
+    user_id = len(data)
+
+    data[str(user_id)] = {
+        &#34;user_id&#34;: int(user_id),
+        &#34;username&#34;: username
+    }
+
+    self.write(data)
+    return True</code></pre>
+</details>
+<div class="desc"><p>Add a new user if username is unique.</p></div>
+</dd>
+<dt id="user_data_handler.UserDataHandler.get_user_id"><code class="name flex">
+<span>def <span class="ident">get_user_id</span></span>(<span>self, username)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_user_id(self, username):
+    &#34;&#34;&#34;Return user id based on username.&#34;&#34;&#34;
+    data = self.read()
+
+    for user_id, user_info in data.items():
+        if user_info.get(&#34;username&#34;) == username:
+            return int(user_id)
+    return None</code></pre>
+</details>
+<div class="desc"><p>Return user id based on username.</p></div>
+</dd>
+<dt id="user_data_handler.UserDataHandler.get_username"><code class="name flex">
+<span>def <span class="ident">get_username</span></span>(<span>self, user_id)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_username(self, user_id):
+    data = self.read()
+    for info in data.values():
+        if info.get(&#34;user_id&#34;) == user_id:
+            return info.get(&#34;username&#34;)
+    return None </code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="user_data_handler.UserDataHandler.update_username"><code class="name flex">
+<span>def <span class="ident">update_username</span></span>(<span>self, current_username, new_username)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_username(self, current_username, new_username):
+    &#34;&#34;&#34;Update the username for an existing user.&#34;&#34;&#34;
+    data = self.read()
+    if any(info.get(&#34;username&#34;) == new_username for info in data.values()):
+        return False
+    if str(self.get_user_id(current_username)) not in data:
+        return False
+    data[str(self.get_user_id(current_username))][&#34;username&#34;] = new_username
+    self.write(data)
+    return True</code></pre>
+</details>
+<div class="desc"><p>Update the username for an existing user.</p></div>
 </dd>
 </dl>
-</section>
-<section>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -78,9 +208,17 @@ including points acquired from previous turns.</p>
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-functions">Functions</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="user_data_handler.UserDataHandler" href="#user_data_handler.UserDataHandler">UserDataHandler</a></code></h4>
 <ul class="">
-<li><code><a title="main.main" href="#main.main">main</a></code></li>
+<li><code><a title="user_data_handler.UserDataHandler.add_user" href="#user_data_handler.UserDataHandler.add_user">add_user</a></code></li>
+<li><code><a title="user_data_handler.UserDataHandler.get_user_id" href="#user_data_handler.UserDataHandler.get_user_id">get_user_id</a></code></li>
+<li><code><a title="user_data_handler.UserDataHandler.get_username" href="#user_data_handler.UserDataHandler.get_username">get_username</a></code></li>
+<li><code><a title="user_data_handler.UserDataHandler.update_username" href="#user_data_handler.UserDataHandler.update_username">update_username</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

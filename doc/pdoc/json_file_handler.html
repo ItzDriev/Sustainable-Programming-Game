@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>main API documentation</title>
-<meta name="description" content="Lets play a game of &#34;PIG, the Dice Game&#34; 🐷 …">
+<title>json_file_handler API documentation</title>
+<meta name="description" content="Handles Json data.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -33,44 +33,121 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>main</code></h1>
+<h1 class="title">Module <code>json_file_handler</code></h1>
 </header>
 <section id="section-intro">
-<p>Lets play a game of "PIG, the Dice Game" 🐷</p>
-<p>Your goal is to beat the opposing player
-by reaching the target points before them!</p>
-<p>During your turn, you can roll the dice as many times as you'd like,
-however, if exactly ONE of your dice roll a '1', all your points during that turn are lost.
-If you happen to roll two '1's', all of you points will be reset to 0,
-including points acquired from previous turns.</p>
-<p>🐷 Play carefully, and don't be a PIG! 🐷
-⚀</p>
+<p>Handles Json data.</p>
 </section>
 <section>
 </section>
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="main.main"><code class="name flex">
-<span>def <span class="ident">main</span></span>(<span>)</span>
+<dt id="json_file_handler.JSONFileHandler"><code class="flex name class">
+<span>class <span class="ident">JSONFileHandler</span></span>
+<span>(</span><span>file_path, dir_path='./guess/GameData')</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def main():
-    &#34;&#34;&#34;Execute the main program.&#34;&#34;&#34;
-    print(__doc__)
-    shell.Shell().cmdloop()</code></pre>
+<pre><code class="python">class JSONFileHandler():
+    &#34;&#34;&#34;Handles writing user data to JSON file.&#34;&#34;&#34;
+
+    def __init__(self, file_path, dir_path=&#34;./guess/GameData&#34;):
+        &#34;&#34;&#34;Initialize the object.&#34;&#34;&#34;
+        self.__file_path = Path(file_path)
+        self.__dir_path = Path(dir_path)
+        self.__dir_path.mkdir(parents=True, exist_ok=True)
+
+    def is_missing_or_empty(self):
+        &#34;&#34;&#34;Check for missing file or invalid content.&#34;&#34;&#34;
+        missing_file = not self.__file_path.exists()
+        if not missing_file:
+            empty_file = self.__file_path.stat().st_size == 0
+        else:
+            empty_file = True
+        if missing_file or empty_file:
+            self.write({})
+            return True
+        return False
+
+    def write(self, data):
+        &#34;&#34;&#34;Write user data to file.&#34;&#34;&#34;
+        with open(self.__file_path, &#34;w&#34;, encoding=&#34;utf-8&#34;) as f:
+            json.dump(data, f, indent=4)
+
+    def read(self):
+        &#34;&#34;&#34;Read user data file and returns.&#34;&#34;&#34;
+        self.is_missing_or_empty()
+        with open(self.__file_path, &#34;r&#34;, encoding=&#34;utf-8&#34;) as f:
+            return json.load(f)</code></pre>
 </details>
-<div class="desc"><p>Execute the main program.</p></div>
+<div class="desc"><p>Handles writing user data to JSON file.</p>
+<p>Initialize the object.</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="json_file_handler.JSONFileHandler.is_missing_or_empty"><code class="name flex">
+<span>def <span class="ident">is_missing_or_empty</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_missing_or_empty(self):
+    &#34;&#34;&#34;Check for missing file or invalid content.&#34;&#34;&#34;
+    missing_file = not self.__file_path.exists()
+    if not missing_file:
+        empty_file = self.__file_path.stat().st_size == 0
+    else:
+        empty_file = True
+    if missing_file or empty_file:
+        self.write({})
+        return True
+    return False</code></pre>
+</details>
+<div class="desc"><p>Check for missing file or invalid content.</p></div>
+</dd>
+<dt id="json_file_handler.JSONFileHandler.read"><code class="name flex">
+<span>def <span class="ident">read</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read(self):
+    &#34;&#34;&#34;Read user data file and returns.&#34;&#34;&#34;
+    self.is_missing_or_empty()
+    with open(self.__file_path, &#34;r&#34;, encoding=&#34;utf-8&#34;) as f:
+        return json.load(f)</code></pre>
+</details>
+<div class="desc"><p>Read user data file and returns.</p></div>
+</dd>
+<dt id="json_file_handler.JSONFileHandler.write"><code class="name flex">
+<span>def <span class="ident">write</span></span>(<span>self, data)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write(self, data):
+    &#34;&#34;&#34;Write user data to file.&#34;&#34;&#34;
+    with open(self.__file_path, &#34;w&#34;, encoding=&#34;utf-8&#34;) as f:
+        json.dump(data, f, indent=4)</code></pre>
+</details>
+<div class="desc"><p>Write user data to file.</p></div>
 </dd>
 </dl>
-</section>
-<section>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -78,9 +155,16 @@ including points acquired from previous turns.</p>
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-functions">Functions</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="json_file_handler.JSONFileHandler" href="#json_file_handler.JSONFileHandler">JSONFileHandler</a></code></h4>
 <ul class="">
-<li><code><a title="main.main" href="#main.main">main</a></code></li>
+<li><code><a title="json_file_handler.JSONFileHandler.is_missing_or_empty" href="#json_file_handler.JSONFileHandler.is_missing_or_empty">is_missing_or_empty</a></code></li>
+<li><code><a title="json_file_handler.JSONFileHandler.read" href="#json_file_handler.JSONFileHandler.read">read</a></code></li>
+<li><code><a title="json_file_handler.JSONFileHandler.write" href="#json_file_handler.JSONFileHandler.write">write</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
