@@ -26,13 +26,12 @@ class TestGameClass(unittest.TestCase):
         the_game.data_handler.user_data.add_user("testuser")
         players = []
         players.append(Player("testuser", the_game.data_handler.user_data.get_user_id("testuser")))
-        the_game.start(players, True)
-
+        the_game.start(players, 1,  test_mode=True)
 
         self.assertTrue(True)
         os.remove(self.test_dir+"/UserData.json")
-        os.rmdir(self.test_dir)         
-        
+        os.rmdir(self.test_dir)
+
 
 if __name__ == "__main__":
     unittest.main()

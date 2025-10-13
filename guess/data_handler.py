@@ -25,6 +25,7 @@ class DataHandler:
         self.leaderboard_data = LeaderboardDataHandler(self.__dir_path/"LeaderboardData.json", self.__dir_path)
 
     def print_leaderboard(self):
+        """Print leaderboard."""
         leaderboard = self.leaderboard_data.read()
         for user_id, score in leaderboard.items():
             print (f"{self.user_data.get_username(int(user_id))}: {score}")
