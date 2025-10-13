@@ -12,7 +12,8 @@ from guess.player import Player
 
 class Game:
     """Represents the game object"""
-    
+    cheat_mode = False
+
     def __init__(self, leaderboard = None, dir_path="./guess/GameData"):
         """Initialize the game object, player and npc resources"""
         
@@ -80,6 +81,9 @@ class Game:
     def player_turn(self, player):
         """Player(s) takes turn rolling dice"""
 
+        if Game.cheat_mode:
+            player.score += 100
+
         if self.game_over:
             return
         
@@ -116,10 +120,9 @@ class Game:
                     case "n":
                         break
                     case "quit":
-                        self.quit()
-                    case "cheat":
-                        player.score += 90
-                        continue
+                        self.game_over = True # Temp Quit
+                    case "q":
+                        self.game_over = True # Temp Quit
             elif(not self.rolled_two_ones(self.dice_hand.get_last_roll()[0], self.dice_hand.get_last_roll()[1])):
                 self.ai.reset_turn_score()
                 player.score -= turn_score
