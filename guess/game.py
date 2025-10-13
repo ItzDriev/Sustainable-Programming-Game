@@ -20,12 +20,10 @@ class Game:
         
         self.ai = AiLogic()
         self.npc_score = 0
-        self.npc_dice_one = DiceHand()
-        self.npc_dice_two = DiceHand()
+        self.npc_dice_hand = DiceHand()
 
         self.players = []
-        self.dice_one = DiceHand()
-        self.dice_two = DiceHand()
+        self.dice_hand = DiceHand()
         
         self.game_over = False
         
@@ -42,14 +40,14 @@ class Game:
             player_score = self.players[0].score
             
             if self.ai.should_roll(self.npc_score, player_score, difficulty):
-                self.npc_hand.roll_dice()
-                value = self.npc_hand.get_last_roll()
-                print(f"🤖 Mr AI rolled {value} {'\u2680\u2681\u2682\u2683\u2684\u2685'[value-1]}")
+                self.npc_dice_hand.roll_dice()
+                value = self.npc_dice_hand.get_last_roll()
+                print(f"🤖 Mr AI rolled {self.npc_dice_hand.get_last_roll()[0]} and {self.npc_dice_hand.get_last_roll()[1]} {'\u2680\u2681\u2682\u2683\u2684\u2685'[value[0]-1]} {'\u2680\u2681\u2682\u2683\u2684\u2685'[value[1]-1]} !")
             else:
                 break
 
-            if self.evaluate(self.npc_dice_one.get_last_roll(), self.npc_dice_two.get_last_roll()):
-                total_roll = self.npc_dice_one.get_last_roll() + self.npc_dice_two.get_last_roll()
+            if not self.rolled_one(self.npc_dice_hand.get_last_roll()[0], self.npc_dice_hand.get_last_roll()[1]):
+                total_roll = sum(self.npc_dice_hand.get_last_roll())
                 self.npc_score += (total_roll)
                 turn_score += (total_roll) 
                 self.ai.increment_turn_score(total_roll)
@@ -62,16 +60,22 @@ class Game:
 
                 
                 print (f"Mr AI's total score: {self.npc_score}")
-                turn_history+=f"Rolled: {self.npc_dice_one.get_last_roll() + self.npc_dice_two.get_last_roll()}\n"
+                turn_history+=f"Rolled: {self.npc_dice_hand.get_last_roll()[0]} and {self.npc_dice_hand.get_last_roll()[1]}\n"
                 sleep(1)
                 continue  # Placeholder for continue-logic
 
-            else:
+            elif(not self.rolled_two_ones(self.npc_dice_hand.get_last_roll()[0], self.npc_dice_hand.get_last_roll()[1])):
                 self.ai.reset_turn_score()
                 self.npc_score -= turn_score
                 print (f"❌ Mr AI rolled 1. His score will be reset down to {self.npc_score} ❌")
                 sleep(2.5)
                 break
+            else:
+                self.npc_score = 0
+                print (f"❌ Oh noooooo! Mr. AI rolled two 1's. Score will be reset down to {self.npc_score} ❌")
+                sleep(2.5)
+                break
+
                   
     def player_turn(self, player):
         """Player(s) takes turn rolling dice"""
@@ -87,17 +91,14 @@ class Game:
                 print("")
             print(turn_history)
 
-            self.dice_one.roll_dice()
-            self.dice_two.roll_dice()
+            self.dice_hand.roll_dice()
             self.ai.increment_turn_round_for_player()
             value = self.dice_hand.get_last_roll()
-            print (f"{player.get_username()} rolled {value}  {'\u2680\u2681\u2682\u2683\u2684\u2685'[value-1]}")
-            
-            print (f"{player.get_username()} rolled {self.dice_one.get_last_roll()} and {self.dice_two.get_last_roll()}!")
+            print (f"{player.get_username()} rolled {self.dice_hand.get_last_roll()[0]} and {self.dice_hand.get_last_roll()[1]} {'\u2680\u2681\u2682\u2683\u2684\u2685'[value[0]-1]} {'\u2680\u2681\u2682\u2683\u2684\u2685'[value[1]-1]} !")
             
             #Evaluate if any roll is 1
-            if (self.evaluate(self.dice_one.get_last_roll(), self.dice_two.get_last_roll())):
-                total_roll = (self.dice_one.get_last_roll() + self.dice_two.get_last_roll())
+            if (not self.rolled_one(self.dice_hand.get_last_roll()[0], self.dice_hand.get_last_roll()[1])):
+                total_roll = sum(self.dice_hand.get_last_roll())
                 player.score += (total_roll)
                 turn_score += (total_roll)
                 if  player.score >= 100:
@@ -108,7 +109,7 @@ class Game:
                 
                 #Needs a quit method    
                 option = input (f"{player.get_username()}'s Total score: {player.score} \n\nContinue? 'y'/'n' or 'quit' to quit\n")
-                turn_history+=f"Rolled: {self.dice_one.get_last_roll() + self.dice_two.get_last_roll()}\n"
+                turn_history+=f"Rolled: {self.dice_hand.get_last_roll()[0]} and {self.dice_hand.get_last_roll()[1]}\n"
                 match option:
                     case "y":
                         continue
@@ -119,14 +120,19 @@ class Game:
                     case "cheat":
                         player.score += 90
                         continue
-            else:
+            elif(not self.rolled_two_ones(self.dice_hand.get_last_roll()[0], self.dice_hand.get_last_roll()[1])):
                 self.ai.reset_turn_score()
                 player.score -= turn_score
                 print (f"❌ Dang it! {player.get_username()} rolled 1. Score will be reset down to {player.score} ❌")
                 sleep(2.5)
                 break
+            else:
+                player.score = 0
+                print (f"❌ Oh noooooo! {player.get_username()} rolled two 1's. Score will be reset down to {player.score} ❌")
+                sleep(2.5)
+                break
     
-    def reset_game(self, players):
+    def reset_game(self, players : Player):
         """Ensures game is reset and has correct players when starting new game"""
         self.game_over = False
         self.npc_score = 0
@@ -134,7 +140,7 @@ class Game:
         
         return
                    
-    def start(self, players, test_mode=False):
+    def start(self, players, difficulty, test_mode=False):
         """Decide which player starts first"""
         
         if (self.reset_game(players)):
@@ -190,11 +196,17 @@ class Game:
                 self.player_turn(self.players[current_user_index])
                 print("")
 
-    def evaluate(self, value_one, value_two ):
+    def rolled_one(self, value_one, value_two ):
         """Determine if player may continue or not"""
         if value_one == 1 or value_two == 1:
-            return False
-        return True
+            return True
+        return False
+
+    def rolled_two_ones(self, value_one, value_two ):
+        """Determine if player may continue or not"""
+        if value_one == 1 and value_two == 1:
+            return True
+        return False
 
     def game_status(self):  
         """Monitor if game is finished or not"""
