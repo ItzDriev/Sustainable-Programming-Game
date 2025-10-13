@@ -62,6 +62,7 @@ jobs:
 
       - name: Build docs
         run: |
+          pip install -r docs/requirements.txt
           make sphinx
 
       - name: Upload docs artifact
