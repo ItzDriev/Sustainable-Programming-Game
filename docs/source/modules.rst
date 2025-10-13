@@ -1,7 +1,7 @@
-guess
+PigGame
 =====
 
 .. toctree::
    :maxdepth: 4
 
-   guess
+   PigGame

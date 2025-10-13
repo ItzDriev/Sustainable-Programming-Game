@@ -7,7 +7,7 @@ Module for handling UserData.
 Handles user data.
 """
 
-from guess.json_file_handler import JSONFileHandler
+from PigGame.json_file_handler import JSONFileHandler
 
 
 class UserDataHandler(JSONFileHandler):

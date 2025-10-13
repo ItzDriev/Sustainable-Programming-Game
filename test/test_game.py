@@ -5,8 +5,8 @@
 
 import unittest
 import os
-from guess import game
-from guess.player import Player
+from PigGame import game
+from PigGame.player import Player
 
 
 class TestGameClass(unittest.TestCase):
