@@ -124,7 +124,13 @@ pyreverse:
 	dot -Tpng packages.dot -o doc/pyreverse/packages.png
 	rm -f classes.dot packages.dot
 
-doc: pdoc pyreverse #pydoc sphinx
+sphinx:
+	@$(call MESSAGE,$@)
+	rm -f docs/source/PigGame.rst
+	sphinx-apidoc -o docs/source PigGame
+	$(MAKE) -C docs html
+
+doc: pdoc pyreverse sphinx
 
 
 
