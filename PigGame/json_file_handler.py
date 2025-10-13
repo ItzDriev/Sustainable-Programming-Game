@@ -10,7 +10,7 @@ from pathlib import Path
 class JSONFileHandler():
     """Handles writing user data to JSON file."""
 
-    def __init__(self, file_path, dir_path="./guess/GameData"):
+    def __init__(self, file_path, dir_path="./PigGame/GameData"):
         """Initialize the object."""
         self.__file_path = Path(file_path)
         self.__dir_path = Path(dir_path)

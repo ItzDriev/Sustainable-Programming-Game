@@ -64,10 +64,10 @@ jobs:
         run: |
           cd docs
           cd source
-          rm -f guess.rst
+          rm -f PigGame.rst
           cd ..
           cd ..
-          sphinx-apidoc -o docs/source guess
+          sphinx-apidoc -o docs/source PigGame
           cd docs
           make html
 

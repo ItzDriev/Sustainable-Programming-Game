@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run guess.main",
+            "name": "Run PigGame.main",
             "type": "debugpy",
             "request": "launch",
-            "module": "guess.main",
+            "module": "PigGame.main",
             "cwd": "${workspaceFolder}",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}"

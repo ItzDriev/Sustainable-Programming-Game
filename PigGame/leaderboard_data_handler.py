@@ -7,7 +7,7 @@ Module for handling LeaderboardData.
 Handles LeaderboardData.
 """
 
-from guess.json_file_handler import JSONFileHandler
+from PigGame.json_file_handler import JSONFileHandler
 
 
 class LeaderboardDataHandler(JSONFileHandler):

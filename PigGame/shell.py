@@ -9,8 +9,8 @@ You can read about the cmd module in the docs:
 """
 
 import cmd
-from guess.game import Game
-from guess.player import Player
+from PigGame.game import Game
+from PigGame.player import Player
 
 
 class Shell(cmd.Cmd):

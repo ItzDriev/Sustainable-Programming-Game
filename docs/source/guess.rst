@@ -1,69 +1,69 @@
-guess package
+PigGame package
 =============
 
 Submodules
 ----------
 
-guess.data\_handler module
+PigGame.data\_handler module
 --------------------------
 
-.. automodule:: guess.data_handler
+.. automodule:: PigGame.data_handler
    :members:
    :show-inheritance:
    :undoc-members:
 
-guess.game module
+PigGame.game module
 -----------------
 
-.. automodule:: guess.game
+.. automodule:: PigGame.game
    :members:
    :show-inheritance:
    :undoc-members:
 
-guess.json\_file\_handler module
+PigGame.json\_file\_handler module
 --------------------------------
 
-.. automodule:: guess.json_file_handler
+.. automodule:: PigGame.json_file_handler
    :members:
    :show-inheritance:
    :undoc-members:
 
-guess.leaderboard\_data\_handler module
+PigGame.leaderboard\_data\_handler module
 ---------------------------------------
 
-.. automodule:: guess.leaderboard_data_handler
+.. automodule:: PigGame.leaderboard_data_handler
    :members:
    :show-inheritance:
    :undoc-members:
 
-guess.main module
+PigGame.main module
 -----------------
 
-.. automodule:: guess.main
+.. automodule:: PigGame.main
    :members:
    :show-inheritance:
    :undoc-members:
 
-guess.player module
+PigGame.player module
 -------------------
 
-.. automodule:: guess.player
+.. automodule:: PigGame.player
    :members:
    :show-inheritance:
    :undoc-members:
 
-guess.shell module
+PigGame.shell module
 ------------------
 
-.. automodule:: guess.shell
+.. automodule:: PigGame.shell
    :members:
    :show-inheritance:
    :undoc-members:
 
-guess.user\_data\_handler module
+PigGame.user\_data\_handler module
 --------------------------------
 
-.. automodule:: guess.user_data_handler
+.. automodule:: PigGame.user_data_handler
    :members:
    :show-inheritance:
    :undoc-members:
@@ -71,7 +71,7 @@ guess.user\_data\_handler module
 Module contents
 ---------------
 
-.. automodule:: guess
+.. automodule:: PigGame
    :members:
    :show-inheritance:
    :undoc-members:

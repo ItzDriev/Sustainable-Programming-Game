@@ -4,10 +4,9 @@
 """Unit testing."""
 
 
-from pathlib import Path
 import unittest
 import os
-from guess.data_handler import DataHandler
+from PigGame.data_handler import DataHandler
 
 
 class TestDataHandlerClass(unittest.TestCase):
@@ -15,7 +14,7 @@ class TestDataHandlerClass(unittest.TestCase):
 
     def test_init_default_object(self):
         """Instantiate an object and check its properties."""
-        self.test_dir = "./guess/TestGameData"
+        self.test_dir = "./PigGame/TestGameData"
         res = DataHandler(self.test_dir)
         exp = DataHandler
         self.assertIsInstance(res, exp)
@@ -23,9 +22,8 @@ class TestDataHandlerClass(unittest.TestCase):
         # Cleanup directory
         os.rmdir(self.test_dir)
         # Cleanup file
-        #os.remove(self.test_dir/"LeaderboardData.json")
-        #os.rmdir(self.test_dir)
-
+        # os.remove(self.test_dir/"LeaderboardData.json")
+        # os.rmdir(self.test_dir)
 
 
 if __name__ == "__main__":

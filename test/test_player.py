@@ -4,7 +4,7 @@
 """Unit testing."""
 
 import unittest
-from guess import player
+from PigGame.player import Player
 
 
 class TestPlayerClass(unittest.TestCase):
@@ -12,13 +12,13 @@ class TestPlayerClass(unittest.TestCase):
 
     def test_init_default_object(self):
         """Instantiate an object and check its properties."""
-        res = player.Player("Test", 4)
-        exp = player.Player
+        res = Player("Test", 4)
+        exp = Player
         self.assertIsInstance(res, exp)
 
     def test_set_username(self):
         """Update username and check."""
-        the_player = player.Player("Test", 0)
+        the_player = Player("Test", 0)
         new_username = "NewUsername"
         the_player.set_username(new_username)
 
@@ -28,7 +28,7 @@ class TestPlayerClass(unittest.TestCase):
 
     def test_get_username(self):
         """Test get username."""
-        the_player = player.Player("Test", 0)
+        the_player = Player("Test", 0)
 
         res = the_player.get_username()
         exp = res == "Test"
@@ -36,7 +36,7 @@ class TestPlayerClass(unittest.TestCase):
 
     def test_get_user_id(self):
         """Create player and check user_id."""
-        the_player = player.Player("Test", 55)
+        the_player = Player("Test", 55)
 
         res = the_player.get_user_id()
         exp = res == 55

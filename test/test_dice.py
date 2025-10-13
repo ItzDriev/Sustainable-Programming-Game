@@ -4,21 +4,21 @@
 """Unit testing."""
 
 import unittest
+from PigGame.dice import Dice
 
-from guess import dice
 
 class TestDiceClass(unittest.TestCase):
     """A test class to test the dice class."""
 
     def test_init_dice(self):
         """Tests the instatiation of the dice class."""
-        test_dice = dice.Dice()
-        exp = dice.Dice
+        test_dice = Dice()
+        exp = Dice
         self.assertIsInstance(test_dice, exp)
 
     def test_roll_dice(self):
         """Tests the roll dice method and if it generates an integer between 1-6."""
-        test_dice = dice.Dice()
+        test_dice = Dice()
         value = test_dice.roll_dice()
         self.assertIsInstance(value, int)
         self.assertGreaterEqual(value, 1)
@@ -26,7 +26,7 @@ class TestDiceClass(unittest.TestCase):
 
     def test_get_last_roll(self):
         """Test if the get method get_last_roll returns the actual roll value."""
-        test_dice = dice.Dice()
+        test_dice = Dice()
         exp = test_dice.roll_dice()
         res = test_dice.get_last_roll()
         self.assertEqual(exp, res)

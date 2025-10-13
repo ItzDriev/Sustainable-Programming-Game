@@ -4,21 +4,21 @@
 """Unit testing."""
 
 import unittest
+from PigGame.dice_hand import DiceHand
 
-from guess import dice_hand
 
 class TestDiceHandClass(unittest.TestCase):
     """Test class object for dice_hand class."""
 
     def test_init_dice_hand(self):
         """Test object instantiation."""
-        res = dice_hand.DiceHand()
-        exp = dice_hand.DiceHand
+        res = DiceHand()
+        exp = DiceHand
         self.assertIsInstance(res, exp)
 
     def test_roll_dice(self):
         """Tests if the dice generates a integer between 1 and 6."""
-        test_hand = dice_hand.DiceHand()
+        test_hand = DiceHand()
 
         value = test_hand.roll_dice()
 
@@ -31,12 +31,11 @@ class TestDiceHandClass(unittest.TestCase):
         self.assertLessEqual(value[1], 6)
 
     def test_get_last_value(self):
-        """
-        Tests if the get_last_value method return the expected value.
+        """Tests if the get_last_value method return the expected value.
+
         from roll_dice method.
         """
-
-        test_hand = dice_hand.DiceHand()
+        test_hand = DiceHand()
 
         test_hand.roll_dice()
         value1 = test_hand.dice[0].get_last_roll()
@@ -52,7 +51,7 @@ class TestDiceHandClass(unittest.TestCase):
 
     def test_get_roll_history(self):
         """Test if the returned roll_history matches the actual dice roll ristory."""
-        test_hand = dice_hand.DiceHand()
+        test_hand = DiceHand()
         exp = []
         res = test_hand.get_roll_history()
         for i in range(1, 11):
