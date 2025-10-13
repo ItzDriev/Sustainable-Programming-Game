@@ -51,9 +51,8 @@ class Shell(cmd.Cmd):
 
     def do_cheat(self, _):
         """This will cheat the game towards the end of it for testing purposes"""
-        #Plan: Cheat the game to like 95% of the target points for both sides I guess or something?
-
-        print("This will do some kind of cheat for the game")
+        Game.cheat_mode = True
+        print("Cheat Mode Activated - You're a god daddy")
 
     def do_roll(self, _):
         """Decide to to roll the dice"""
