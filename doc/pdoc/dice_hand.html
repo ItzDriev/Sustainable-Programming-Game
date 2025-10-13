@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>main API documentation</title>
-<meta name="description" content="Lets play a game of &#34;PIG, the Dice Game&#34; 🐷 …">
+<title>dice_hand API documentation</title>
+<meta name="description" content="This module defines a hand in order to engage with a dice">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -33,44 +33,111 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>main</code></h1>
+<h1 class="title">Module <code>dice_hand</code></h1>
 </header>
 <section id="section-intro">
-<p>Lets play a game of "PIG, the Dice Game" 🐷</p>
-<p>Your goal is to beat the opposing player
-by reaching the target points before them!</p>
-<p>During your turn, you can roll the dice as many times as you'd like,
-however, if exactly ONE of your dice roll a '1', all your points during that turn are lost.
-If you happen to roll two '1's', all of you points will be reset to 0,
-including points acquired from previous turns.</p>
-<p>🐷 Play carefully, and don't be a PIG! 🐷
-⚀</p>
+<p>This module defines a hand in order to engage with a dice</p>
 </section>
 <section>
 </section>
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="main.main"><code class="name flex">
-<span>def <span class="ident">main</span></span>(<span>)</span>
+<dt id="dice_hand.DiceHand"><code class="flex name class">
+<span>class <span class="ident">DiceHand</span></span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def main():
-    &#34;&#34;&#34;Execute the main program.&#34;&#34;&#34;
-    print(__doc__)
-    shell.Shell().cmdloop()</code></pre>
+<pre><code class="python">class DiceHand:
+    &#34;&#34;&#34;Represents a dice hand&#34;&#34;&#34;
+    def __init__(self):
+        &#34;&#34;&#34;Initialize the dice hand object&#34;&#34;&#34;
+        self.dice = [Dice(), Dice()]
+        self.roll_history = []
+        self.last_roll = []
+
+    def roll_dice(self):
+        &#34;&#34;&#34;Roll the dice in hand&#34;&#34;&#34;
+        self.last_roll.clear()
+
+        for die in self.dice:
+            die.roll_dice()
+            self.last_roll.append(die.get_last_roll())
+        
+        self.roll_history.append(self.last_roll)
+        return self.last_roll #Testing purpose
+
+    def get_last_roll(self):
+        &#34;&#34;&#34;Return the value of the last die throw&#34;&#34;&#34;
+        return self.last_roll
+
+    def get_roll_history(self):
+        &#34;&#34;&#34;Return all rolls from current session&#34;&#34;&#34;
+        return self.roll_history</code></pre>
 </details>
-<div class="desc"><p>Execute the main program.</p></div>
+<div class="desc"><p>Represents a dice hand</p>
+<p>Initialize the dice hand object</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="dice_hand.DiceHand.get_last_roll"><code class="name flex">
+<span>def <span class="ident">get_last_roll</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_last_roll(self):
+    &#34;&#34;&#34;Return the value of the last die throw&#34;&#34;&#34;
+    return self.last_roll</code></pre>
+</details>
+<div class="desc"><p>Return the value of the last die throw</p></div>
+</dd>
+<dt id="dice_hand.DiceHand.get_roll_history"><code class="name flex">
+<span>def <span class="ident">get_roll_history</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_roll_history(self):
+    &#34;&#34;&#34;Return all rolls from current session&#34;&#34;&#34;
+    return self.roll_history</code></pre>
+</details>
+<div class="desc"><p>Return all rolls from current session</p></div>
+</dd>
+<dt id="dice_hand.DiceHand.roll_dice"><code class="name flex">
+<span>def <span class="ident">roll_dice</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def roll_dice(self):
+    &#34;&#34;&#34;Roll the dice in hand&#34;&#34;&#34;
+    self.last_roll.clear()
+
+    for die in self.dice:
+        die.roll_dice()
+        self.last_roll.append(die.get_last_roll())
+    
+    self.roll_history.append(self.last_roll)
+    return self.last_roll #Testing purpose</code></pre>
+</details>
+<div class="desc"><p>Roll the dice in hand</p></div>
 </dd>
 </dl>
-</section>
-<section>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -78,9 +145,16 @@ including points acquired from previous turns.</p>
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-functions">Functions</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="dice_hand.DiceHand" href="#dice_hand.DiceHand">DiceHand</a></code></h4>
 <ul class="">
-<li><code><a title="main.main" href="#main.main">main</a></code></li>
+<li><code><a title="dice_hand.DiceHand.get_last_roll" href="#dice_hand.DiceHand.get_last_roll">get_last_roll</a></code></li>
+<li><code><a title="dice_hand.DiceHand.get_roll_history" href="#dice_hand.DiceHand.get_roll_history">get_roll_history</a></code></li>
+<li><code><a title="dice_hand.DiceHand.roll_dice" href="#dice_hand.DiceHand.roll_dice">roll_dice</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

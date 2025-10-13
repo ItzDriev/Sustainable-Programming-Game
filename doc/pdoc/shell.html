@@ -65,24 +65,40 @@ cmd — support for line-oriented command interpreters
     prompt = &#34;(Game) &#34;
 
     def __init__(self):
-        &#34;&#34;&#34;Init the object.&#34;&#34;&#34;
+        &#34;&#34;&#34;Init the object. &#34;&#34;&#34;
         super().__init__()
-        self.game = game.Game()
-    def do_start(self, _):
+        self.game = Game() # Game is a singleton persistant during &#34;program&#34; lifespan
+    def do_start(self, mode):
         # 50/50 if computer goes first or if the human playing goes first?
 
         &#34;&#34;&#34;Start a game versus the computer&#34;&#34;&#34;
-        msg = (
-            &#34;Game Started! Start off by rolling the dice!&#34;
-        )
-        self.game.start()
+        msg = (&#34;Game Started! Start off by rolling the dice!&#34;)
+
+        players = []
+        for n in range(int(mode)):
+            username = input(&#34;Enter username: &#34;)
+            self.game.data_handler.user_data.add_user(username)
+
+            
+            userid = self.game.data_handler.user_data.get_user_id(username)
+            if userid == None:
+                raise Exception(&#34;UserID Not Found!&#34;)
+
+            players.append(Player(username, userid))
+        if int(mode)==1:
+            print(&#34;Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. Liam (Expert 😡)\n\n😈 --- Hardest --- 😈&#34;)
+            difficulty = int(input(&#34;Select Preferred Difficulty: &#34;))
+
+        #Prompted to select 2 player mode or VS AI
+        #Prompted to input name for player player 2 respectively
         print(msg)
+        self.game.start(players, difficulty)
+        
 
     def do_cheat(self, _):
         &#34;&#34;&#34;This will cheat the game towards the end of it for testing purposes&#34;&#34;&#34;
-        #Plan: Cheat the game to like 95% of the target points for both sides I guess or something?
-
-        print(&#34;This will do some kind of cheat for the game&#34;)
+        Game.cheat_mode = True
+        print(&#34;Cheat Mode Activated - You&#39;re a god daddy&#34;)
 
     def do_roll(self, _):
         &#34;&#34;&#34;Decide to to roll the dice&#34;&#34;&#34;
@@ -92,11 +108,22 @@ cmd — support for line-oriented command interpreters
 
 
     #Potentially add do_namechange
-    def do_namechange(self, _):
+    def do_namechange(self, args):
         &#34;&#34;&#34;Will perform a namechange&#34;&#34;&#34;
+
+        name_info = args.split()
+
+        if(len(name_info)!=2):
+            return #Arguments were incorrect
+
+        self.game.data_handler.user_data.update_username(current_username = name_info[0], new_username=name_info[1])
 
         print(&#34;You change your name lul xd&#34;)
     
+    
+    def help_namechange(self):
+        print(&#34;Usage: namechange &lt;currentUsername&gt; &lt;newUsername&gt;&#34;)
+
     def do_rules(self, _):
         &#34;&#34;&#34;Will explain the rules once again&#34;&#34;&#34;
 
@@ -130,7 +157,13 @@ cmd — support for line-oriented command interpreters
     def do_EOF(self, arg):
         # pylint: disable=invalid-name
         &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
-        return self.do_exit(arg)</code></pre>
+        return self.do_exit(arg)
+    
+    def do_leaderboard(self, arg):
+        self.game.data_handler.print_leaderboard()
+        #parameters = arg.split()
+        #self.game.data_handler.leaderboard_data.register_highscore(parameters[0], parameters[1])
+        #print(self.game.data_handler.leaderboard_data.get_highscore(parameters[0]))</code></pre>
 </details>
 <div class="desc"><p>Classes that handle the terminal's user inputs</p>
 <p>Init the object.</p></div>
@@ -176,9 +209,8 @@ cmd — support for line-oriented command interpreters
 </summary>
 <pre><code class="python">def do_cheat(self, _):
     &#34;&#34;&#34;This will cheat the game towards the end of it for testing purposes&#34;&#34;&#34;
-    #Plan: Cheat the game to like 95% of the target points for both sides I guess or something?
-
-    print(&#34;This will do some kind of cheat for the game&#34;)</code></pre>
+    Game.cheat_mode = True
+    print(&#34;Cheat Mode Activated - You&#39;re a god daddy&#34;)</code></pre>
 </details>
 <div class="desc"><p>This will cheat the game towards the end of it for testing purposes</p></div>
 </dd>
@@ -198,16 +230,39 @@ cmd — support for line-oriented command interpreters
 </details>
 <div class="desc"><p>Leave the game.</p></div>
 </dd>
-<dt id="shell.Shell.do_namechange"><code class="name flex">
-<span>def <span class="ident">do_namechange</span></span>(<span>self, _)</span>
+<dt id="shell.Shell.do_leaderboard"><code class="name flex">
+<span>def <span class="ident">do_leaderboard</span></span>(<span>self, arg)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def do_namechange(self, _):
+<pre><code class="python">def do_leaderboard(self, arg):
+    self.game.data_handler.print_leaderboard()
+    #parameters = arg.split()
+    #self.game.data_handler.leaderboard_data.register_highscore(parameters[0], parameters[1])
+    #print(self.game.data_handler.leaderboard_data.get_highscore(parameters[0]))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="shell.Shell.do_namechange"><code class="name flex">
+<span>def <span class="ident">do_namechange</span></span>(<span>self, args)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def do_namechange(self, args):
     &#34;&#34;&#34;Will perform a namechange&#34;&#34;&#34;
+
+    name_info = args.split()
+
+    if(len(name_info)!=2):
+        return #Arguments were incorrect
+
+    self.game.data_handler.user_data.update_username(current_username = name_info[0], new_username=name_info[1])
 
     print(&#34;You change your name lul xd&#34;)</code></pre>
 </details>
@@ -282,24 +337,53 @@ cmd — support for line-oriented command interpreters
 <div class="desc"><p>Will explain the rules once again</p></div>
 </dd>
 <dt id="shell.Shell.do_start"><code class="name flex">
-<span>def <span class="ident">do_start</span></span>(<span>self, _)</span>
+<span>def <span class="ident">do_start</span></span>(<span>self, mode)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def do_start(self, _):
+<pre><code class="python">def do_start(self, mode):
     # 50/50 if computer goes first or if the human playing goes first?
 
     &#34;&#34;&#34;Start a game versus the computer&#34;&#34;&#34;
-    msg = (
-        &#34;Game Started! Start off by rolling the dice!&#34;
-    )
-    self.game.start()
-    print(msg)</code></pre>
+    msg = (&#34;Game Started! Start off by rolling the dice!&#34;)
+
+    players = []
+    for n in range(int(mode)):
+        username = input(&#34;Enter username: &#34;)
+        self.game.data_handler.user_data.add_user(username)
+
+        
+        userid = self.game.data_handler.user_data.get_user_id(username)
+        if userid == None:
+            raise Exception(&#34;UserID Not Found!&#34;)
+
+        players.append(Player(username, userid))
+    if int(mode)==1:
+        print(&#34;Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. Liam (Expert 😡)\n\n😈 --- Hardest --- 😈&#34;)
+        difficulty = int(input(&#34;Select Preferred Difficulty: &#34;))
+
+    #Prompted to select 2 player mode or VS AI
+    #Prompted to input name for player player 2 respectively
+    print(msg)
+    self.game.start(players, difficulty)</code></pre>
 </details>
 <div class="desc"><p>Start a game versus the computer</p></div>
+</dd>
+<dt id="shell.Shell.help_namechange"><code class="name flex">
+<span>def <span class="ident">help_namechange</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def help_namechange(self):
+    print(&#34;Usage: namechange &lt;currentUsername&gt; &lt;newUsername&gt;&#34;)</code></pre>
+</details>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -319,12 +403,14 @@ cmd — support for line-oriented command interpreters
 <li><code><a title="shell.Shell.do_EOF" href="#shell.Shell.do_EOF">do_EOF</a></code></li>
 <li><code><a title="shell.Shell.do_cheat" href="#shell.Shell.do_cheat">do_cheat</a></code></li>
 <li><code><a title="shell.Shell.do_exit" href="#shell.Shell.do_exit">do_exit</a></code></li>
+<li><code><a title="shell.Shell.do_leaderboard" href="#shell.Shell.do_leaderboard">do_leaderboard</a></code></li>
 <li><code><a title="shell.Shell.do_namechange" href="#shell.Shell.do_namechange">do_namechange</a></code></li>
 <li><code><a title="shell.Shell.do_q" href="#shell.Shell.do_q">do_q</a></code></li>
 <li><code><a title="shell.Shell.do_quit" href="#shell.Shell.do_quit">do_quit</a></code></li>
 <li><code><a title="shell.Shell.do_roll" href="#shell.Shell.do_roll">do_roll</a></code></li>
 <li><code><a title="shell.Shell.do_rules" href="#shell.Shell.do_rules">do_rules</a></code></li>
 <li><code><a title="shell.Shell.do_start" href="#shell.Shell.do_start">do_start</a></code></li>
+<li><code><a title="shell.Shell.help_namechange" href="#shell.Shell.help_namechange">help_namechange</a></code></li>
 <li><code><a title="shell.Shell.intro" href="#shell.Shell.intro">intro</a></code></li>
 <li><code><a title="shell.Shell.prompt" href="#shell.Shell.prompt">prompt</a></code></li>
 </ul>

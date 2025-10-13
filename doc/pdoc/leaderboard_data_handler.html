@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>main API documentation</title>
-<meta name="description" content="Lets play a game of &#34;PIG, the Dice Game&#34; 🐷 …">
+<title>leaderboard_data_handler API documentation</title>
+<meta name="description" content="Module for handling LeaderboardData …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -33,44 +33,86 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>main</code></h1>
+<h1 class="title">Module <code>leaderboard_data_handler</code></h1>
 </header>
 <section id="section-intro">
-<p>Lets play a game of "PIG, the Dice Game" 🐷</p>
-<p>Your goal is to beat the opposing player
-by reaching the target points before them!</p>
-<p>During your turn, you can roll the dice as many times as you'd like,
-however, if exactly ONE of your dice roll a '1', all your points during that turn are lost.
-If you happen to roll two '1's', all of you points will be reset to 0,
-including points acquired from previous turns.</p>
-<p>🐷 Play carefully, and don't be a PIG! 🐷
-⚀</p>
+<p>Module for handling LeaderboardData.</p>
+<p>Handles LeaderboardData.</p>
 </section>
 <section>
 </section>
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="main.main"><code class="name flex">
-<span>def <span class="ident">main</span></span>(<span>)</span>
+<dt id="leaderboard_data_handler.LeaderboardDataHandler"><code class="flex name class">
+<span>class <span class="ident">LeaderboardDataHandler</span></span>
+<span>(</span><span>file_path, dir_path)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def main():
-    &#34;&#34;&#34;Execute the main program.&#34;&#34;&#34;
-    print(__doc__)
-    shell.Shell().cmdloop()</code></pre>
+<pre><code class="python">class LeaderboardDataHandler(JSONFileHandler):
+    &#34;&#34;&#34;Handle writing leaderboard data to JSON file.&#34;&#34;&#34;
+
+    def __init__(self, file_path, dir_path):
+        &#34;&#34;&#34;Handle leaderboard data to JSON file.&#34;&#34;&#34;
+        super().__init__(file_path, dir_path)
+
+    def register_highscore(self, user_id, score):
+        data = self.read()
+        data[str(user_id)] = int(score)
+        self.write(data)
+        
+    def get_highscore(self, user_id):
+        data = self.read()
+        return data[str(user_id)]</code></pre>
 </details>
-<div class="desc"><p>Execute the main program.</p></div>
+<div class="desc"><p>Handle writing leaderboard data to JSON file.</p>
+<p>Handle leaderboard data to JSON file.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>guess.json_file_handler.JSONFileHandler</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="leaderboard_data_handler.LeaderboardDataHandler.get_highscore"><code class="name flex">
+<span>def <span class="ident">get_highscore</span></span>(<span>self, user_id)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_highscore(self, user_id):
+    data = self.read()
+    return data[str(user_id)]</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="leaderboard_data_handler.LeaderboardDataHandler.register_highscore"><code class="name flex">
+<span>def <span class="ident">register_highscore</span></span>(<span>self, user_id, score)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def register_highscore(self, user_id, score):
+    data = self.read()
+    data[str(user_id)] = int(score)
+    self.write(data)</code></pre>
+</details>
+<div class="desc"></div>
 </dd>
 </dl>
-</section>
-<section>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -78,9 +120,15 @@ including points acquired from previous turns.</p>
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-functions">Functions</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="leaderboard_data_handler.LeaderboardDataHandler" href="#leaderboard_data_handler.LeaderboardDataHandler">LeaderboardDataHandler</a></code></h4>
 <ul class="">
-<li><code><a title="main.main" href="#main.main">main</a></code></li>
+<li><code><a title="leaderboard_data_handler.LeaderboardDataHandler.get_highscore" href="#leaderboard_data_handler.LeaderboardDataHandler.get_highscore">get_highscore</a></code></li>
+<li><code><a title="leaderboard_data_handler.LeaderboardDataHandler.register_highscore" href="#leaderboard_data_handler.LeaderboardDataHandler.register_highscore">register_highscore</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

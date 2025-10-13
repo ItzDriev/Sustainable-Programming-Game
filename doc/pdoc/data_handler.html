@@ -59,247 +59,37 @@ and updating user and leaderboard data in JSON format.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class DataHandler:
-    &#34;&#34;&#34;Handles writing data to JSON file.&#34;&#34;&#34;
+    &#34;&#34;&#34;Handles game&#39;s data.&#34;&#34;&#34;
 
     def __init__(self, dir_path=&#34;./guess/GameData&#34;):
-        &#34;&#34;&#34;Initialize the data writer.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the object.&#34;&#34;&#34;
         self.__dir_path = Path(dir_path)
-        self.__dir_path.mkdir(parents=True, exist_ok=True)
+        self.user_data = UserDataHandler(self.__dir_path/&#34;UserData.json&#34;, self.__dir_path)
+        self.leaderboard_data = LeaderboardDataHandler(self.__dir_path/&#34;LeaderboardData.json&#34;, self.__dir_path)
 
-        self.__user_data_path = self.__dir_path/&#34;UserData.json&#34;
-        self.__leadboard_data_path = self.__dir_path/&#34;LeaderboardData.json&#34;
-
-    def is_user_data_file_missing_or_empty(self):
-        &#34;&#34;&#34;Check for missing file or invalid content.&#34;&#34;&#34;
-        missing_file = not self.__user_data_path.exists()
-        if not missing_file:
-            empty_file = self.__user_data_path.stat().st_size == 0
-        else:
-            empty_file = True
-        if missing_file or empty_file:
-            self.write_user_data_json({})
-            return True
-        return False
-
-    def write_user_data_json(self, data):
-        &#34;&#34;&#34;Write user data to file.&#34;&#34;&#34;
-        with open(self.__user_data_path, &#34;w&#34;, encoding=&#34;utf-8&#34;) as f:
-            json.dump(data, f, indent=4)
-
-    def read_user_data_json(self):
-        &#34;&#34;&#34;Read user data file and returns.&#34;&#34;&#34;
-        self.is_user_data_file_missing_or_empty()
-        with open(self.__user_data_path, &#34;r&#34;, encoding=&#34;utf-8&#34;) as f:
-            return json.load(f)
-
-    def get_user_id(self, username):
-        &#34;&#34;&#34;Return user id based on username.&#34;&#34;&#34;
-        data = self.read_user_data_json()
-
-        for user_id, user_info in data.items():
-            if user_info.get(&#34;username&#34;) == username:
-                return int(user_id)
-        return False
-
-    def add_or_update_user(self, username, user_id=None):
-        &#34;&#34;&#34;Add a new user or updates their name.&#34;&#34;&#34;
-        data = self.read_user_data_json()
-
-        user_id = len(data) if user_id is None else user_id
-
-        # Ensure unique username
-        for _, user_info in data.items():
-            if user_info.get(&#34;username&#34;) == username:
-                return False
-
-        data[str(user_id)] = {
-            &#34;user_id&#34;: int(user_id),
-            &#34;username&#34;: username
-        }
-
-        self.write_user_data_json(data)
-        return True
-
-    def is_leaderboard_data_file_missing_or_empty(self):
-        &#34;&#34;&#34;Check for missing file or invalid content.&#34;&#34;&#34;
-        missing_file = not self.__leadboard_data_path.exists()
-        if not missing_file:
-            empty_file = self.__leadboard_data_path.stat().st_size == 0
-        else:
-            empty_file = True
-        if missing_file or empty_file:
-            self.write_leaderboard_data_json({})
-            return True
-        return False
-
-    def write_leaderboard_data_json(self, data):
-        &#34;&#34;&#34;Write leadboard data to file.&#34;&#34;&#34;
-        with open(self.__leadboard_data_path, &#34;w&#34;, encoding=&#34;utf-8&#34;) as f:
-            json.dump(data, f, indent=4)
-
-    def read_leaderboard_data_json(self):
-        &#34;&#34;&#34;Read leaderboard data from file.&#34;&#34;&#34;
-        self.is_leaderboard_data_file_missing_or_empty()
-        with open(self.__leadboard_data_path, &#34;r&#34;, encoding=&#34;utf-8&#34;) as f:
-            return json.load(f)</code></pre>
+    def print_leaderboard(self):
+        leaderboard = self.leaderboard_data.read()
+        for user_id, score in leaderboard.items():
+            print (f&#34;{self.user_data.get_username(int(user_id))}: {score}&#34;)</code></pre>
 </details>
-<div class="desc"><p>Handles writing data to JSON file.</p>
-<p>Initialize the data writer.</p></div>
+<div class="desc"><p>Handles game's data.</p>
+<p>Initialize the object.</p></div>
 <h3>Methods</h3>
 <dl>
-<dt id="data_handler.DataHandler.add_or_update_user"><code class="name flex">
-<span>def <span class="ident">add_or_update_user</span></span>(<span>self, username, user_id=None)</span>
+<dt id="data_handler.DataHandler.print_leaderboard"><code class="name flex">
+<span>def <span class="ident">print_leaderboard</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_or_update_user(self, username, user_id=None):
-    &#34;&#34;&#34;Add a new user or updates their name.&#34;&#34;&#34;
-    data = self.read_user_data_json()
-
-    user_id = len(data) if user_id is None else user_id
-
-    # Ensure unique username
-    for _, user_info in data.items():
-        if user_info.get(&#34;username&#34;) == username:
-            return False
-
-    data[str(user_id)] = {
-        &#34;user_id&#34;: int(user_id),
-        &#34;username&#34;: username
-    }
-
-    self.write_user_data_json(data)
-    return True</code></pre>
+<pre><code class="python">def print_leaderboard(self):
+    leaderboard = self.leaderboard_data.read()
+    for user_id, score in leaderboard.items():
+        print (f&#34;{self.user_data.get_username(int(user_id))}: {score}&#34;)</code></pre>
 </details>
-<div class="desc"><p>Add a new user or updates their name.</p></div>
-</dd>
-<dt id="data_handler.DataHandler.get_user_id"><code class="name flex">
-<span>def <span class="ident">get_user_id</span></span>(<span>self, username)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_user_id(self, username):
-    &#34;&#34;&#34;Return user id based on username.&#34;&#34;&#34;
-    data = self.read_user_data_json()
-
-    for user_id, user_info in data.items():
-        if user_info.get(&#34;username&#34;) == username:
-            return int(user_id)
-    return False</code></pre>
-</details>
-<div class="desc"><p>Return user id based on username.</p></div>
-</dd>
-<dt id="data_handler.DataHandler.is_leaderboard_data_file_missing_or_empty"><code class="name flex">
-<span>def <span class="ident">is_leaderboard_data_file_missing_or_empty</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def is_leaderboard_data_file_missing_or_empty(self):
-    &#34;&#34;&#34;Check for missing file or invalid content.&#34;&#34;&#34;
-    missing_file = not self.__leadboard_data_path.exists()
-    if not missing_file:
-        empty_file = self.__leadboard_data_path.stat().st_size == 0
-    else:
-        empty_file = True
-    if missing_file or empty_file:
-        self.write_leaderboard_data_json({})
-        return True
-    return False</code></pre>
-</details>
-<div class="desc"><p>Check for missing file or invalid content.</p></div>
-</dd>
-<dt id="data_handler.DataHandler.is_user_data_file_missing_or_empty"><code class="name flex">
-<span>def <span class="ident">is_user_data_file_missing_or_empty</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def is_user_data_file_missing_or_empty(self):
-    &#34;&#34;&#34;Check for missing file or invalid content.&#34;&#34;&#34;
-    missing_file = not self.__user_data_path.exists()
-    if not missing_file:
-        empty_file = self.__user_data_path.stat().st_size == 0
-    else:
-        empty_file = True
-    if missing_file or empty_file:
-        self.write_user_data_json({})
-        return True
-    return False</code></pre>
-</details>
-<div class="desc"><p>Check for missing file or invalid content.</p></div>
-</dd>
-<dt id="data_handler.DataHandler.read_leaderboard_data_json"><code class="name flex">
-<span>def <span class="ident">read_leaderboard_data_json</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def read_leaderboard_data_json(self):
-    &#34;&#34;&#34;Read leaderboard data from file.&#34;&#34;&#34;
-    self.is_leaderboard_data_file_missing_or_empty()
-    with open(self.__leadboard_data_path, &#34;r&#34;, encoding=&#34;utf-8&#34;) as f:
-        return json.load(f)</code></pre>
-</details>
-<div class="desc"><p>Read leaderboard data from file.</p></div>
-</dd>
-<dt id="data_handler.DataHandler.read_user_data_json"><code class="name flex">
-<span>def <span class="ident">read_user_data_json</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def read_user_data_json(self):
-    &#34;&#34;&#34;Read user data file and returns.&#34;&#34;&#34;
-    self.is_user_data_file_missing_or_empty()
-    with open(self.__user_data_path, &#34;r&#34;, encoding=&#34;utf-8&#34;) as f:
-        return json.load(f)</code></pre>
-</details>
-<div class="desc"><p>Read user data file and returns.</p></div>
-</dd>
-<dt id="data_handler.DataHandler.write_leaderboard_data_json"><code class="name flex">
-<span>def <span class="ident">write_leaderboard_data_json</span></span>(<span>self, data)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def write_leaderboard_data_json(self, data):
-    &#34;&#34;&#34;Write leadboard data to file.&#34;&#34;&#34;
-    with open(self.__leadboard_data_path, &#34;w&#34;, encoding=&#34;utf-8&#34;) as f:
-        json.dump(data, f, indent=4)</code></pre>
-</details>
-<div class="desc"><p>Write leadboard data to file.</p></div>
-</dd>
-<dt id="data_handler.DataHandler.write_user_data_json"><code class="name flex">
-<span>def <span class="ident">write_user_data_json</span></span>(<span>self, data)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def write_user_data_json(self, data):
-    &#34;&#34;&#34;Write user data to file.&#34;&#34;&#34;
-    with open(self.__user_data_path, &#34;w&#34;, encoding=&#34;utf-8&#34;) as f:
-        json.dump(data, f, indent=4)</code></pre>
-</details>
-<div class="desc"><p>Write user data to file.</p></div>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -316,14 +106,7 @@ and updating user and leaderboard data in JSON format.</p>
 <li>
 <h4><code><a title="data_handler.DataHandler" href="#data_handler.DataHandler">DataHandler</a></code></h4>
 <ul class="">
-<li><code><a title="data_handler.DataHandler.add_or_update_user" href="#data_handler.DataHandler.add_or_update_user">add_or_update_user</a></code></li>
-<li><code><a title="data_handler.DataHandler.get_user_id" href="#data_handler.DataHandler.get_user_id">get_user_id</a></code></li>
-<li><code><a title="data_handler.DataHandler.is_leaderboard_data_file_missing_or_empty" href="#data_handler.DataHandler.is_leaderboard_data_file_missing_or_empty">is_leaderboard_data_file_missing_or_empty</a></code></li>
-<li><code><a title="data_handler.DataHandler.is_user_data_file_missing_or_empty" href="#data_handler.DataHandler.is_user_data_file_missing_or_empty">is_user_data_file_missing_or_empty</a></code></li>
-<li><code><a title="data_handler.DataHandler.read_leaderboard_data_json" href="#data_handler.DataHandler.read_leaderboard_data_json">read_leaderboard_data_json</a></code></li>
-<li><code><a title="data_handler.DataHandler.read_user_data_json" href="#data_handler.DataHandler.read_user_data_json">read_user_data_json</a></code></li>
-<li><code><a title="data_handler.DataHandler.write_leaderboard_data_json" href="#data_handler.DataHandler.write_leaderboard_data_json">write_leaderboard_data_json</a></code></li>
-<li><code><a title="data_handler.DataHandler.write_user_data_json" href="#data_handler.DataHandler.write_user_data_json">write_user_data_json</a></code></li>
+<li><code><a title="data_handler.DataHandler.print_leaderboard" href="#data_handler.DataHandler.print_leaderboard">print_leaderboard</a></code></li>
 </ul>
 </li>
 </ul>
