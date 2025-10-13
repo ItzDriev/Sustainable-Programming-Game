@@ -21,3 +21,4 @@ coverage
 pdoc3
 sphinx
 sphinx-rtd-theme # for ReadTheDocs local build
+myst-parser
