@@ -6,14 +6,44 @@ Usage
 Installation
 ------------
 
-To play the game, first install the requirements using pip:
+To ensure the project contains all packages, first install the requirements using pip:
 
 .. code-block:: console
 
    (.venv) $ pip install -r requirements.txt
 
-Creating recipes
-----------------
+Tests
+------------
+
+Run all tests:
+
+.. code-block:: console
+
+   (.venv) $ make test
+
+Run unittests:
+
+.. code-block:: console
+
+   (.venv) $ make covarage
+
+Run flake8:
+
+.. code-block:: console
+
+   (.venv) $ make flake8
+
+Run pylint:
+
+.. code-block:: console
+
+   (.venv) $ make pylint
+
+Documenation generation
+------------------------
+
+.. Creating recipes
+.. ----------------
 
 .. To retrieve a list of random ingredients,
 .. you can use the ``lumache.get_random_ingredients()`` function:
