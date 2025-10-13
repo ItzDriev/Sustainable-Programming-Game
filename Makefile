@@ -127,6 +127,7 @@ pyreverse:
 sphinx:
 	@$(call MESSAGE,$@)
 	rm -f docs/source/PigGame.rst
+	curl -L https://raw.githubusercontent.com/ItzDriev/Sustainable-Programming-Game/main/README.md -o docs/source/README.md
 	sphinx-apidoc -o docs/source PigGame
 	$(MAKE) -C docs html
 
