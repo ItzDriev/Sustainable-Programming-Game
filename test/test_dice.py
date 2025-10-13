@@ -4,8 +4,8 @@
 """Unit testing."""
 
 import unittest
-
 from guess import dice
+
 
 class TestDiceClass(unittest.TestCase):
     """A test class to test the dice class."""

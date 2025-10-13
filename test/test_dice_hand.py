@@ -4,8 +4,8 @@
 """Unit testing."""
 
 import unittest
-
 from guess import dice_hand
+
 
 class TestDiceHandClass(unittest.TestCase):
     """Test class object for dice_hand class."""
@@ -31,11 +31,10 @@ class TestDiceHandClass(unittest.TestCase):
         self.assertLessEqual(value[1], 6)
 
     def test_get_last_value(self):
-        """
-        Tests if the get_last_value method return the expected value.
+        """Tests if the get_last_value method return the expected value.
+
         from roll_dice method.
         """
-
         test_hand = dice_hand.DiceHand()
 
         test_hand.roll_dice()

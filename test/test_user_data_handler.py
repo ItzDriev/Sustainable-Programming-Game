@@ -25,7 +25,8 @@ class TestUserDataHandlerClass(unittest.TestCase):
     def test_get_user_id(self):
         """Test auto creation of data file."""
         self.test_dir = "./guess/TestGameData"
-        self.user_data = UserDataHandler(self.test_dir+"/UserData.json", dir_path=self.test_dir)
+        self.user_data = UserDataHandler(self.test_dir+"/UserData.json",
+                                         dir_path=self.test_dir)
 
         self.user_data.write({
             "55": {
@@ -49,7 +50,8 @@ class TestUserDataHandlerClass(unittest.TestCase):
     def test_add_user(self):
         """Test auto creation of data file."""
         self.test_dir = "./guess/TestGameData"
-        self.user_data = UserDataHandler(self.test_dir+"/UserData.json", dir_path=self.test_dir)
+        self.user_data = UserDataHandler(self.test_dir+"/UserData.json",
+                                         dir_path=self.test_dir)
 
         self.user_data.add_user("Test0")
 
@@ -69,7 +71,8 @@ class TestUserDataHandlerClass(unittest.TestCase):
     def test_update_username(self):
         """Test auto creation of data file."""
         self.test_dir = "./guess/TestGameData"
-        self.user_data = UserDataHandler(self.test_dir+"/UserData.json", dir_path=self.test_dir)
+        self.user_data = UserDataHandler(self.test_dir+"/UserData.json",
+                                         dir_path=self.test_dir)
 
         self.user_data.add_user("Test0")
         self.user_data.update_username("Test0", "Test0NewUsername")
@@ -91,7 +94,8 @@ class TestUserDataHandlerClass(unittest.TestCase):
     def test_update_username_taken(self):
         """Test auto creation of data file."""
         self.test_dir = "./guess/TestGameData"
-        self.user_data = UserDataHandler(self.test_dir+"/UserData.json", dir_path=self.test_dir)
+        self.user_data = UserDataHandler(self.test_dir+"/UserData.json",
+                                         dir_path=self.test_dir)
 
         self.user_data.add_user("Test0")
         self.user_data.add_user("Test1")

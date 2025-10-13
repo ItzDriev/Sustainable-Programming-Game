@@ -4,7 +4,6 @@
 """Unit testing."""
 
 
-from pathlib import Path
 import unittest
 import os
 from guess.data_handler import DataHandler
@@ -23,9 +22,8 @@ class TestDataHandlerClass(unittest.TestCase):
         # Cleanup directory
         os.rmdir(self.test_dir)
         # Cleanup file
-        #os.remove(self.test_dir/"LeaderboardData.json")
-        #os.rmdir(self.test_dir)
-
+        # os.remove(self.test_dir/"LeaderboardData.json")
+        # os.rmdir(self.test_dir)
 
 
 if __name__ == "__main__":
