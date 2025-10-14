@@ -20,6 +20,9 @@ class Game:
     def __init__(self, dir_path="./PigGame/GameData"):
         """Initialize the game object, player and npc resources."""
         self.data_handler = DataHandler(dir_path)
+
+        self.game_over = False
+
         self.ai = AiLogic()
         self.npc_score = 0
         self.npc_dice_hand = DiceHand()
@@ -42,10 +45,10 @@ class Game:
             if self.ai.should_roll(self.npc_score, player_score, difficulty):
                 self.npc_dice_hand.roll_dice()
                 value = self.npc_dice_hand.get_last_roll()
-                print(f"🤖 Mr AI rolled {self.npc_dice_hand.get_last_roll()[0]} "
-                      f"and {self.npc_dice_hand.get_last_roll()[1]} "
-                      f"{'\u2680\u2681\u2682\u2683\u2684\u2685'[value[0]-1]} "
-                      f"{'\u2680\u2681\u2682\u2683\u2684\u2685'[value[1]-1]} !")
+                print(f"🤖 Mr AI rolled {self.npc_dice_hand.get_last_roll()[0]}"
+                      f" and {self.npc_dice_hand.get_last_roll()[1]}"
+                      f" {'\u2680\u2681\u2682\u2683\u2684\u2685'[value[0]-1]}"
+                      f" {'\u2680\u2681\u2682\u2683\u2684\u2685'[value[1]-1]}")
             else:
                 break
 
@@ -86,9 +89,6 @@ class Game:
         if Game.cheat_mode:
             player.score += self.target_points
 
-        if self.game_over:
-            return
-
         turn_score = 0
         turn_history = ("🐷----------Turn History For:" +
                         f"{player.get_username()}----------🐷\n")
@@ -102,9 +102,9 @@ class Game:
             self.ai.increment_turn_round_for_player()
             value = self.dice_hand.get_last_roll()
             print(f"{player.get_username()} rolled {self.dice_hand.get_last_roll()[0]}"
-                  f"and {self.dice_hand.get_last_roll()[1]}"
-                  f"{'\u2680\u2681\u2682\u2683\u2684\u2685'[value[0]-1]}"
-                  f"{'\u2680\u2681\u2682\u2683\u2684\u2685'[value[1]-1]} !")
+                  f" and {self.dice_hand.get_last_roll()[1]}"
+                  f" {'\u2680\u2681\u2682\u2683\u2684\u2685'[value[0]-1]}"
+                  f" {'\u2680\u2681\u2682\u2683\u2684\u2685'[value[1]-1]}")
 
             # Evaluate if any roll is 1
             if (not self.rolled_one(self.dice_hand.get_last_roll()[0],
@@ -133,9 +133,9 @@ class Game:
                     case "n":
                         break
                     case "quit":
-                        self.game_over = True  # Temp Quit
-                    case "q":
-                        self.game_over = True  # Temp Quit
+                        self.quit_game(player)  # Prompts quit message
+                        break  # Breaks loop and returns to start()
+
             elif (not self.rolled_two_ones(self.dice_hand.get_last_roll()[0],
                                            self.dice_hand.get_last_roll()[1])):
                 self.ai.reset_turn_score()
@@ -156,6 +156,17 @@ class Game:
         self.game_over = False
         self.npc_score = 0
         self.players = players
+        
+    def quit_game(self, player):
+        """Prompts quit message, returns to player_turn method"""
+
+        print(f"\n😢 {player.get_username()}...Giving up already? 😢\n")
+
+        for y in range(11):
+            print(f"\r⏳ Exiting to menu{'.' * y}", end="")
+            sleep(0.1)
+        print("\n")
+        self.game_over = True
 
     def start(self, players, difficulty, target_points, test_mode=False):
         """Decide which player starts first and keeps the game going"""
