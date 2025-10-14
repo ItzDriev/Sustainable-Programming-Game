@@ -17,7 +17,7 @@ class Shell(cmd.Cmd):
     """Classes that handle most of the terminal's user inputs."""
 
     intro = "Welcome to the PIG Game!. Type help or ? to list available commands.\n\nTo start a game simply enter 'start'"
-    prompt = "(Game) "
+    prompt = "(🐷 Game): "
 
     def __init__(self):
         """Init the object."""

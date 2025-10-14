@@ -158,7 +158,7 @@ class Game:
         self.players = players
 
     def start(self, players, difficulty, target_points, test_mode=False):
-        """Decide which player starts first."""
+        """Decide which player starts first and keeps the game going"""
 
         self.target_points = target_points
         self.ai.round_end_number = target_points
