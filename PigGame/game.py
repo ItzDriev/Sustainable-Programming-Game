@@ -115,7 +115,7 @@ class Game:
                 turn_score += (total_roll)
                 if player.score >= self.target_points:
                     print(f"🎉 {player.get_username()} reached"
-                          f"{self.target_points} points."
+                          f"{self.target_points} points. "
                           f"{player.get_username()} wins! 🎉\n")
                     self.game_over = True
                     self.ai.reset_turn_score()
