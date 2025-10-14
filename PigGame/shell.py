@@ -42,12 +42,16 @@ class Shell(cmd.Cmd):
             print("Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. "
                   "Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. "
                   "Liam (Expert 😡)\n\n😈 --- Hardest --- 😈")
-            difficulty = int(input("Select Preferred Difficulty: "))
+            difficulty = 0
+            while difficulty < 1 or difficulty > 4:
+                difficulty = int(input("Select Preferred Difficulty: "))
+        else:
+            difficulty = None
+        self.game.start(players, difficulty)
 
         # Prompted to select 2 player mode or VS AI
         # Prompted to input name for player player 2 respectively
         print(msg)
-        self.game.start(players, difficulty)
 
     def do_cheat(self, _):
         """Activates cheating for testing purposes."""
