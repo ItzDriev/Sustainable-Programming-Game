@@ -27,7 +27,7 @@ class TestGameClass(unittest.TestCase):
         players = []
         players.append(Player("testuser",
                               the_game.data_handler.user_data.get_user_id("testuser")))
-        the_game.start(players, 1,  test_mode=True)
+        the_game.start(players, 1, 100, True)
 
         self.assertTrue(True)
         os.remove(self.test_dir+"/UserData.json")

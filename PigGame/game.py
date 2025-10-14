@@ -16,7 +16,6 @@ class Game:
 
     cheat_mode = False
 
-
     def __init__(self, dir_path="./PigGame/GameData"):
         """Initialize the game object, player and npc resources."""
         self.data_handler = DataHandler(dir_path)
@@ -156,10 +155,9 @@ class Game:
         self.game_over = False
         self.npc_score = 0
         self.players = players
-        
-    def quit_game(self, player):
-        """Prompts quit message, returns to player_turn method"""
 
+    def quit_game(self, player):
+        """Prompts quit message, returns to player_turn method."""
         print(f"\n😢 {player.get_username()}...Giving up already? 😢\n")
 
         for y in range(11):
@@ -169,8 +167,7 @@ class Game:
         self.game_over = True
 
     def start(self, players, difficulty, target_points, test_mode=False):
-        """Decide which player starts first and keeps the game going"""
-
+        """Decide which player starts first and keeps the game going."""
         self.target_points = target_points
         self.ai.round_end_number = target_points
 
