@@ -44,14 +44,17 @@ class Shell(cmd.Cmd):
                   "Liam (Expert 😡)\n\n😈 --- Hardest --- 😈")
             difficulty = 0
             while difficulty < 1 or difficulty > 4:
-                difficulty = int(input("Select Preferred Difficulty: "))
+                try:
+                    difficulty = (int(input("Select your difficulty: ")))
+                except ValueError:
+                    print("Must be an integer!")
         else:
             difficulty = None
-        self.game.start(players, difficulty)
 
         # Prompted to select 2 player mode or VS AI
         # Prompted to input name for player player 2 respectively
         print(msg)
+        self.game.start(players, difficulty)
 
     def do_cheat(self, _):
         """Activates cheating for testing purposes."""
