@@ -131,6 +131,7 @@ class Shell(cmd.Cmd):
         """Show leaderboard."""
         self.game.data_handler.print_leaderboard()
         # parameters = arg.split()
+        self.game.data_handler.leaderboard_data.register_highscore(3)
         # self.game.data_handler.leaderboard_data.register_highscore(parameters[0],
         # parameters[1])
         # print(self.game.data_handler.leaderboard_data.get_highscore(parameters[0]))

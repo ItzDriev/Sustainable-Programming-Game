@@ -17,13 +17,34 @@ class LeaderboardDataHandler(JSONFileHandler):
         """Handle leaderboard data to JSON file."""
         super().__init__(file_path, dir_path)
 
-    def register_highscore(self, user_id, score):
+    def register_highscore(self, user_id):
         """Write highscore to file."""
+        wins = 1
+        losts = 1
+        ppt = 1
+        total_turns = 1
         data = self.read()
-        data[str(user_id)] = int(score)
+        data[str(user_id)] = {"wins": wins, "games_played": losts, "ppt": ppt, "total_turns": total_turns}
         self.write(data)
 
     def get_highscore(self, user_id):
         """Return highscore of player based on user_id."""
         data = self.read()
         return data[str(user_id)]
+
+    def update_player_ppt_and_total_turns_total(self, player, value):
+        """Update points per turn and total turns for players."""
+        data = self.read()
+        data[str(player.get_user_id())]["total_turns"] += 1
+        data[str(player.get_user_id())]["ppt"] = (data[str(player.get_user_id())]["ppt"]*(data[str(player.get_user_id())]["total_turns"]-1)+value)/data[str(player.get_user_id())]["total_turns"]
+        self.write(data)
+
+    def update_player_games_played(self, player_won, player):
+        """Update wins and games played for players."""
+        data = self.read()
+        if player_won:
+            data[str(player.get_user_id())]["wins"] += 1
+            data[str(player.get_user_id())]["games_played"] += 1
+        else:
+            data[str(player.get_user_id())]["games_played"] += 1
+        self.write(data)
