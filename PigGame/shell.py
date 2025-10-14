@@ -16,7 +16,7 @@ from PigGame.player import Player
 class Shell(cmd.Cmd):
     """Classes that handle the terminal's user inputs."""
 
-    intro = "Welcome to the PIG Game!. Type help or ? to list available commands.\n"
+    intro = "Welcome to the PIG Game!. Type help or ? to list available commands.\n\nTo start a game simply enter 'start'"
     prompt = "(Game) "
 
     def __init__(self):
@@ -24,11 +24,22 @@ class Shell(cmd.Cmd):
         super().__init__()
         self.game = Game()  # Game is a singleton persistant during "program" lifespan
 
-    def do_start(self, mode):
-        # 50/50 if computer goes first or if the human playing goes first?
+    def do_start(self, _):
         """Start a game versus the computer."""
         msg = "Game Started! Start off by rolling the dice!"
+        while True:
+            mode = input("Please enter amount of players! 1 = Vs AI, 2 = 2 Player mode: ").strip()
+            if mode in ("1", "2"):
+                break
+            print("Error please enter a valid amount of players (1 or 2)! 🐷")
 
+        while True:
+            target_points = input("Enter the target points for the game! 🐷: ").strip()
+            if target_points.isdigit() is False:
+                print("Please enter a valid number, any positive number!")
+            else:
+                target_points=int(target_points)
+                break
         players = []
         for _ in range(int(mode)):
             username = input("Enter username: ")
@@ -47,7 +58,7 @@ class Shell(cmd.Cmd):
         # Prompted to select 2 player mode or VS AI
         # Prompted to input name for player player 2 respectively
         print(msg)
-        self.game.start(players, difficulty)
+        self.game.start(players, difficulty, target_points)
 
     def do_cheat(self, _):
         """Activates cheating for testing purposes."""
