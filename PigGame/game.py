@@ -16,6 +16,7 @@ class Game:
 
     cheat_mode = False
 
+
     def __init__(self, dir_path="./PigGame/GameData"):
         """Initialize the game object, player and npc resources."""
         self.data_handler = DataHandler(dir_path)
@@ -26,6 +27,7 @@ class Game:
         self.players = []
         self.dice_hand = DiceHand()
         self.game_over = False
+        self.target_points = 100
 
     def npc_turn(self, difficulty):
         """Npc takes turn, sends result to the intelligence class."""
@@ -54,8 +56,8 @@ class Game:
                 turn_score += (total_roll)
                 self.ai.increment_turn_score(total_roll)
 
-                if self.npc_score >= 100:
-                    print("🤖 Mr AI reached 100 points. Game over 🤖")
+                if self.npc_score >= self.target_points:
+                    print(f"🤖 Mr AI reached {self.target_points} points. Game over 🤖\n")
                     self.game_over = True
                     self.ai.reset_turn_score()
                     break
@@ -82,7 +84,7 @@ class Game:
     def player_turn(self, player):
         """Player(s) takes turn rolling dice."""
         if Game.cheat_mode:
-            player.score += 100
+            player.score += self.target_points
 
         if self.game_over:
             return
@@ -111,9 +113,10 @@ class Game:
                 total_roll = sum(self.dice_hand.get_last_roll())
                 player.score += (total_roll)
                 turn_score += (total_roll)
-                if player.score >= 100:
-                    print(f"🎉 {player.get_username()} reached 100 points."
-                          f"{player.get_username()} wins! 🎉")
+                if player.score >= self.target_points:
+                    print(f"🎉 {player.get_username()} reached"
+                          f"{self.target_points} points. "
+                          f"{player.get_username()} wins! 🎉\n")
                     self.game_over = True
                     self.ai.reset_turn_score()
                     break
@@ -154,8 +157,12 @@ class Game:
         self.npc_score = 0
         self.players = players
 
-    def start(self, players, difficulty, test_mode=False):
-        """Decide which player starts first."""
+    def start(self, players, difficulty, target_points, test_mode=False):
+        """Decide which player starts first and keeps the game going"""
+
+        self.target_points = target_points
+        self.ai.round_end_number = target_points
+
         if self.reset_game(players):
             who_starts = 0
 
