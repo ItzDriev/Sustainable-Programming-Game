@@ -48,3 +48,11 @@ class LeaderboardDataHandler(JSONFileHandler):
         else:
             data[str(player.get_user_id())]["games_played"] += 1
         self.write(data)
+
+    def create_leaderboard_information_for_new_players(self, user_id):
+        """Create leaderboard data for user."""
+        data = self.read()
+        if any(keys == str(user_id) for keys in data.keys()):
+            return
+        data[str(user_id)] = {"wins": 0, "games_played": 0, "ppt": 0, "total_turns": 0}
+        self.write(data)

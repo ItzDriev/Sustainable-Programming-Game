@@ -49,6 +49,7 @@ class Shell(cmd.Cmd):
             username = input("Enter username: ")
             self.game.data_handler.user_data.add_user(username)
             userid = self.game.data_handler.user_data.get_user_id(username)
+            self.game.data_handler.leaderboard_data.create_leaderboard_information_for_new_players(userid)
             if userid is None:
                 raise Exception("UserID Not Found!")
 
