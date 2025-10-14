@@ -49,6 +49,7 @@ class Shell(cmd.Cmd):
             username = input("Enter username: ")
             self.game.data_handler.user_data.add_user(username)
             userid = self.game.data_handler.user_data.get_user_id(username)
+            self.game.data_handler.leaderboard_data.create_leaderboard_information_for_new_players(userid)
             if userid is None:
                 raise Exception("UserID Not Found!")
 
@@ -131,6 +132,7 @@ class Shell(cmd.Cmd):
         """Show leaderboard."""
         self.game.data_handler.print_leaderboard()
         # parameters = arg.split()
+        self.game.data_handler.leaderboard_data.register_highscore(3)
         # self.game.data_handler.leaderboard_data.register_highscore(parameters[0],
         # parameters[1])
         # print(self.game.data_handler.leaderboard_data.get_highscore(parameters[0]))

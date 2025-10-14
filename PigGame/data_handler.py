@@ -35,6 +35,8 @@ class DataHandler:
 
     def print_leaderboard(self):
         """Print leaderboard."""
+        print(f"{'Name':<15}{'Wins':<15}{'PPT':<15}")
         leaderboard = self.leaderboard_data.read()
         for user_id, score in leaderboard.items():
+            print(f"{self.user_data.get_username(int(user_id)):<15}")
             print(f"{self.user_data.get_username(int(user_id))}: {score}")
