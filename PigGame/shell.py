@@ -32,7 +32,8 @@ class Shell(cmd.Cmd):
         """
         msg = "Game Started! Start off by rolling the dice!"
         while True:
-            mode = input("Please enter amount of players! 1 = Vs AI, 2 = 2 Player mode: ").strip()
+            mode = input("Please enter amount of players! "
+                         "1 = Vs AI, 2 = 2 Player mode: ").strip()
             if mode in ("1", "2"):
                 break
             print("Error please enter a valid amount of players (1 or 2)! 🐷")
@@ -49,7 +50,7 @@ class Shell(cmd.Cmd):
             username = input("Enter username: ")
             self.game.data_handler.user_data.add_user(username)
             userid = self.game.data_handler.user_data.get_user_id(username)
-            self.game.data_handler.leaderboard_data.create_leaderboard_information_for_new_players(userid)
+            self.game.data_handler.leaderboard_data.add_new_player(userid)
             if userid is None:
                 raise Exception("UserID Not Found!")
 

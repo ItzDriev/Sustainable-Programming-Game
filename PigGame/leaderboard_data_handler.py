@@ -24,7 +24,10 @@ class LeaderboardDataHandler(JSONFileHandler):
         ppt = 1
         total_turns = 1
         data = self.read()
-        data[str(user_id)] = {"wins": wins, "games_played": losts, "ppt": ppt, "total_turns": total_turns}
+        data[str(user_id)] = {"wins": wins,
+                              "games_played": losts,
+                              "ppt": ppt,
+                              "total_turns": total_turns}
         self.write(data)
 
     def get_highscore(self, user_id):
@@ -34,9 +37,13 @@ class LeaderboardDataHandler(JSONFileHandler):
 
     def update_player_ppt_and_total_turns_total(self, player, value):
         """Update points per turn and total turns for players."""
+        uid = str(player.get_user_id())
+
         data = self.read()
-        data[str(player.get_user_id())]["total_turns"] += 1
-        data[str(player.get_user_id())]["ppt"] = (data[str(player.get_user_id())]["ppt"]*(data[str(player.get_user_id())]["total_turns"]-1)+value)/data[str(player.get_user_id())]["total_turns"]
+        data[uid]["total_turns"] += 1
+        data[uid]["ppt"] = (data[uid]["ppt"]
+                            * (data[uid]["total_turns"]-1)
+                            + value)/data[uid]["total_turns"]
         self.write(data)
 
     def update_player_games_played(self, player_won, player):
@@ -49,7 +56,7 @@ class LeaderboardDataHandler(JSONFileHandler):
             data[str(player.get_user_id())]["games_played"] += 1
         self.write(data)
 
-    def create_leaderboard_information_for_new_players(self, user_id):
+    def add_new_player(self, user_id):
         """Create leaderboard data for user."""
         data = self.read()
         if any(keys == str(user_id) for keys in data.keys()):
