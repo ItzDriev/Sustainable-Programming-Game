@@ -6,5 +6,9 @@
     "1": {
         "user_id": 1,
         "username": "Liam"
+    },
+    "2": {
+        "user_id": 2,
+        "username": "Johan"
     }
 }

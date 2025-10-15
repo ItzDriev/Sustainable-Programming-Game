@@ -70,11 +70,7 @@ class Shell(cmd.Cmd):
         # Prompted to select 2 player mode or VS AI
         # Prompted to input name for player player 2 respectively
         print(msg)
-<<<<<<< HEAD
-        self.game.start(players, difficulty)
-=======
         self.game.start(players, difficulty, target_points)
->>>>>>> 34f4a16dad022baa253ffe3f4a7d7962b205a76e
 
     def do_cheat(self, _):
         """Activates cheating for testing purposes.

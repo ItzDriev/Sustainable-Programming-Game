@@ -163,11 +163,11 @@ class Game:
                 sleep(2.5)
                 break
 
-    def reset_game(self, players: Player):
+    def reset_game(self):
         """Ensure game is reset and has correct players when starting new game."""
         self.game_over = False
         self.npc_score = 0
-        self.players = players
+        self.players = None
 
     def quit_game(self, player):
         """Prompts quit message, returns to player_turn method."""
@@ -181,11 +181,12 @@ class Game:
 
     def start(self, players, difficulty, target_points, test_mode=False):
         """Decide which player starts first and keeps the game going."""
+        if self.reset_game():
+            who_starts = 0
+
         self.target_points = target_points
         self.ai.round_end_number = target_points
-
-        if self.reset_game(players):
-            who_starts = 0
+        self.players = players
 
         if test_mode:
             return
