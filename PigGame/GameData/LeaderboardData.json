@@ -1,5 +1,14 @@
 {
-    "5": 25,
-    "1": 29,
-    "3": 29
+    "0": {
+        "wins": 1,
+        "games_played": 1,
+        "ppt": 13.5,
+        "total_turns": 4
+    },
+    "1": {
+        "wins": 0,
+        "games_played": 1,
+        "ppt": 9.75,
+        "total_turns": 4
+    }
 }

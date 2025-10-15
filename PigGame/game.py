@@ -28,8 +28,10 @@ class Game:
 
         self.players = []
         self.dice_hand = DiceHand()
+        self.game_over = False
+        self.target_points = 100
 
-    def npc_turn(self, difficulty):
+    def npc_turn(self, difficulty, player):
         """Npc takes turn, sends result to the intelligence class."""
         turn_score = 0
         turn_history = "🐷----------Turn History For: Computer-AI----------🐷\n"
@@ -56,10 +58,11 @@ class Game:
                 turn_score += (total_roll)
                 self.ai.increment_turn_score(total_roll)
 
-                if self.npc_score >= 100:
-                    print("🤖 Mr AI reached 100 points. Game over 🤖")
+                if self.npc_score >= self.target_points:
+                    print(f"🤖 Mr AI reached {self.target_points} points. Game over 🤖\n")
                     self.game_over = True
                     self.ai.reset_turn_score()
+                    self.data_handler.leaderboard_data.update_player_games_played(player=player, player_won=False)
                     break
                 print(f"Mr AI's total score: {self.npc_score}")
                 turn_history += (f"Rolled: {self.npc_dice_hand.get_last_roll()[0]}" +
@@ -84,7 +87,7 @@ class Game:
     def player_turn(self, player):
         """Player(s) takes turn rolling dice."""
         if Game.cheat_mode:
-            player.score += 100
+            player.score += self.target_points
 
         turn_score = 0
         turn_history = ("🐷----------Turn History For:" +
@@ -98,6 +101,7 @@ class Game:
             self.dice_hand.roll_dice()
             self.ai.increment_turn_round_for_player()
             value = self.dice_hand.get_last_roll()
+
             print(f"{player.get_username()} rolled {self.dice_hand.get_last_roll()[0]}"
                   f" and {self.dice_hand.get_last_roll()[1]}"
                   f" {'\u2680\u2681\u2682\u2683\u2684\u2685'[value[0]-1]}"
@@ -110,11 +114,20 @@ class Game:
                 total_roll = sum(self.dice_hand.get_last_roll())
                 player.score += (total_roll)
                 turn_score += (total_roll)
-                if player.score >= 100:
-                    print(f"🎉 {player.get_username()} reached 100 points."
-                          f"{player.get_username()} wins! 🎉")
+                print(turn_score)
+                if player.score >= self.target_points:
+                    print(f"🎉 {player.get_username()} reached"
+                          f"{self.target_points} points. "
+                          f"{player.get_username()} wins! 🎉\n")
                     self.game_over = True
                     self.ai.reset_turn_score()
+                    self.data_handler.leaderboard_data.update_player_ppt_and_total_turns_total(player=player, value=turn_score)
+                    self.data_handler.leaderboard_data.update_player_games_played(player=player, player_won=True)
+                    if len(self.players) == 2:
+                        if player == self.players[1]:
+                            self.data_handler.leaderboard_data.update_player_games_played(player=self.players[0], player_won=False)
+                        elif player == self.players[0]:
+                            self.data_handler.leaderboard_data.update_player_games_played(player=self.players[1], player_won=False)
                     break
 
                 # Needs a quit method
@@ -127,6 +140,7 @@ class Game:
                     case "y":
                         continue
                     case "n":
+                        self.data_handler.leaderboard_data.update_player_ppt_and_total_turns_total(player=player, value=turn_score)
                         break
                     case "quit":
                         self.quit_game(player)  # Prompts quit message
@@ -135,6 +149,7 @@ class Game:
             elif (not self.rolled_two_ones(self.dice_hand.get_last_roll()[0],
                                            self.dice_hand.get_last_roll()[1])):
                 self.ai.reset_turn_score()
+                self.data_handler.leaderboard_data.update_player_ppt_and_total_turns_total(player=player, value=0)
                 player.score -= turn_score
                 print(f"❌ Dang it! {player.get_username()} rolled 1."
                       f"Score will be reset down to {player.score} ❌")
@@ -142,6 +157,7 @@ class Game:
                 break
             else:
                 player.score = 0
+                self.data_handler.leaderboard_data.update_player_ppt_and_total_turns_total(player=player, value=0)
                 print(f"❌ Oh noooooo! {player.get_username()} rolled two 1's. "
                       f"Score will be reset down to {player.score} ❌")
                 sleep(2.5)
@@ -154,8 +170,7 @@ class Game:
         self.players = players
 
     def quit_game(self, player):
-        """Prompts quit message, returns to player_turn method"""
-
+        """Prompts quit message, returns to player_turn method."""
         print(f"\n😢 {player.get_username()}...Giving up already? 😢\n")
 
         for y in range(11):
@@ -164,8 +179,11 @@ class Game:
         print("\n")
         self.game_over = True
 
-    def start(self, players, difficulty, test_mode=False):
-        """Ensure fresh reset then decide which player starts first."""
+    def start(self, players, difficulty, target_points, test_mode=False):
+        """Decide which player starts first and keeps the game going."""
+        self.target_points = target_points
+        self.ai.round_end_number = target_points
+
         if self.reset_game(players):
             who_starts = 0
 
@@ -179,14 +197,14 @@ class Game:
                     self.player_turn(self.players[0])
                     who_starts = 1
                 case 2:
-                    self.npc_turn(difficulty)
+                    self.npc_turn(difficulty, self.players[0])
                     who_starts = 2
 
             match who_starts:
                 case 1:
                     while not self.game_over:
                         print("")
-                        self.npc_turn(difficulty)
+                        self.npc_turn(difficulty, self.players[0])
                         if self.game_over:
                             break
                         print("")
@@ -198,7 +216,7 @@ class Game:
                         if self.game_over:
                             break
                         print("")
-                        self.npc_turn(difficulty)
+                        self.npc_turn(difficulty, self.players[0])
         else:
             match random.randint(1, 2):
                 case 1:

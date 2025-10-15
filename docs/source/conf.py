@@ -27,6 +27,11 @@ extensions = [
     'myst_parser'
 ]
 
+autodoc_default_options = {
+    'members': True,
+    'special-members': '__init__',
+}
+
 autosummary_generate = True
 
 intersphinx_mapping = {

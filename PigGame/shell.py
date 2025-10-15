@@ -14,26 +14,42 @@ from PigGame.player import Player
 
 
 class Shell(cmd.Cmd):
-    """Classes that handle the terminal's user inputs."""
+    """Classes that handle most of the terminal's user inputs."""
 
-    intro = "Welcome to the PIG Game!. Type help or ? to list available commands.\n"
-    prompt = "(Game) "
+    intro = "Welcome to the PIG Game!. Type help or ? to list available commands." \
+            "\n\nTo start a game simply enter 'start'"
+    prompt = "(🐷 Game): "
 
     def __init__(self):
         """Init the object."""
         super().__init__()
         self.game = Game()  # Game is a singleton persistant during "program" lifespan
 
-    def do_start(self, mode):
-        # 50/50 if computer goes first or if the human playing goes first?
-        """Start a game versus the computer."""
-        msg = "Game Started! Start off by rolling the dice!"
+    def do_start(self, _):
+        """Start the game and takes three additional inputs.
 
+        Target_Points, Username and Difficulty.
+        """
+        msg = "Game Started! Start off by rolling the dice!"
+        while True:
+            mode = input("Please enter amount of players! 1 = Vs AI, 2 = 2 Player mode: ").strip()
+            if mode in ("1", "2"):
+                break
+            print("Error please enter a valid amount of players (1 or 2)! 🐷")
+
+        while True:
+            target_points = input("Enter the target points for the game! 🐷: ").strip()
+            if target_points.isdigit() is False:
+                print("Please enter a valid number, any positive number!")
+            else:
+                target_points = int(target_points)
+                break
         players = []
         for _ in range(int(mode)):
             username = input("Enter username: ")
             self.game.data_handler.user_data.add_user(username)
             userid = self.game.data_handler.user_data.get_user_id(username)
+            self.game.data_handler.leaderboard_data.create_leaderboard_information_for_new_players(userid)
             if userid is None:
                 raise Exception("UserID Not Found!")
 
@@ -54,19 +70,19 @@ class Shell(cmd.Cmd):
         # Prompted to select 2 player mode or VS AI
         # Prompted to input name for player player 2 respectively
         print(msg)
+<<<<<<< HEAD
         self.game.start(players, difficulty)
+=======
+        self.game.start(players, difficulty, target_points)
+>>>>>>> 34f4a16dad022baa253ffe3f4a7d7962b205a76e
 
     def do_cheat(self, _):
-        """Activates cheating for testing purposes."""
+        """Activates cheating for testing purposes.
+
+        Immediately goes to the end of the game.
+        """
         Game.cheat_mode = True
         print("Cheat Mode Activated - You're a god daddy")
-
-    def do_roll(self, _):
-        """Decide to to roll the dice."""
-        # Guess this will call a dice class, roll the dice and add the
-        # points to the current dice hand or something
-
-        print("You roll the dice!")
 
     def do_namechange(self, args):
         """Will perform a namechange."""
@@ -120,6 +136,7 @@ class Shell(cmd.Cmd):
         """Show leaderboard."""
         self.game.data_handler.print_leaderboard()
         # parameters = arg.split()
+        self.game.data_handler.leaderboard_data.register_highscore(3)
         # self.game.data_handler.leaderboard_data.register_highscore(parameters[0],
         # parameters[1])
         # print(self.game.data_handler.leaderboard_data.get_highscore(parameters[0]))
