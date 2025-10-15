@@ -5,6 +5,7 @@
 
 import random
 from time import sleep
+from typing import List
 from PigGame.dice_hand import DiceHand
 from PigGame.ai_logic import AiLogic
 from PigGame.data_handler import DataHandler
@@ -26,12 +27,12 @@ class Game:
         self.npc_score = 0
         self.npc_dice_hand = DiceHand()
 
-        self.players = []
+        self.players: List[Player] = []
         self.dice_hand = DiceHand()
         self.game_over = False
         self.target_points = 100
 
-    def npc_turn(self, difficulty, player):
+    def npc_turn(self, difficulty, player: Player):
         """Npc takes turn, sends result to the intelligence class."""
         turn_score = 0
         turn_history = "🐷----------Turn History For: Computer-AI----------🐷\n"
@@ -84,7 +85,7 @@ class Game:
                 sleep(2.5)
                 break
 
-    def player_turn(self, player):
+    def player_turn(self, player: Player):
         """Player(s) takes turn rolling dice."""
         if Game.cheat_mode:
             player.score += self.target_points
@@ -168,7 +169,7 @@ class Game:
         self.npc_score = 0
         self.players = None
 
-    def quit_game(self, player):
+    def quit_game(self, player: Player):
         """Prompts quit message, returns to player_turn method."""
         print(f"\n😢 {player.get_username()}...Giving up already? 😢\n")
 
