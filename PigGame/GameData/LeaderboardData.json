@@ -22,5 +22,11 @@
         "games_played": 1,
         "ppt": 13.0,
         "total_turns": 4
+    },
+    "2": {
+        "wins": 0,
+        "games_played": 0,
+        "ppt": 0,
+        "total_turns": 0
     }
 }
