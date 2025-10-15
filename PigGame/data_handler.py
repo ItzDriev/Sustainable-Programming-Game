@@ -33,10 +33,25 @@ class DataHandler:
             self.__dir_path / "LeaderboardData.json", self.__dir_path
         )
 
-    def print_leaderboard(self):
+    def print_leaderboard(self, arg):
         """Print leaderboard."""
-        print(f"{'Name':<15}{'Wins':<15}{'PPT':<15}")
         leaderboard = self.leaderboard_data.read()
+        top_leader = 0
+        print("----------------------------------------------------------------------------------------")
+        print(f"|{'Top 10:':<15}{'Name:':<15}{'Games played:':<20}{'Winrate:':<15}{'Avr score per turn:':<21}|")
+        print("----------------------------------------------------------------------------------------")
+
         for user_id, score in leaderboard.items():
-            print(f"{self.user_data.get_username(int(user_id)):<15}")
-            print(f"{self.user_data.get_username(int(user_id))}: {score}")
+            if score['wins'] != 0:
+                winrate = int(((score['wins'])/(score['games_played']))*100)
+            else:
+                winrate = 0
+            top_leader+=1
+
+            print(f"|{top_leader:<15}{str(self.user_data.get_username(int(user_id))):<15}{score['games_played']:<20}{f'{winrate}%':<15}{score['ppt']:<21.2f}|")
+            print("----------------------------------------------------------------------------------------")
+            if arg == "":
+                if top_leader == 10:
+                    break
+            elif top_leader >= int(arg):
+                break

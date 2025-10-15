@@ -114,10 +114,9 @@ class Game:
                 total_roll = sum(self.dice_hand.get_last_roll())
                 player.score += (total_roll)
                 turn_score += (total_roll)
-                print(turn_score)
                 if player.score >= self.target_points:
                     print(f"🎉 {player.get_username()} reached"
-                          f"{self.target_points} points. "
+                          f" {self.target_points} points. "
                           f"{player.get_username()} wins! 🎉\n")
                     self.game_over = True
                     self.ai.reset_turn_score()
@@ -135,7 +134,7 @@ class Game:
                                f"Total score: {player.score}" +
                                "\n\nContinue? 'y'/'n' or 'quit' to quit\n")
                 turn_history += (f"Rolled: {self.dice_hand.get_last_roll()[0]}" +
-                                 f"and {self.dice_hand.get_last_roll()[1]}\n")
+                                 f" and {self.dice_hand.get_last_roll()[1]}\n")
                 match option:
                     case "y":
                         continue
