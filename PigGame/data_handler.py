@@ -35,7 +35,7 @@ class DataHandler:
 
     def print_leaderboard(self, arg):
         """Print leaderboard."""
-        leaderboard = self.leaderboard_data.read()
+        leaderboard = dict(self.leaderboard_data.read())
         sorted_data = dict(sorted(leaderboard.items(), key=lambda item: item[1]["ppt"], reverse=True))
 
         top_leader = 0
