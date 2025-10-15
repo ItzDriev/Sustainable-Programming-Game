@@ -16,13 +16,13 @@ including points acquired from previous turns.
 🐷 Play carefully, and don't be a PIG! 🐷  ⚀
 """
 
-from PigGame import shell
+from PigGame.shell import Shell
 
 
 def main():
     """Execute the main program."""
     print(__doc__)
-    shell.Shell().cmdloop()
+    Shell().cmdloop()
 
 
 if __name__ == "__main__":

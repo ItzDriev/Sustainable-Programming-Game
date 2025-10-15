@@ -8,6 +8,7 @@ Handles LeaderboardData.
 """
 
 from PigGame.json_file_handler import JSONFileHandler
+from PigGame.player import Player
 
 
 class LeaderboardDataHandler(JSONFileHandler):
@@ -22,14 +23,18 @@ class LeaderboardDataHandler(JSONFileHandler):
         data = self.read()
         return data[str(user_id)]
 
-    def update_player_ppt_and_total_turns_total(self, player, value):
+    def update_ppt_and_turns(self, player: Player, value):
         """Update points per turn and total turns for players."""
+        uid = str(player.get_user_id())
+
         data = self.read()
-        data[str(player.get_user_id())]["total_turns"] += 1
-        data[str(player.get_user_id())]["ppt"] = (data[str(player.get_user_id())]["ppt"]*(data[str(player.get_user_id())]["total_turns"]-1)+value)/data[str(player.get_user_id())]["total_turns"]
+        data[uid]["total_turns"] += 1
+        data[uid]["ppt"] = (data[uid]["ppt"]
+                            * (data[uid]["total_turns"]-1)
+                            + value)/data[uid]["total_turns"]
         self.write(data)
 
-    def update_player_games_played(self, player_won, player):
+    def update_games_played(self, player_won, player: Player):
         """Update wins and games played for players."""
         data = self.read()
         if player_won:
@@ -39,9 +44,9 @@ class LeaderboardDataHandler(JSONFileHandler):
             data[str(player.get_user_id())]["games_played"] += 1
         self.write(data)
 
-    def create_leaderboard_information_for_new_players(self, user_id):
+    def add_new_player(self, user_id):
         """Create leaderboard data for user."""
-        data = self.read()
+        data = dict(self.read())
         if any(keys == str(user_id) for keys in data.keys()):
             return
         data[str(user_id)] = {"wins": 0, "games_played": 0, "ppt": 0, "total_turns": 0}

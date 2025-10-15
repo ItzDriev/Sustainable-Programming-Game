@@ -7,6 +7,7 @@ Module for handling UserData.
 Handles user data.
 """
 
+from typing import Any, Dict
 from PigGame.json_file_handler import JSONFileHandler
 
 
@@ -31,9 +32,10 @@ class UserDataHandler(JSONFileHandler):
         :return: The id of a user based on username.
         :rtype: :py:obj:`int` | :py:obj:`None`
         """
-        data = self.read()
+        data = dict(self.read())
 
         for user_id, user_info in data.items():
+            user_info: Dict[str, Any] = user_info
             if user_info.get("username") == username:
                 return int(user_id)
         return None
@@ -46,7 +48,7 @@ class UserDataHandler(JSONFileHandler):
         :return: If the user was added succesfully.
         :rtype: :py:obj:`bool`
         """
-        data = self.read()
+        data = dict(self.read())
 
         if any(info.get("username") == username for info in data.values()):
             return False
@@ -67,7 +69,7 @@ class UserDataHandler(JSONFileHandler):
         :return: If the username was updated or not.
         :rtype: :py:obj:`bool`
         """
-        data = self.read()
+        data = dict(self.read())
         if any(info.get("username") == new_username for info in data.values()):
             return False
         if str(self.get_user_id(current_username)) not in data:
@@ -84,7 +86,7 @@ class UserDataHandler(JSONFileHandler):
         :return: The username of a user/player.
         :rtype: :py:obj:`str` | :py:obj:`None`
         """
-        data = self.read()
+        data = dict(self.read())
         for info in data.values():
             if info.get("user_id") == user_id:
                 return info.get("username")
