@@ -128,11 +128,6 @@ class Shell(cmd.Cmd):
         """Leave the game."""
         return self.do_exit(arg)
 
-    def do_leaderboard(self, _):
+    def do_leaderboard(self, arg):
         """Show leaderboard."""
-        self.game.data_handler.print_leaderboard()
-        # parameters = arg.split()
-        self.game.data_handler.leaderboard_data.register_highscore(3)
-        # self.game.data_handler.leaderboard_data.register_highscore(parameters[0],
-        # parameters[1])
-        # print(self.game.data_handler.leaderboard_data.get_highscore(parameters[0]))
+        self.game.data_handler.print_leaderboard(arg)

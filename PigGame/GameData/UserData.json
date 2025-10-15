@@ -10,5 +10,9 @@
     "2": {
         "user_id": 2,
         "username": "Johan"
+    },
+    "3": {
+        "user_id": 3,
+        "username": "Anton"
     }
 }
