@@ -102,7 +102,7 @@ class Shell(cmd.Cmd):
         """Will perform a namechange.
 
         :param args: Arguments separated by spaces representing either current or new usernames.
-        :type aargs: str
+        :type args: str
         """
         name_info = args.split()
 
