@@ -14,5 +14,9 @@
     "3": {
         "user_id": 3,
         "username": "Anton"
+    },
+    "4": {
+        "user_id": 4,
+        "username": "john"
     }
 }
