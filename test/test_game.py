@@ -53,8 +53,10 @@ class TestGameClass(unittest.TestCase):
     def test_npc_hand_roll(self):
         """Tests if npc hand rolls correctly."""
         test_game = Game()
-        test_game.players = [Player('test_name', 1)]
+        test_game.players.append(Player('test_name', 1))
         test_game.players[0].score = 0
+        test_game.target_points = 0
+
 
         test_game.ai.should_roll = lambda *_: True
         test_game.npc_turn()
