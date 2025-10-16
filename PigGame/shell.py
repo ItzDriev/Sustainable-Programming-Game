@@ -170,7 +170,8 @@ class Shell(cmd.Cmd):
     def do_leaderboard(self, arg):
         """Show leaderboard.
 
-        :param arg: Argument for something
+        :param arg: Argument for number of top players to display 
+                    (ex. "leaderboard 50" shows Top 50)
         :type arg: :py:obj:`str`
         """
         self.game.data_handler.print_leaderboard(arg)
