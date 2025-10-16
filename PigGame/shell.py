@@ -22,14 +22,31 @@ class Shell(cmd.Cmd):
     prompt = "(🐷 Game): "
 
     def __init__(self):
-        """Init the object."""
+        """Init the object.
+
+        :param game: singleton instance of the game.
+        """
         super().__init__()
         self.game = Game()  # Game is a singleton persistant during "program" lifespan
 
     def do_start(self, _):
         """Start the game and takes three additional inputs.
 
-        Target_Points, Username and Difficulty.
+        :param _: Placeholder argument.
+        :type _: None
+
+        :param mode: Input variable for game mode selection —
+                     "1" for Player vs AI, "2" for 2-player mode.
+        :type mode: str
+
+        :param target_points: Input variable for the target score required
+                              to win the game.
+        :type target_points: int
+
+        :param username: Input variable representing each player's username.
+        :type username: str
+
+        :raises Exception: If a player UserID cannot be found in user data.
         """
         msg = "Game Started! Start off by rolling the dice!"
         while True:
@@ -82,7 +99,11 @@ class Shell(cmd.Cmd):
         print("Cheat Mode Activated - You're a god daddy")
 
     def do_namechange(self, args):
-        """Will perform a namechange."""
+        """Will perform a namechange.
+
+        :param args: Arguments separated by spaces representing either current or new usernames.
+        :type aargs: str
+        """
         name_info = args.split()
 
         if len(name_info) != 2:
@@ -112,23 +133,43 @@ class Shell(cmd.Cmd):
     # Below are all ways to exit the game: exit, quite, q and EOF
 
     def do_exit(self, _):
-        """Leave the game."""
+        """Leave the game.
+
+        :return: True, indicating game exit
+        :rtype: bool
+        """
         print("Game Exited! Cya around!")
         return True
 
     def do_quit(self, arg):
-        """Leave the game."""
+        """Leave the game.
+
+        :return: True, indicating game exit
+        :rtype: bool
+        """
         return self.do_exit(arg)
 
     def do_q(self, arg):
-        """Leave the game."""
+        """Leave the game.
+
+        :return: True, indicating game exit
+        :rtype: bool
+        """
         return self.do_exit(arg)
 
     def do_EOF(self, arg):
         # pylint: disable=invalid-name
-        """Leave the game."""
+        """Leave the game.
+
+        :return: True, indicating game exit
+        :rtype: bool
+        """
         return self.do_exit(arg)
 
     def do_leaderboard(self, arg):
-        """Show leaderboard."""
+        """Show leaderboard.
+
+        :param arg: Argument for something
+        :type arg: str
+        """
         self.game.data_handler.print_leaderboard(arg)
