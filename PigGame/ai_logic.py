@@ -6,6 +6,8 @@
 class AiLogic:
     """Handles how the AI thinks."""
 
+    difficulty = 0
+
     def __init__(self):
         """Declare variables."""
         self.__turn_score = 0
@@ -127,9 +129,9 @@ class AiLogic:
         self.reset_turn_score()
         return False
 
-    def should_roll(self, npc_score, player_score, difficulty):
+    def should_roll(self, npc_score, player_score):
         """Dice which difficulty function that should be played."""
-        match difficulty:
+        match AiLogic.difficulty:
             case 1:
                 return self.rasmus_ai_difficulty(npc_score, player_score)
             case 2:

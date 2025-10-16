@@ -32,7 +32,7 @@ class Game:
         self.game_over = False
         self.target_points = 100
 
-    def npc_turn(self, difficulty, player: Player):
+    def npc_turn(self, player: Player):
         """Npc takes turn, sends result to the intelligence class."""
         turn_score = 0
         turn_history = "🐷----------Turn History For: Computer-AI----------🐷\n"
@@ -42,7 +42,7 @@ class Game:
                 print("")
             print(turn_history)
             player_score = self.players[0].score
-            if self.ai.should_roll(self.npc_score, player_score, difficulty):
+            if self.ai.should_roll(self.npc_score, player_score):
                 self.npc_dice_hand.roll_dice()
                 value = self.npc_dice_hand.get_last_roll()
                 print(f"🤖 Mr AI rolled {self.npc_dice_hand.get_last_roll()[0]}"
@@ -101,20 +101,20 @@ class Game:
 
             self.dice_hand.roll_dice()
             self.ai.increment_turn_round_for_player()
-            value = self.dice_hand.get_last_roll()
+            dice_points = self.dice_hand.get_last_roll()
 
             print(f"{player.get_username()} rolled {self.dice_hand.get_last_roll()[0]}"
                   f" and {self.dice_hand.get_last_roll()[1]}"
-                  f" {'\u2680\u2681\u2682\u2683\u2684\u2685'[value[0]-1]}"
-                  f" {'\u2680\u2681\u2682\u2683\u2684\u2685'[value[1]-1]}")
+                  f" {'\u2680\u2681\u2682\u2683\u2684\u2685'[dice_points[0]-1]}"
+                  f" {'\u2680\u2681\u2682\u2683\u2684\u2685'[dice_points[1]-1]}")
 
             # Evaluate if any roll is 1
-            if (not self.rolled_one(self.dice_hand.get_last_roll()[0],
-                                    self.dice_hand.get_last_roll()[1])):
+            if (not self.rolled_one(dice_points[0],
+                                    dice_points[1])):
 
-                total_roll = sum(self.dice_hand.get_last_roll())
-                player.score += (total_roll)
-                turn_score += (total_roll)
+                total_points = sum(dice_points)
+                player.score += (total_points)
+                turn_score += (total_points)
                 if player.score >= self.target_points:
                     print(f"🎉 {player.get_username()} reached"
                           f" {self.target_points} points. "
@@ -123,14 +123,14 @@ class Game:
                     self.ai.reset_turn_score()
                     self.data_handler.leaderboard_data.update_ppt_and_turns(player, turn_score)
                     self.data_handler.leaderboard_data.update_games_played(True, player)
-                    if len(self.players) == 2:
-                        if player == self.players[1]:
-                            self.data_handler.leaderboard_data.update_games_played(False, self.players[0])
-                        elif player == self.players[0]:
-                            self.data_handler.leaderboard_data.update_games_played(False, self.players[1])
+
+                    for p in self.players:
+                        if p == player:
+                            self.data_handler.leaderboard_data.update_games_played(True, player)
+                        else:
+                            self.data_handler.leaderboard_data.update_games_played(False, p)
                     break
 
-                # Needs a quit method
                 option = input(f"{player.get_username()}'s " +
                                f"Total score: {player.score}" +
                                "\n\nContinue? 'y'/'n' or 'quit' to quit\n")
@@ -179,33 +179,24 @@ class Game:
         print("\n")
         self.game_over = True
 
-    def start(self, players, difficulty, target_points, test_mode=False):
+    def start(self, players, target_points, test_mode=False):
         """Decide which player starts first and keeps the game going."""
-        if self.reset_game():
-            who_starts = 0
+        if test_mode:
+            return
+
+        self.reset_game()
 
         self.target_points = target_points
         self.ai.round_end_number = target_points
         self.players = players
 
-        if test_mode:
-            return
-
         # Decide who starts in a singleplayer game
         if len(self.players) == 1:
             match random.randint(1, 2):
                 case 1:
-                    self.player_turn(self.players[0])
-                    who_starts = 1
-                case 2:
-                    self.npc_turn(difficulty, self.players[0])
-                    who_starts = 2
-
-            match who_starts:
-                case 1:
                     while not self.game_over:
                         print("")
-                        self.npc_turn(difficulty, self.players[0])
+                        self.npc_turn(self.players[0])
                         if self.game_over:
                             break
                         print("")
@@ -217,21 +208,11 @@ class Game:
                         if self.game_over:
                             break
                         print("")
-                        self.npc_turn(difficulty, self.players[0])
+                        self.npc_turn(self.players[0])
         else:
-            match random.randint(1, 2):
-                case 1:
-                    self.player_turn(self.players[0])
-                    current_user_index = 0
-                case 2:
-                    self.player_turn(self.players[1])
-                    current_user_index = 1
-
+            current_user_index = random.randint(0, 1)
             while not self.game_over:
-                if current_user_index == 0:
-                    current_user_index = 1
-                else:
-                    current_user_index = 0
+                current_user_index = 1 if current_user_index == 0 else 0
                 print("")
                 self.player_turn(self.players[current_user_index])
                 print("")

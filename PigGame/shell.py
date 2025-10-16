@@ -11,6 +11,7 @@ You can read about the cmd module in the docs:
 import cmd
 from PigGame.game import Game
 from PigGame.player import Player
+from PigGame.ai_logic import AiLogic
 
 
 class Shell(cmd.Cmd):
@@ -59,19 +60,18 @@ class Shell(cmd.Cmd):
             print("Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. "
                   "Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. "
                   "Liam (Expert 😡)\n\n😈 --- Hardest --- 😈")
-            difficulty = 0
-            while difficulty < 1 or difficulty > 4:
+            while AiLogic.difficulty < 1 or AiLogic.difficulty > 4:
                 try:
-                    difficulty = (int(input("Select your difficulty: ")))
+                    AiLogic.difficulty = (int(input("Select your difficulty: ")))
                 except ValueError:
                     print("Must be an integer!")
         else:
-            difficulty = None
+            AiLogic.difficulty = None
 
         # Prompted to select 2 player mode or VS AI
         # Prompted to input name for player player 2 respectively
         print(msg)
-        self.game.start(players, difficulty, target_points)
+        self.game.start(players, target_points)
 
     def do_cheat(self, _):
         """Activates cheating for testing purposes.
