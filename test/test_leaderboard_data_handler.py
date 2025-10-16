@@ -15,7 +15,7 @@ from PigGame.data_handler import DataHandler
 
 
 class DummyPlayer:
-    """Lightweight stand-in for Player with only get_user_id()."""
+    """Player with only get_user_id()."""
 
     def __init__(self, user_id: int):
         """Store the provided user id."""
@@ -48,12 +48,12 @@ class TestLeaderBoardDataHandlerClass(unittest.TestCase):
         self.tmp.cleanup()
 
     def test_get_highscore(self):
-        """#22-23: get_highscore returns dict for a given user_id."""
+        """Get_highscore returns dict for a given user_id."""
         self.assertEqual(self.lb.get_highscore(0), self.base['0'])
         self.assertEqual(self.lb.get_highscore('3')['ppt'], 1.0)
 
     def test_update_ppt_and_turns(self):
-        """#27-30: update_ppt_and_turns increments turns and updates running average ppt."""
+        """Update_ppt_and_turns increments turns and updates running average ppt."""
         player = DummyPlayer(user_id=1)
         data_before = self.lb.read()
         old_turns = data_before['1']['total_turns']
@@ -67,7 +67,7 @@ class TestLeaderBoardDataHandlerClass(unittest.TestCase):
         self.assertAlmostEqual(data_after['1']['ppt'], expected_ppt, places=7)
 
     def test_update_games_played_won(self):
-        """#34-40 (win path): update_games_played increments wins and games_played when player_won is True."""
+        """Test for win path in update_games_played."""
         player = DummyPlayer(user_id=0)
         data_before = self.lb.read()
         wins_before = data_before['0']['wins']
@@ -78,7 +78,7 @@ class TestLeaderBoardDataHandlerClass(unittest.TestCase):
         self.assertEqual(data_after['0']['games_played'], games_before + 1)
 
     def test_update_games_played_lost(self):
-        """#34-40 (loss path): update_games_played increments games_played only when player_won is False."""
+        """Test for loss path in update_games_played."""
         player = DummyPlayer(user_id=1)
         data_before = self.lb.read()
         wins_before = data_before['1']['wins']
@@ -89,13 +89,13 @@ class TestLeaderBoardDataHandlerClass(unittest.TestCase):
         self.assertEqual(data_after['1']['games_played'], games_before + 1)
 
     def test_add_new_player_exists(self):
-        """#44-48 (exists): add_new_player is a no-op when user_id is already present."""
+        """Check if player already have stats."""
         self.lb.add_new_player(0)
         data = self.lb.read()
         self.assertEqual(data['0'], self.base['0'])
 
     def test_add_new_player_missing(self):
-        """#44-48 (missing): add_new_player inserts a default record when user_id is absent."""
+        """Check if player have no stats."""
         new_id = 9
         self.lb.add_new_player(new_id)
         data = self.lb.read()
@@ -130,7 +130,7 @@ class TestDataHandlerPrintLeaderboard(unittest.TestCase):
         self.tmp.cleanup()
 
     def test_print_leaderboard_order_and_default_limit(self):
-        """print_leaderboard: sorts by ppt descending and respects default top 10 limit."""
+        """Sorts by ppt descending and respects default top 10 limit."""
         buf = StringIO()
         with contextlib.redirect_stdout(buf):
             self.dh.print_leaderboard(arg="")
@@ -144,7 +144,7 @@ class TestDataHandlerPrintLeaderboard(unittest.TestCase):
         self.assertIn("1.00", rows[2])
 
     def test_print_leaderboard_with_limit(self):
-        """print_leaderboard: applies provided numeric limit to number of printed rows."""
+        """Applies provided numeric limit to number of printed rows."""
         buf = StringIO()
         with contextlib.redirect_stdout(buf):
             self.dh.print_leaderboard(arg="2")
