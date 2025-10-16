@@ -18,19 +18,6 @@ class LeaderboardDataHandler(JSONFileHandler):
         """Handle leaderboard data to JSON file."""
         super().__init__(file_path, dir_path)
 
-    def register_highscore(self, user_id):
-        """Write highscore to file."""
-        wins = 1
-        losts = 1
-        ppt = 1
-        total_turns = 1
-        data = self.read()
-        data[str(user_id)] = {"wins": wins,
-                              "games_played": losts,
-                              "ppt": ppt,
-                              "total_turns": total_turns}
-        self.write(data)
-
     def get_highscore(self, user_id):
         """Return highscore of player based on user_id."""
         data = self.read()

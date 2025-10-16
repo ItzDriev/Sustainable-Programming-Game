@@ -27,7 +27,7 @@ class TestGameClass(unittest.TestCase):
         players = []
         players.append(Player("testuser",
                               the_game.data_handler.user_data.get_user_id("testuser")))
-        the_game.start(players, 1, 100, True)
+        the_game.start(players, 100, True)
 
         self.assertTrue(True)
         os.remove(self.test_dir+"/UserData.json")
@@ -43,7 +43,7 @@ class TestGameClass(unittest.TestCase):
     def test_reset_game(self):
         """ Tests if the game resets properly """
         test_game = Game()
-        test_game.start([Player('test_player', 1)], 1, 100, True)
+        test_game.start([Player('test_player', 1)], 100, True)
         test_game.npc_score = 10
         self.assertEqual(10, test_game.npc_score)
         self.assertFalse(test_game.game_over)
