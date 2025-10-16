@@ -32,7 +32,7 @@ class Game:
         self.game_over = False
         self.target_points = 100
 
-    def npc_turn(self, player: Player):
+    def npc_turn(self):
         """Npc takes turn, sends result to the intelligence class."""
         turn_score = 0
         turn_history = "🐷----------Turn History For: Computer-AI----------🐷\n"
@@ -63,7 +63,7 @@ class Game:
                     print(f"🤖 Mr AI reached {self.target_points} points. Game over 🤖\n")
                     self.game_over = True
                     self.ai.reset_turn_score()
-                    self.data_handler.leaderboard_data.update_games_played(False, player)
+                    self.data_handler.leaderboard_data.update_games_played(False, self.players[0])
                     break
                 print(f"Mr AI's total score: {self.npc_score}")
                 turn_history += (f"Rolled: {self.npc_dice_hand.get_last_roll()[0]}" +
