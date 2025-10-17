@@ -25,6 +25,7 @@ class Shell(cmd.Cmd):
         """Init the object.
 
         :param game: singleton instance of the game.
+        :type game: :py:obj:`Game`
         """
         super().__init__()
         self.game = Game()  # Game is a singleton persistant during "program" lifespan
@@ -33,18 +34,18 @@ class Shell(cmd.Cmd):
         """Start the game and takes three additional inputs.
 
         :param _: Placeholder argument.
-        :type _: None
+        :type _: :py:obj:`None`
 
         :param mode: Input variable for game mode selection —
                      "1" for Player vs AI, "2" for 2-player mode.
-        :type mode: str
+        :type mode: :py:obj:`str`
 
         :param target_points: Input variable for the target score required
                               to win the game.
-        :type target_points: int
+        :type target_points: :py:obj:`int`
 
         :param username: Input variable representing each player's username.
-        :type username: str
+        :type username: :py:obj:`str`
 
         :raises Exception: If a player UserID cannot be found in user data.
         """
@@ -138,7 +139,7 @@ class Shell(cmd.Cmd):
         """Leave the game.
 
         :return: True, indicating game exit
-        :rtype: bool
+        :rtype: :py:obj:`bool`
         """
         print("Game Exited! Cya around!")
         return True
@@ -147,7 +148,7 @@ class Shell(cmd.Cmd):
         """Leave the game.
 
         :return: True, indicating game exit
-        :rtype: bool
+        :rtype: :py:obj:`bool`
         """
         return self.do_exit(arg)
 
@@ -155,7 +156,7 @@ class Shell(cmd.Cmd):
         """Leave the game.
 
         :return: True, indicating game exit
-        :rtype: bool
+        :rtype: :py:obj:`bool`
         """
         return self.do_exit(arg)
 
@@ -164,14 +165,15 @@ class Shell(cmd.Cmd):
         """Leave the game.
 
         :return: True, indicating game exit
-        :rtype: bool
+        :rtype: :py:obj:`bool`
         """
         return self.do_exit(arg)
 
     def do_leaderboard(self, arg):
         """Show leaderboard.
 
-        :param arg: Argument for something
-        :type arg: str
+        :param arg: Argument for number of top players to display 
+                    (ex. "leaderboard 50" shows Top 50)
+        :type arg: :py:obj:`str`
         """
         self.game.turn_manager.data_handler.print_leaderboard(arg)
