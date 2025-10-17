@@ -82,7 +82,8 @@ class TurnManager():
 
                     for p in players:
                         if p != player:
-                            self.data_handler.leaderboard_data.update_games_played(False, p)
+                            (self.data_handler.leaderboard_data.
+                             update_games_played(False, p))
                     break
 
                 option = self.game_ui.prompt_next_action(player.get_username(),
@@ -94,7 +95,8 @@ class TurnManager():
                     case "y":
                         continue
                     case "n":
-                        self.data_handler.leaderboard_data.update_ppt_and_turns(player, turn_score)
+                        (self.data_handler.leaderboard_data.
+                         update_ppt_and_turns(player, turn_score))
                         break
                     case "quit":
                         self.game.quit_game(player)  # Prompts quit message
@@ -170,7 +172,7 @@ class TurnManager():
                 ai.reset_turn_score()
                 ai.score -= turn_score
                 print("❌ Mr AI rolled 1. His score will "
-                        f"be reset down to {ai.score} ❌")
+                      f"be reset down to {ai.score} ❌")
                 sleep(2.5)
                 break
             else:

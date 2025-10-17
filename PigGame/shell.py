@@ -101,7 +101,8 @@ class Shell(cmd.Cmd):
     def do_namechange(self, args):
         """Will perform a namechange.
 
-        :param args: Arguments separated by spaces representing either current or new usernames.
+        :param args: Arguments separated by spaces representing
+                     current and new usernames.
         :type args: str
         """
         name_info = args.split()
@@ -109,7 +110,8 @@ class Shell(cmd.Cmd):
         if len(name_info) != 2:
             return  # Arguments were incorrect
 
-        self.game.turn_manager.data_handler.user_data.update_username(name_info[0], name_info[1])
+        self.game.turn_manager.data_handler.user_data.update_username(name_info[0],
+                                                                      name_info[1])
 
         print("You change your name lul xd")
 

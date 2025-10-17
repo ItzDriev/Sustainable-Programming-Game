@@ -19,7 +19,7 @@ class AiLogic:
         self.first_time_rolling = 0
         self.round_end_number = 100
         self.near_end_buffer = 10
-        self.score: int
+        self.score: int = 0
 
     def rasmus_ai_difficulty(self, player_score):
         """Logic for difficulty 1 (Rasmus difficulty)."""
