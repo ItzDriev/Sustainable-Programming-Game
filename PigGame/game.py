@@ -26,7 +26,7 @@ class Game:
         """
         self.game_over = False
 
-        self.ai = AiLogic()
+        self.ai: AiLogic = AiLogic()
 
         self.players: List[Player] = []
         self.dice_hand = DiceHand()

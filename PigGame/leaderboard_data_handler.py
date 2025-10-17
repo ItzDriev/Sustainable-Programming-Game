@@ -11,7 +11,7 @@ from PigGame.json_file_handler import JSONFileHandler
 from PigGame.player import Player
 
 
-class LeaderboardDataHandler(JSONFileHandler):
+class LeaderboardDataHandler(JSONFileHandler):  # noqa: H601
     """Handle writing leaderboard data to JSON file."""
 
     def __init__(self, file_path, dir_path):

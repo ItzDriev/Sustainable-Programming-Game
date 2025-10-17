@@ -11,7 +11,7 @@ from typing import Any, Dict
 from PigGame.json_file_handler import JSONFileHandler
 
 
-class UserDataHandler(JSONFileHandler):
+class UserDataHandler(JSONFileHandler):  # noqa: H601
     """Handles writing user data to JSON file."""
 
     def __init__(self, file_path, dir_path):

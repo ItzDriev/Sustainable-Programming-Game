@@ -6,10 +6,10 @@
         "total_turns": 29
     },
     "1": {
-        "wins": 89,
-        "games_played": 116,
-        "ppt": 6.28582,
-        "total_turns": 126
+        "wins": 103,
+        "games_played": 141,
+        "ppt": 6.356736503496504,
+        "total_turns": 143
     },
     "2": {
         "wins": 2,
@@ -28,5 +28,29 @@
         "games_played": 0,
         "ppt": 10.0,
         "total_turns": 1
+    },
+    "5": {
+        "wins": 1,
+        "games_played": 1,
+        "ppt": 6.0,
+        "total_turns": 1
+    },
+    "6": {
+        "wins": 0,
+        "games_played": 1,
+        "ppt": 0.0,
+        "total_turns": 1
+    },
+    "7": {
+        "wins": 0,
+        "games_played": 0,
+        "ppt": 0,
+        "total_turns": 0
+    },
+    "8": {
+        "wins": 0,
+        "games_played": 0,
+        "ppt": 0,
+        "total_turns": 0
     }
 }
