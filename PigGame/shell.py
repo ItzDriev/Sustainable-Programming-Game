@@ -67,9 +67,9 @@ class Shell(cmd.Cmd):
         players = []
         for _ in range(int(mode)):
             username = input("Enter username: ")
-            self.game.data_handler.user_data.add_user(username)
-            userid = self.game.data_handler.user_data.get_user_id(username)
-            self.game.data_handler.leaderboard_data.add_new_player(userid)
+            self.game.turn_manager.data_handler.user_data.add_user(username)
+            userid = self.game.turn_manager.data_handler.user_data.get_user_id(username)
+            self.game.turn_manager.data_handler.leaderboard_data.add_new_player(userid)
             if userid is None:
                 raise Exception("UserID Not Found!")
 
@@ -110,7 +110,7 @@ class Shell(cmd.Cmd):
         if len(name_info) != 2:
             return  # Arguments were incorrect
 
-        self.game.data_handler.user_data.update_username(name_info[0], name_info[1])
+        self.game.turn_manager.data_handler.user_data.update_username(name_info[0], name_info[1])
 
         print("You change your name lul xd")
 
@@ -174,4 +174,4 @@ class Shell(cmd.Cmd):
                     (ex. "leaderboard 50" shows Top 50)
         :type arg: :py:obj:`str`
         """
-        self.game.data_handler.print_leaderboard(arg)
+        self.game.turn_manager.data_handler.print_leaderboard(arg)
