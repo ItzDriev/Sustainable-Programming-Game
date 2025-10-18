@@ -107,12 +107,6 @@ class TestGameClass(unittest.TestCase):
         self.assertFalse(test_game.game_over)
         self.assertIsNone(test_game.players)
 
-    def test_game_status(self):
-        """Tests if the game_status monitors correctly."""
-        test_game = Game()
-        test_game.game_over = True
-        self.assertTrue(test_game.game_status)
-
 
 if __name__ == "__main__":
     unittest.main()

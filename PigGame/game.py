@@ -24,8 +24,6 @@ class Game:
         :param dir_path: Directory path, eg. './PigGame/GameData'.
         :type dir_path: :py:obj:`str`
         """
-        self.game_over = False
-
         self.ai: AiLogic = AiLogic()
 
         self.players: List[Player] = []
@@ -120,11 +118,3 @@ class Game:
                                               self.players,
                                               self.cheat_mode)
                 print("")
-
-    def game_status(self):
-        """Monitor if game is finished or not.
-
-        :return: The game status
-        :return type: :py:obj:`True` | :py:obj:`True`
-        """
-        return self.game_over

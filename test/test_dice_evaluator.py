@@ -7,7 +7,7 @@ import unittest
 from PigGame.utils.dice_evaluator import DiceEvaluator
 
 
-class TestDiceEvaluatorClass(unittest.TestCase):
+class TestDiceEvaluatorClass(unittest.TestCase):  # noqa: *
     """Test the class."""
 
     def test_rolled_one(self):
