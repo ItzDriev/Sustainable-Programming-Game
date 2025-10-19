@@ -9,9 +9,9 @@ You can read about the cmd module in the docs:
 """
 
 import cmd
-from PigGame.game import Game
-from PigGame.player import Player
-from PigGame.ai_logic import AiLogic
+from pig_game.game import Game
+from pig_game.player import Player
+from pig_game.ai_logic import AiLogic
 
 
 class Shell(cmd.Cmd): # noqa : H601

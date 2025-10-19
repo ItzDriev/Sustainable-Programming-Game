@@ -4,7 +4,7 @@
 """Unit testing."""
 
 import unittest
-from PigGame.utils.dice_evaluator import DiceEvaluator
+from pig_game.utils.dice_evaluator import DiceEvaluator
 
 
 class TestDiceEvaluatorClass(unittest.TestCase):  # noqa: *

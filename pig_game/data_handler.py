@@ -9,17 +9,17 @@ and updating user and leaderboard data in JSON format.
 """
 
 from pathlib import Path
-from PigGame.user_data_handler import UserDataHandler
-from PigGame.leaderboard_data_handler import LeaderboardDataHandler
+from pig_game.user_data_handler import UserDataHandler
+from pig_game.leaderboard_data_handler import LeaderboardDataHandler
 
 
 class DataHandler:  # pylint: disable=too-few-public-methods
     """Handles game's data."""
 
-    def __init__(self, dir_path="./PigGame/GameData"):
+    def __init__(self, dir_path="./pig_game/GameData"):
         """Initialize the object.
 
-        :param dir_path: Directory path, eg. './PigGame/GameData'.
+        :param dir_path: Directory path, eg. './pig_game/GameData'.
         :type dir_path: :py:obj:`str`
         """
         self.__dir_path = Path(dir_path)

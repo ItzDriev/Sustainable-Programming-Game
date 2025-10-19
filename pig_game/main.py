@@ -16,7 +16,7 @@ including points acquired from previous turns.
 🐷 Play carefully, and don't be a PIG! 🐷  ⚀
 """
 
-from PigGame.shell import Shell
+from pig_game.shell import Shell
 
 
 def main():
