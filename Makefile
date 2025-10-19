@@ -119,16 +119,17 @@ pdoc:
 pyreverse:
 	@$(call MESSAGE,$@)
 	install -d doc/pyreverse
-	pyreverse pig_game/*.py
-	dot -Tpng classes.dot -o doc/pyreverse/classes.png
-	dot -Tpng packages.dot -o doc/pyreverse/packages.png
-	rm -f classes.dot packages.dot
+	pyreverse -o dot -p pig_game pig_game
+	dot -Tpng classes_pig_game.dot -o doc/pyreverse/classes.png
+	dot -Tpng packages_pig_game.dot -o doc/pyreverse/packages.png
+	rm -f classes_pig_game.dot packages_pig_game.dot
+	cp doc/pyreverse/classes.png docs/source
 
 sphinx:
 	@$(call MESSAGE,$@)
-	rm -f docs/source/pig_game.rst
+	rm -f docs/source/pig_game*.rst
 	curl -L https://raw.githubusercontent.com/ItzDriev/Sustainable-Programming-Game/main/README.md -o docs/source/README.md
-	sphinx-apidoc -o docs/source pig_game
+	sphinx-apidoc -f -o docs/source ./pig_game --separate --no-toc --module-first
 	$(MAKE) -C docs html
 
 doc: pdoc pyreverse sphinx

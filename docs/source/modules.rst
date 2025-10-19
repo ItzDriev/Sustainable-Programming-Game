@@ -1,5 +1,5 @@
 pig_game
-=======
+========
 
 .. toctree::
    :maxdepth: 4

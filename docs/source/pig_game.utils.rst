@@ -1,37 +1,19 @@
 pig\_game.utils package
 =======================
 
-Submodules
-----------
-
-pig\_game.utils.dice\_evaluator module
---------------------------------------
-
-.. automodule:: pig_game.utils.dice_evaluator
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-pig\_game.utils.game\_ui module
--------------------------------
-
-.. automodule:: pig_game.utils.game_ui
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-pig\_game.utils.turn\_manager module
-------------------------------------
-
-.. automodule:: pig_game.utils.turn_manager
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
-Module contents
----------------
-
 .. automodule:: pig_game.utils
    :members:
    :show-inheritance:
    :undoc-members:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pig_game.utils.data_handler
+   pig_game.utils.dice_evaluator
+   pig_game.utils.json_file_handler
+   pig_game.utils.leaderboard_data_handler
+   pig_game.utils.user_data_handler
