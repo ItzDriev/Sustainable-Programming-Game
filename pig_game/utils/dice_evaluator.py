@@ -1,7 +1,7 @@
 """Dice Evaluator module."""
 
 
-class DiceEvaluator():  # noqa: H601
+class DiceEvaluator:  # noqa: H601
     """Evaluates dice."""
 
     @staticmethod

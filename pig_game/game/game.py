@@ -16,7 +16,7 @@ class Game:
     """Represents the game object."""
 
     cheat_mode = False
-    dice_emoji = '\u2680\u2681\u2682\u2683\u2684\u2685'
+    dice_emoji = "\u2680\u2681\u2682\u2683\u2684\u2685"
 
     def __init__(self, dir_path="./pig_game/GameData"):
         """Initialize the game object, player and npc resources.
@@ -77,44 +77,48 @@ class Game:
                 case 1:
                     while not self.game_over:
                         print("")
-                        self.turn_manager.npc_turn(self.ai,
-                                                   self.dice_hand,
-                                                   self.players,
-                                                   self.target_points)
+                        self.turn_manager.npc_turn(
+                            self.ai, self.dice_hand, self.players, self.target_points
+                        )
                         if self.game_over:
                             break
                         print("")
-                        self.turn_manager.player_turn(self.players[0],
-                                                      self.dice_hand,
-                                                      self.ai,
-                                                      self.target_points,
-                                                      self.players,
-                                                      self.cheat_mode)
+                        self.turn_manager.player_turn(
+                            self.players[0],
+                            self.dice_hand,
+                            self.ai,
+                            self.target_points,
+                            self.players,
+                            self.cheat_mode,
+                        )
                 case 2:
                     while not self.game_over:
                         print("")
-                        self.turn_manager.player_turn(self.players[0],
-                                                      self.dice_hand,
-                                                      self.ai,
-                                                      self.target_points,
-                                                      self.players,
-                                                      self.cheat_mode)
+                        self.turn_manager.player_turn(
+                            self.players[0],
+                            self.dice_hand,
+                            self.ai,
+                            self.target_points,
+                            self.players,
+                            self.cheat_mode,
+                        )
                         if self.game_over:
                             break
                         print("")
-                        self.turn_manager.npc_turn(self.ai,
-                                                   self.dice_hand,
-                                                   self.players,
-                                                   self.target_points)
+                        self.turn_manager.npc_turn(
+                            self.ai, self.dice_hand, self.players, self.target_points
+                        )
         else:
             current_user_index = random.randint(0, 1)
             while not self.game_over:
                 current_user_index = 1 if current_user_index == 0 else 0
                 print("")
-                self.turn_manager.player_turn(self.players[current_user_index],
-                                              self.dice_hand,
-                                              self.ai,
-                                              self.target_points,
-                                              self.players,
-                                              self.cheat_mode)
+                self.turn_manager.player_turn(
+                    self.players[current_user_index],
+                    self.dice_hand,
+                    self.ai,
+                    self.target_points,
+                    self.players,
+                    self.cheat_mode,
+                )
                 print("")
