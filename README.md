@@ -5,8 +5,8 @@ through interactive gameplay.
 
 # Installation
 
-See, <a href="https://itzdriev.github.io/Sustainable-Programming-Game/usage.html#installation">
-  <img style="text-align: center" alt="Static Badge" src="https://img.shields.io/badge/Installation-Link-blue">
+See, <a style="display: grid" href="https://itzdriev.github.io/Sustainable-Programming-Game/usage.html#installation">
+  <img style="align-self: center" alt="Static Badge" src="https://img.shields.io/badge/Installation-Link-blue">
 </a>
 
 # Documentation
