@@ -172,7 +172,7 @@ class Shell(cmd.Cmd): # noqa : H601
     def do_leaderboard(self, arg):
         """Show leaderboard.
 
-        :param arg: Argument for number of top players to display 
+        :param arg: Argument for number of top players to display
                     (ex. "leaderboard 50" shows Top 50)
         :type arg: :py:obj:`str`
         """
