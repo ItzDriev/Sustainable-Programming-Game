@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Module for ai rolling logic."""
-from pig_game.computer_difficulties import ComputerDifficulties
+from pig_game.game.computer_difficulties import ComputerDifficulties
 
 
 class Computer:

@@ -6,7 +6,7 @@
 
 import unittest
 import os
-from pig_game.json_file_handler import JSONFileHandler
+from pig_game.utils.json_file_handler import JSONFileHandler
 
 
 class TestJSONFileHandlerClass(unittest.TestCase):

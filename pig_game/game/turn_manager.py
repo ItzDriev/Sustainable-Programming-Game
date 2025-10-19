@@ -2,12 +2,12 @@
 
 from time import sleep
 from typing import List
-from pig_game.player import Player
-from pig_game.data_handler import DataHandler
-from pig_game.utils.game_ui import GameUI
-from pig_game.dice_hand import DiceHand
+from pig_game.game.player import Player
+from pig_game.utils.data_handler import DataHandler
+from pig_game.game.game_ui import GameUI
+from pig_game.game.dice_hand import DiceHand
 from pig_game.utils.dice_evaluator import DiceEvaluator
-from pig_game.computer import Computer
+from pig_game.game.computer import Computer
 
 
 class TurnManager():

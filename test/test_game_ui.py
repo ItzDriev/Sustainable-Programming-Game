@@ -2,7 +2,7 @@
 
 import unittest
 from unittest.mock import patch
-from pig_game.utils.game_ui import GameUI
+from pig_game.game.game_ui import GameUI
 
 
 class TestGameUIClass(unittest.TestCase):  # noqa: H601

@@ -6,7 +6,7 @@
 
 import unittest
 import os
-from pig_game.data_handler import DataHandler
+from pig_game.utils.data_handler import DataHandler
 
 
 class TestDataHandlerClass(unittest.TestCase):
