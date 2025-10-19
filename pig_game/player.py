@@ -4,7 +4,7 @@
 """Module for the Player object representing a player in the game."""
 
 
-class Player:
+class Player:  # noqa : H601
     """Represent a player in the game."""
 
     def __init__(self, username, user_id):
