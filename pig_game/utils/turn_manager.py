@@ -7,7 +7,7 @@ from pig_game.data_handler import DataHandler
 from pig_game.utils.game_ui import GameUI
 from pig_game.dice_hand import DiceHand
 from pig_game.utils.dice_evaluator import DiceEvaluator
-from pig_game.ai_logic import AiLogic
+from pig_game.computer import Computer
 
 
 class TurnManager():
@@ -28,7 +28,7 @@ class TurnManager():
     def player_turn(self,
                     player: Player,
                     dice_hand: DiceHand,
-                    ai: AiLogic,
+                    ai: Computer,
                     target_points,
                     players,
                     cheat_mode):
@@ -58,7 +58,7 @@ class TurnManager():
             print(turn_history)
 
             dice_hand.roll_dice()
-            ai.increment_turn_round_for_player()
+            ai.difficulties.increment_turn_round_for_player()
             dice_points = dice_hand.get_last_roll()
 
             self.game_ui.show_roll(player.get_username(), dice_points)
@@ -75,7 +75,7 @@ class TurnManager():
                           f" {target_points} points. "
                           f"{player.get_username()} wins! 🎉\n")
                     self.game.game_over = True
-                    ai.reset_turn_score()
+                    ai.difficulties.reset_turn_score()
                     self.data_handler.leaderboard_data.update_ppt_and_turns(player,
                                                                             turn_score)
                     self.data_handler.leaderboard_data.update_games_played(True, player)
@@ -104,7 +104,7 @@ class TurnManager():
 
             elif (not DiceEvaluator.rolled_two_ones(dice_hand.get_last_roll()[0],
                                                     dice_hand.get_last_roll()[1])):
-                ai.reset_turn_score()
+                ai.difficulties.reset_turn_score()
                 self.data_handler.leaderboard_data.update_ppt_and_turns(player, 0)
                 player.score -= turn_score
                 print(f"❌ Dang it! {player.get_username()} rolled 1."
@@ -120,7 +120,7 @@ class TurnManager():
                 break
 
     def npc_turn(self,
-                 ai: AiLogic,
+                 ai: Computer,
                  dice_hand: DiceHand,
                  players: List[Player],
                  target_points):
@@ -153,12 +153,12 @@ class TurnManager():
                 total_roll = sum(dice_hand.get_last_roll())
                 ai.score += (total_roll)
                 turn_score += (total_roll)
-                ai.increment_turn_score(total_roll)
+                ai.difficulties.increment_turn_score(total_roll)
 
                 if ai.score >= target_points:
                     print(f"🤖 Mr AI reached {target_points} points. Game over 🤖\n")
                     self.game.game_over = True
-                    ai.reset_turn_score()
+                    ai.difficulties.reset_turn_score()
                     self.data_handler.leaderboard_data.update_games_played(False,
                                                                            players[0])
                     break
@@ -169,7 +169,7 @@ class TurnManager():
 
             elif (not DiceEvaluator.rolled_two_ones(dice_hand.get_last_roll()[0],
                                                     dice_hand.get_last_roll()[1])):
-                ai.reset_turn_score()
+                ai.difficulties.reset_turn_score()
                 ai.score -= turn_score
                 print("❌ Mr AI rolled 1. His score will "
                       f"be reset down to {ai.score} ❌")

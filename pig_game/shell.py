@@ -11,7 +11,7 @@ You can read about the cmd module in the docs:
 import cmd
 from pig_game.game import Game
 from pig_game.player import Player
-from pig_game.ai_logic import AiLogic
+from pig_game.computer import Computer
 
 
 class Shell(cmd.Cmd): # noqa : H601
@@ -78,13 +78,13 @@ class Shell(cmd.Cmd): # noqa : H601
             print("Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. "
                   "Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. "
                   "Liam (Expert 😡)\n\n😈 --- Hardest --- 😈")
-            while AiLogic.difficulty < 1 or AiLogic.difficulty > 4:
+            while Computer.difficulty < 1 or Computer.difficulty > 4:
                 try:
-                    AiLogic.difficulty = (int(input("Select your difficulty: ")))
+                    Computer.difficulty = (int(input("Select your difficulty: ")))
                 except ValueError:
                     print("Must be an integer!")
         else:
-            AiLogic.difficulty = None
+            Computer.difficulty = None
 
         # Prompted to select 2 player mode or VS AI
         # Prompted to input name for player player 2 respectively
