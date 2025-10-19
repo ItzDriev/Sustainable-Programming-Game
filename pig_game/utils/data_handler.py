@@ -9,8 +9,8 @@ and updating user and leaderboard data in JSON format.
 """
 
 from pathlib import Path
-from pig_game.user_data_handler import UserDataHandler
-from pig_game.leaderboard_data_handler import LeaderboardDataHandler
+from pig_game.utils.user_data_handler import UserDataHandler
+from pig_game.utils.leaderboard_data_handler import LeaderboardDataHandler
 
 
 class DataHandler:  # pylint: disable=too-few-public-methods

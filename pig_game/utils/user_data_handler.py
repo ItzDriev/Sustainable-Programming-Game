@@ -8,7 +8,7 @@ Handles user data.
 """
 
 from typing import Any, Dict
-from pig_game.json_file_handler import JSONFileHandler
+from pig_game.utils.json_file_handler import JSONFileHandler
 
 
 class UserDataHandler(JSONFileHandler):  # noqa: H601

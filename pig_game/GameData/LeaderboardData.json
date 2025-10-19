@@ -6,10 +6,10 @@
         "total_turns": 29
     },
     "1": {
-        "wins": 118,
-        "games_played": 168,
-        "ppt": 6.524773580246913,
-        "total_turns": 162
+        "wins": 122,
+        "games_played": 175,
+        "ppt": 6.420197159763314,
+        "total_turns": 169
     },
     "2": {
         "wins": 2,
@@ -50,6 +50,12 @@
     "8": {
         "wins": 0,
         "games_played": 0,
+        "ppt": 0,
+        "total_turns": 0
+    },
+    "9": {
+        "wins": 0,
+        "games_played": 1,
         "ppt": 0,
         "total_turns": 0
     }

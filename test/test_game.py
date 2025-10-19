@@ -5,8 +5,8 @@
 
 import unittest
 import os
-from pig_game.game import Game
-from pig_game.player import Player
+from pig_game.game.game import Game
+from pig_game.game.player import Player
 
 
 class TestGameClass(unittest.TestCase):  # noqa : H601

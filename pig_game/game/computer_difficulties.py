@@ -1,101 +1,100 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Module for ai rolling logic."""
+"""ComputerDifficulties module."""
 
 
-class AiLogic:
-    """Handles how the AI thinks."""
+class ComputerDifficulties():
+    """Defines difficulty logics."""
 
-    difficulty = 0
-
-    def __init__(self):
+    def __init__(self, computer):
         """Declare variables."""
         self.__turn_score = 0
         self.first_start_hand = 0
-        self.__target = 0
         self.enemy_total_rolls_this_round = 0
         self.npc_total_rolls_this_round = 0
         self.if_under_then_hit_once_more = True
         self.first_time_rolling = 0
         self.round_end_number = 100
         self.near_end_buffer = 10
-        self.score: int = 0
+        self.computer = computer
 
-    def rasmus_ai_difficulty(self, player_score):
+    def easy_mode(self, player_score, computer_score):
         """Logic for difficulty 1 (Rasmus difficulty)."""
         if self.first_time_rolling > 0:
             self.first_time_rolling -= 1
             return True
-        if player_score > self.score:
+        if player_score > computer_score:
             if self.npc_total_rolls_this_round < self.enemy_total_rolls_this_round:
                 self.npc_total_rolls_this_round += 1
                 return True
             if self.if_under_then_hit_once_more:
                 self.if_under_then_hit_once_more = False
                 return True
-        if self.score > self.round_end_number - self.near_end_buffer:
+        if computer_score > self.round_end_number - self.near_end_buffer:
             return True
         self.reset_turn_score()
         return False
 
-    def johan_ai_difficulty(self, player_score):
+    def medium_mode(self, player_score, computer_score):
         """Logic for difficulty 2 (Johans difficulty)."""
         self.first_start_hand += 1
 
-        if self.score >= self.round_end_number - self.near_end_buffer:
+        target_points_for_turn = 0
+
+        if computer_score >= self.round_end_number - self.near_end_buffer:
             return True
 
         if self.first_start_hand == 1:
-            self.__target = 15
-            self.__target -= max(min(self.score // 25, 4), 0)
+            target_points_for_turn = 15
+            target_points_for_turn -= max(min(computer_score // 25, 4), 0)
 
-            diff = self.score - player_score
+            diff = computer_score - player_score
             if diff >= 20:
-                self.__target -= 3
+                target_points_for_turn -= 3
             elif diff <= -20:
-                self.__target += 5
+                target_points_for_turn += 5
 
-        if self.__turn_score < self.__target:
+        if self.__turn_score < target_points_for_turn:
             return True
         self.reset_turn_score()
         return False
 
-    def anton_ai_difficulty(self, player_score):
+    def hard_mode(self, player_score, computer_score):
         """Logic for difficulty 3 (Anton difficulty)."""
         self.first_start_hand += 1
 
-        diff = self.score - player_score
+        target_points_for_turn = 0
+
+        diff = computer_score - player_score
 
         if self.first_start_hand == 1:
-            self.__target = 16
-            self.__target -= max(min(self.score // 20, 4), 0)
+            target_points_for_turn = 16
+            target_points_for_turn -= max(min(computer_score // 20, 4), 0)
             # Comment just in case AI doesnt work properly
             # like this although I dont see a reason why it would break
             # diff=npc_score - player score used to be here,
             # moved it out of if statement
 
             if diff >= 20:
-                self.__target -= 4
+                target_points_for_turn -= 4
             elif diff <= -20:
-                self.__target += 6
+                target_points_for_turn += 6
 
-            if self.score >= self.round_end_number - self.near_end_buffer:
-                self.__target -= 2
+            if computer_score >= self.round_end_number - self.near_end_buffer:
+                target_points_for_turn -= 2
 
-            self.__target = max(6, min(self.__target, 22))
+            target_points_for_turn = max(6, min(target_points_for_turn, 22))
 
         push_buffer = 3 if diff < 0 else 0
 
-        if self.__turn_score < self.__target + push_buffer:
+        if self.__turn_score < target_points_for_turn + push_buffer:
             return True
 
         self.reset_turn_score()
         return False
 
-    def liam_ai_difficulty(self, player_score):
+    def extreme_mode(self, player_score, computer_score):
         """Logic for difficulty 4 (Liam difficulty)."""
-        needed = self.round_end_number - self.score
-        diff = self.score - player_score
+        needed = self.round_end_number - computer_score
+        diff = computer_score - player_score
 
         # safe (no 1s) = 25/36, mean safe gain ≈ 8
         # single 1 (turn bust) = 10/36  -> lose current turn score
@@ -113,7 +112,7 @@ class AiLogic:
         ev_next = (
             p_safe * safe_mean_gain
             - p_bust * self.__turn_score
-            - p_wipe * (self.__turn_score + self.score)
+            - p_wipe * (self.__turn_score + computer_score)
         )
 
         threshold = 0.02 * diff  # +0.4 at +20 lead, -0.4 at -20 behind
@@ -129,18 +128,6 @@ class AiLogic:
 
         self.reset_turn_score()
         return False
-
-    def should_roll(self, player_score):
-        """Dice which difficulty function that should be played."""
-        match AiLogic.difficulty:
-            case 1:
-                return self.rasmus_ai_difficulty(player_score)
-            case 2:
-                return self.johan_ai_difficulty(player_score)
-            case 3:
-                return self.anton_ai_difficulty(player_score)
-            case 4:
-                return self.liam_ai_difficulty(player_score)
 
     def reset_turn_score(self):
         """Reset all variables after AI played his turn."""

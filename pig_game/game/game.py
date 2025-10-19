@@ -6,10 +6,10 @@
 import random
 from time import sleep
 from typing import List
-from pig_game.dice_hand import DiceHand
-from pig_game.ai_logic import AiLogic
-from pig_game.player import Player
-from pig_game.utils.turn_manager import TurnManager
+from pig_game.game.dice_hand import DiceHand
+from pig_game.game.computer import Computer
+from pig_game.game.player import Player
+from pig_game.game.turn_manager import TurnManager
 
 
 class Game:
@@ -24,7 +24,7 @@ class Game:
         :param dir_path: Directory path, eg. './pig_game/GameData'.
         :type dir_path: :py:obj:`str`
         """
-        self.ai: AiLogic = AiLogic()
+        self.ai: Computer = Computer()
 
         self.players: List[Player] = []
         self.dice_hand = DiceHand()
@@ -68,7 +68,7 @@ class Game:
         self.reset_game()
 
         self.target_points = target_points
-        self.ai.round_end_number = target_points
+        self.ai.difficulties.round_end_number = target_points
         self.players = players
 
         # Decide who starts in a singleplayer game
