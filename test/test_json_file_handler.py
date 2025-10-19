@@ -6,7 +6,7 @@
 
 import unittest
 import os
-from PigGame.json_file_handler import JSONFileHandler
+from pig_game.json_file_handler import JSONFileHandler
 
 
 class TestJSONFileHandlerClass(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestJSONFileHandlerClass(unittest.TestCase):
 
     def test_init_default_object(self):
         """Instantiate an object and check its properties."""
-        self.test_dir = "./PigGame/TestGameData"
+        self.test_dir = "./pig_game/TestGameData"
         res = JSONFileHandler("", dir_path=self.test_dir)
         exp = JSONFileHandler
         self.assertIsInstance(res, exp)
@@ -24,7 +24,7 @@ class TestJSONFileHandlerClass(unittest.TestCase):
 
     def test_file_is_missing(self):
         """Test auto creation of data file."""
-        self.test_dir = "./PigGame/TestGameData"
+        self.test_dir = "./pig_game/TestGameData"
         json_file_handler = JSONFileHandler(self.test_dir+"/DoesntExist.json",
                                             dir_path=self.test_dir)
         res = json_file_handler.is_missing_or_empty()
@@ -37,7 +37,7 @@ class TestJSONFileHandlerClass(unittest.TestCase):
 
     def test_file_is_empty(self):
         """Test correcting content of empty file."""
-        self.test_dir = "./PigGame/TestGameData"
+        self.test_dir = "./pig_game/TestGameData"
         json_file_handler = JSONFileHandler(self.test_dir+"/DoesntExist.json",
                                             dir_path=self.test_dir)
         json_file_handler.write({})
@@ -51,7 +51,7 @@ class TestJSONFileHandlerClass(unittest.TestCase):
 
     def test_read(self):
         """Test correcting content of empty file."""
-        self.test_dir = "./PigGame/TestGameData"
+        self.test_dir = "./pig_game/TestGameData"
         json_file_handler = JSONFileHandler(self.test_dir+"/DoesntExist.json",
                                             dir_path=self.test_dir)
         json_file_handler.write({

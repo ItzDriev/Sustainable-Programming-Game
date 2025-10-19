@@ -6,10 +6,10 @@
 import random
 from time import sleep
 from typing import List
-from PigGame.dice_hand import DiceHand
-from PigGame.ai_logic import AiLogic
-from PigGame.player import Player
-from PigGame.utils.turn_manager import TurnManager
+from pig_game.dice_hand import DiceHand
+from pig_game.ai_logic import AiLogic
+from pig_game.player import Player
+from pig_game.utils.turn_manager import TurnManager
 
 
 class Game:
@@ -18,10 +18,10 @@ class Game:
     cheat_mode = False
     dice_emoji = '\u2680\u2681\u2682\u2683\u2684\u2685'
 
-    def __init__(self, dir_path="./PigGame/GameData"):
+    def __init__(self, dir_path="./pig_game/GameData"):
         """Initialize the game object, player and npc resources.
 
-        :param dir_path: Directory path, eg. './PigGame/GameData'.
+        :param dir_path: Directory path, eg. './pig_game/GameData'.
         :type dir_path: :py:obj:`str`
         """
         self.ai: AiLogic = AiLogic()

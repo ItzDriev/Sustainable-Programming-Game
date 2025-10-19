@@ -3,7 +3,7 @@
 
 """This module defines a hand in order to engage with a dice."""
 
-from PigGame.dice import Dice
+from pig_game.dice import Dice
 
 
 class DiceHand:

@@ -9,9 +9,9 @@ You can read about the cmd module in the docs:
 """
 
 import cmd
-from PigGame.game import Game
-from PigGame.player import Player
-from PigGame.ai_logic import AiLogic
+from pig_game.game import Game
+from pig_game.player import Player
+from pig_game.ai_logic import AiLogic
 
 
 class Shell(cmd.Cmd): # noqa : H601
@@ -47,7 +47,7 @@ class Shell(cmd.Cmd): # noqa : H601
         :param username: Input variable representing each player's username.
         :type username: :py:obj:`str`
 
-        :raises Exception: If a player UserID cannot be found in user data.
+        :raises LookupError: If a player UserID cannot be found in user data.
         """
         msg = "Game Started! Start off by rolling the dice!"
         while True:
@@ -71,7 +71,7 @@ class Shell(cmd.Cmd): # noqa : H601
             userid = self.game.turn_manager.data_handler.user_data.get_user_id(username)
             self.game.turn_manager.data_handler.leaderboard_data.add_new_player(userid)
             if userid is None:
-                raise Exception("UserID Not Found!")
+                raise LookupError("UserID Not Found!")
 
             players.append(Player(username, userid))
         if int(mode) == 1:
@@ -172,7 +172,7 @@ class Shell(cmd.Cmd): # noqa : H601
     def do_leaderboard(self, arg):
         """Show leaderboard.
 
-        :param arg: Argument for number of top players to display 
+        :param arg: Argument for number of top players to display
                     (ex. "leaderboard 50" shows Top 50)
         :type arg: :py:obj:`str`
         """

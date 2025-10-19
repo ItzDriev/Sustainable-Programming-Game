@@ -4,10 +4,10 @@ __pycache__
 htmlcov/
 *.pyc
 dice/doc
-PigGame/doc
+pig_game/doc
 build/
 coverage.xml
 dist/
 SigmaGame.spec
-PigGame/SigmaGame.spec
+pig_game/SigmaGame.spec
 *.puml

@@ -15,4 +15,4 @@ through interactive gameplay.
    :caption: Contents:
 
    usage
-   PigGame
+   pig_game

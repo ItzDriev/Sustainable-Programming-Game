@@ -2,12 +2,12 @@
 
 from time import sleep
 from typing import List
-from PigGame.player import Player
-from PigGame.data_handler import DataHandler
-from PigGame.utils.game_ui import GameUI
-from PigGame.dice_hand import DiceHand
-from PigGame.utils.dice_evaluator import DiceEvaluator
-from PigGame.ai_logic import AiLogic
+from pig_game.player import Player
+from pig_game.data_handler import DataHandler
+from pig_game.utils.game_ui import GameUI
+from pig_game.dice_hand import DiceHand
+from pig_game.utils.dice_evaluator import DiceEvaluator
+from pig_game.ai_logic import AiLogic
 
 
 class TurnManager():
@@ -16,7 +16,7 @@ class TurnManager():
     def __init__(self, dir_path, dice_emoji, game):
         """Inititializes needed instance variables.
 
-        :param dir_path: Directory path, eg. './PigGame/GameData'.
+        :param dir_path: Directory path, eg. './pig_game/GameData'.
         :type dir_path: :py:obj:`str`
         :param dice_emoji: String containing Unicode characters of dice.
         :type dice_emoji: :py:obj:`str`

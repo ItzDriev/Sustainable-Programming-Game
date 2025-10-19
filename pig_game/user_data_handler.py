@@ -8,7 +8,7 @@ Handles user data.
 """
 
 from typing import Any, Dict
-from PigGame.json_file_handler import JSONFileHandler
+from pig_game.json_file_handler import JSONFileHandler
 
 
 class UserDataHandler(JSONFileHandler):  # noqa: H601
@@ -19,7 +19,7 @@ class UserDataHandler(JSONFileHandler):  # noqa: H601
 
         :param file_path: File name, eg. '/file.json'.
         :type file_path: :py:obj:`str`
-        :param dir_path: Directory path, eg. './PigGame/GameData'.
+        :param dir_path: Directory path, eg. './pig_game/GameData'.
         :type dir_path: :py:obj:`str`
         """
         super().__init__(file_path, dir_path)

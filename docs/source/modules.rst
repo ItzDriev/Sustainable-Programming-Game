@@ -1,7 +1,7 @@
-PigGame
+pig_game
 =======
 
 .. toctree::
    :maxdepth: 4
 
-   PigGame
+   pig_game

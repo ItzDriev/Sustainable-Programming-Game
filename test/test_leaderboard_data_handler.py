@@ -10,8 +10,8 @@ from io import StringIO
 import contextlib
 from copy import deepcopy
 
-from PigGame.leaderboard_data_handler import LeaderboardDataHandler
-from PigGame.data_handler import DataHandler
+from pig_game.leaderboard_data_handler import LeaderboardDataHandler
+from pig_game.data_handler import DataHandler
 
 
 class DummyPlayer:

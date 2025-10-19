@@ -7,8 +7,8 @@ Module for handling LeaderboardData.
 Handles LeaderboardData.
 """
 
-from PigGame.json_file_handler import JSONFileHandler
-from PigGame.player import Player
+from pig_game.json_file_handler import JSONFileHandler
+from pig_game.player import Player
 
 
 class LeaderboardDataHandler(JSONFileHandler):  # noqa: H601

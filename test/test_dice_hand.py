@@ -4,7 +4,7 @@
 """Unit testing."""
 
 import unittest
-from PigGame.dice_hand import DiceHand
+from pig_game.dice_hand import DiceHand
 
 
 class TestDiceHandClass(unittest.TestCase):
