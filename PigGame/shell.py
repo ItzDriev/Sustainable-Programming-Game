@@ -47,7 +47,7 @@ class Shell(cmd.Cmd): # noqa : H601
         :param username: Input variable representing each player's username.
         :type username: :py:obj:`str`
 
-        :raises Exception: If a player UserID cannot be found in user data.
+        :raises LookupError: If a player UserID cannot be found in user data.
         """
         msg = "Game Started! Start off by rolling the dice!"
         while True:
@@ -71,7 +71,7 @@ class Shell(cmd.Cmd): # noqa : H601
             userid = self.game.turn_manager.data_handler.user_data.get_user_id(username)
             self.game.turn_manager.data_handler.leaderboard_data.add_new_player(userid)
             if userid is None:
-                raise Exception("UserID Not Found!")
+                raise LookupError("UserID Not Found!")
 
             players.append(Player(username, userid))
         if int(mode) == 1:
