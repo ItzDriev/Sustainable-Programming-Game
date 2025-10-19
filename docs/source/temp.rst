@@ -24,7 +24,7 @@ UML diagram for :py:mod:`pig_game.game`:
                   margin: .3rem 0 .3rem 0;
                   justify-self: center
                   "
-                  href="./_images/classes.png" class="uml-button">OPEN DIAGRAM</button>
+                  onclick="window.open('./_images/classes.png', '_blank')">OPEN DIAGRAM</button>
    </div>
 
 
