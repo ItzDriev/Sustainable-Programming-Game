@@ -135,7 +135,6 @@ pyreverse:
 
 sphinx:
 	@$(call MESSAGE,$@)
-	coverage-html
 	install -d doc/api
 	rm -f doc/api/pig_game*.rst
 	curl -L https://raw.githubusercontent.com/ItzDriev/Sustainable-Programming-Game/main/README.md -o doc/api/README.md
