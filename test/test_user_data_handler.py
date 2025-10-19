@@ -15,7 +15,7 @@ class TestUserDataHandlerClass(unittest.TestCase):
     def test_init_default_object(self):
         """Instantiate an object and check its properties."""
         self.test_dir = "./pig_game/TestGameData"
-        res = UserDataHandler(self.test_dir+"/UserData.json", dir_path=self.test_dir)
+        res = UserDataHandler(self.test_dir + "/UserData.json", dir_path=self.test_dir)
         exp = UserDataHandler
         self.assertIsInstance(res, exp)
 
@@ -25,15 +25,11 @@ class TestUserDataHandlerClass(unittest.TestCase):
     def test_get_user_id(self):
         """Test auto creation of data file."""
         self.test_dir = "./pig_game/TestGameData"
-        self.user_data = UserDataHandler(self.test_dir+"/UserData.json",
-                                         dir_path=self.test_dir)
+        self.user_data = UserDataHandler(
+            self.test_dir + "/UserData.json", dir_path=self.test_dir
+        )
 
-        self.user_data.write({
-            "55": {
-                "user_id": 55,
-                "username": "Test"
-            }
-        })
+        self.user_data.write({"55": {"user_id": 55, "username": "Test"}})
 
         res = self.user_data.get_user_id("Test")
         exp = 55
@@ -44,58 +40,51 @@ class TestUserDataHandlerClass(unittest.TestCase):
         self.assertEqual(res_not_existing, exp1)
 
         # Cleanup directory
-        os.remove(self.test_dir+"/UserData.json")
+        os.remove(self.test_dir + "/UserData.json")
         os.rmdir(self.test_dir)
 
     def test_add_user(self):
         """Test auto creation of data file."""
         self.test_dir = "./pig_game/TestGameData"
-        self.user_data = UserDataHandler(self.test_dir+"/UserData.json",
-                                         dir_path=self.test_dir)
+        self.user_data = UserDataHandler(
+            self.test_dir + "/UserData.json", dir_path=self.test_dir
+        )
 
         self.user_data.add_user("Test0")
 
         res = self.user_data.read()
-        exp = {
-            "0": {
-                "user_id": 0,
-                "username": "Test0"
-            }
-        }
+        exp = {"0": {"user_id": 0, "username": "Test0"}}
         self.assertDictEqual(res, exp)
 
         # Cleanup directory
-        os.remove(self.test_dir+"/UserData.json")
+        os.remove(self.test_dir + "/UserData.json")
         os.rmdir(self.test_dir)
 
     def test_update_username(self):
         """Test auto creation of data file."""
         self.test_dir = "./pig_game/TestGameData"
-        self.user_data = UserDataHandler(self.test_dir+"/UserData.json",
-                                         dir_path=self.test_dir)
+        self.user_data = UserDataHandler(
+            self.test_dir + "/UserData.json", dir_path=self.test_dir
+        )
 
         self.user_data.add_user("Test0")
         self.user_data.update_username("Test0", "Test0NewUsername")
 
         res = self.user_data.read()
-        exp = {
-            "0": {
-                "user_id": 0,
-                "username": "Test0NewUsername"
-            }
-        }
+        exp = {"0": {"user_id": 0, "username": "Test0NewUsername"}}
         self.assertDictEqual(res, exp)
         self.assertFalse(self.user_data.add_user("Test0NewUsername"))
 
         # Cleanup directory
-        os.remove(self.test_dir+"/UserData.json")
+        os.remove(self.test_dir + "/UserData.json")
         os.rmdir(self.test_dir)
 
     def test_update_username_taken(self):
         """Test auto creation of data file."""
         self.test_dir = "./pig_game/TestGameData"
-        self.user_data = UserDataHandler(self.test_dir+"/UserData.json",
-                                         dir_path=self.test_dir)
+        self.user_data = UserDataHandler(
+            self.test_dir + "/UserData.json", dir_path=self.test_dir
+        )
 
         self.user_data.add_user("Test0")
         self.user_data.add_user("Test1")
@@ -103,20 +92,14 @@ class TestUserDataHandlerClass(unittest.TestCase):
 
         res = self.user_data.read()
         exp = {
-            "0": {
-                "user_id": 0,
-                "username": "Test0"
-            },
-            "1": {
-                "user_id": 1,
-                "username": "Test1"
-            }
+            "0": {"user_id": 0, "username": "Test0"},
+            "1": {"user_id": 1, "username": "Test1"},
         }
         self.assertDictEqual(res, exp)
         self.assertFalse(self.user_data.update_username(99, "UserDontExist"))
 
         # Cleanup directory
-        os.remove(self.test_dir+"/UserData.json")
+        os.remove(self.test_dir + "/UserData.json")
         os.rmdir(self.test_dir)
 
 

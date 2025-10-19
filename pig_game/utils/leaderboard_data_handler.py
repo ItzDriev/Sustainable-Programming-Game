@@ -29,9 +29,9 @@ class LeaderboardDataHandler(JSONFileHandler):  # noqa: H601
 
         data = self.read()
         data[uid]["total_turns"] += 1
-        data[uid]["ppt"] = (data[uid]["ppt"]
-                            * (data[uid]["total_turns"]-1)
-                            + value)/data[uid]["total_turns"]
+        data[uid]["ppt"] = (
+            data[uid]["ppt"] * (data[uid]["total_turns"] - 1) + value
+        ) / data[uid]["total_turns"]
         self.write(data)
 
     def update_games_played(self, player_won, player: Player):

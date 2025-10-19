@@ -10,7 +10,7 @@ from pig_game.utils.dice_evaluator import DiceEvaluator
 from pig_game.game.computer import Computer
 
 
-class TurnManager():
+class TurnManager:
     """Represents a manager handling turns during a game."""
 
     def __init__(self, dir_path, dice_emoji, game):
@@ -25,13 +25,15 @@ class TurnManager():
         self.game_ui = GameUI(dice_emoji)
         self.game = game
 
-    def player_turn(self,
-                    player: Player,
-                    dice_hand: DiceHand,
-                    ai: Computer,
-                    target_points,
-                    players,
-                    cheat_mode):
+    def player_turn(
+        self,
+        player: Player,
+        dice_hand: DiceHand,
+        ai: Computer,
+        target_points,
+        players,
+        cheat_mode,
+    ):
         """Player(s) takes turn rolling dice.
 
         :param player: Current player rolling.
@@ -50,8 +52,9 @@ class TurnManager():
         if cheat_mode:
             player.score += target_points
         turn_score = 0
-        turn_history = ("🐷----------Turn History For:" +
-                        f"{player.get_username()}----------🐷\n")
+        turn_history = (
+            "🐷----------Turn History For:" + f"{player.get_username()}----------🐷\n"
+        )
 
         while True:
             self.game_ui.clear_terminal()
@@ -64,66 +67,80 @@ class TurnManager():
             self.game_ui.show_roll(player.get_username(), dice_points)
 
             # Evaluate if any roll is 1
-            if (not DiceEvaluator.rolled_one(dice_points[0],
-                                             dice_points[1])):
+            if not DiceEvaluator.rolled_one(dice_points[0], dice_points[1]):
 
                 total_points = sum(dice_points)
-                player.score += (total_points)
-                turn_score += (total_points)
+                player.score += total_points
+                turn_score += total_points
                 if player.score >= target_points:
-                    print(f"🎉 {player.get_username()} reached"
-                          f" {target_points} points. "
-                          f"{player.get_username()} wins! 🎉\n")
+                    print(
+                        f"🎉 {player.get_username()} reached"
+                        f" {target_points} points. "
+                        f"{player.get_username()} wins! 🎉\n"
+                    )
                     self.game.game_over = True
                     ai.difficulties.reset_turn_score()
-                    self.data_handler.leaderboard_data.update_ppt_and_turns(player,
-                                                                            turn_score)
+                    self.data_handler.leaderboard_data.update_ppt_and_turns(
+                        player, turn_score
+                    )
                     self.data_handler.leaderboard_data.update_games_played(True, player)
 
                     for p in players:
                         if p != player:
-                            (self.data_handler.leaderboard_data.
-                             update_games_played(False, p))
+                            (
+                                self.data_handler.leaderboard_data.update_games_played(
+                                    False, p
+                                )
+                            )
                     break
 
-                option = self.game_ui.prompt_next_action(player.get_username(),
-                                                         player.score)
+                option = self.game_ui.prompt_next_action(
+                    player.get_username(), player.score
+                )
 
-                turn_history += (f"Rolled: {dice_hand.get_last_roll()[0]}" +
-                                 f" and {dice_hand.get_last_roll()[1]}\n")
+                turn_history += (
+                    f"Rolled: {dice_hand.get_last_roll()[0]}"
+                    + f" and {dice_hand.get_last_roll()[1]}\n"
+                )
                 match option:
                     case "y":
                         continue
                     case "n":
-                        (self.data_handler.leaderboard_data.
-                         update_ppt_and_turns(player, turn_score))
+                        (
+                            self.data_handler.leaderboard_data.update_ppt_and_turns(
+                                player, turn_score
+                            )
+                        )
                         break
                     case "quit":
                         self.game.quit_game(player)  # Prompts quit message
                         break  # Breaks loop and returns to start()
 
-            elif (not DiceEvaluator.rolled_two_ones(dice_hand.get_last_roll()[0],
-                                                    dice_hand.get_last_roll()[1])):
+            elif not DiceEvaluator.rolled_two_ones(
+                dice_hand.get_last_roll()[0], dice_hand.get_last_roll()[1]
+            ):
                 ai.difficulties.reset_turn_score()
                 self.data_handler.leaderboard_data.update_ppt_and_turns(player, 0)
                 player.score -= turn_score
-                print(f"❌ Dang it! {player.get_username()} rolled 1."
-                      f"Score will be reset down to {player.score} ❌")
+                print(
+                    f"❌ Dang it! {player.get_username()} rolled 1."
+                    f"Score will be reset down to {player.score} ❌"
+                )
                 sleep(2.5)
                 break
             else:
                 player.score = 0
                 self.data_handler.leaderboard_data.update_ppt_and_turns(player, 0)
-                print(f"❌ Oh noooooo! {player.get_username()} rolled two 1's. "
-                      f"Score will be reset down to {player.score} ❌")
+                print(
+                    f"❌ Oh noooooo! {player.get_username()} rolled two 1's. "
+                    f"Score will be reset down to {player.score} ❌"
+                )
                 sleep(2.5)
                 break
 
-    def npc_turn(self,
-                 ai: Computer,
-                 dice_hand: DiceHand,
-                 players: List[Player],
-                 target_points):
+    def npc_turn(
+        self, ai: Computer, dice_hand: DiceHand, players: List[Player], target_points
+    ):
         """Npc takes turn, sends result to the intelligence class.
 
         :param ai: Ai, computer, the player is playing against.
@@ -148,36 +165,45 @@ class TurnManager():
             else:
                 break
 
-            if not DiceEvaluator.rolled_one(dice_hand.get_last_roll()[0],
-                                            dice_hand.get_last_roll()[1]):
+            if not DiceEvaluator.rolled_one(
+                dice_hand.get_last_roll()[0], dice_hand.get_last_roll()[1]
+            ):
                 total_roll = sum(dice_hand.get_last_roll())
-                ai.score += (total_roll)
-                turn_score += (total_roll)
+                ai.score += total_roll
+                turn_score += total_roll
                 ai.difficulties.increment_turn_score(total_roll)
 
                 if ai.score >= target_points:
                     print(f"🤖 Mr AI reached {target_points} points. Game over 🤖\n")
                     self.game.game_over = True
                     ai.difficulties.reset_turn_score()
-                    self.data_handler.leaderboard_data.update_games_played(False,
-                                                                           players[0])
+                    self.data_handler.leaderboard_data.update_games_played(
+                        False, players[0]
+                    )
                     break
                 print(f"Mr AI's total score: {ai.score}")
-                turn_history += (f"Rolled: {dice_hand.get_last_roll()[0]}" +
-                                 f" and {dice_hand.get_last_roll()[1]}\n")
+                turn_history += (
+                    f"Rolled: {dice_hand.get_last_roll()[0]}"
+                    + f" and {dice_hand.get_last_roll()[1]}\n"
+                )
                 sleep(1)
 
-            elif (not DiceEvaluator.rolled_two_ones(dice_hand.get_last_roll()[0],
-                                                    dice_hand.get_last_roll()[1])):
+            elif not DiceEvaluator.rolled_two_ones(
+                dice_hand.get_last_roll()[0], dice_hand.get_last_roll()[1]
+            ):
                 ai.difficulties.reset_turn_score()
                 ai.score -= turn_score
-                print("❌ Mr AI rolled 1. His score will "
-                      f"be reset down to {ai.score} ❌")
+                print(
+                    "❌ Mr AI rolled 1. His score will "
+                    f"be reset down to {ai.score} ❌"
+                )
                 sleep(2.5)
                 break
             else:
                 ai.score = 0
-                print(f"❌ Oh noooooo! Mr. AI rolled two 1's. "
-                      f"Score will be reset down to {ai.score} ❌")
+                print(
+                    f"❌ Oh noooooo! Mr. AI rolled two 1's. "
+                    f"Score will be reset down to {ai.score} ❌"
+                )
                 sleep(2.5)
                 break

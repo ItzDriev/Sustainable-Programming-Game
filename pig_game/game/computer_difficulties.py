@@ -1,7 +1,7 @@
 """ComputerDifficulties module."""
 
 
-class ComputerDifficulties():
+class ComputerDifficulties:
     """Defines difficulty logics."""
 
     def __init__(self, computer):

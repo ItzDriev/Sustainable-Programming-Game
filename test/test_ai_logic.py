@@ -8,6 +8,8 @@ import unittest
 
 class test_ai_logic(unittest.TestCase):
     pass
+
+
 # 25-38 rasmus_ai_difficulty
 # 42-60 johan_ai_difficulty
 # 64-92 anton_ai_difficulty

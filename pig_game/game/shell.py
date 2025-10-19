@@ -14,11 +14,13 @@ from pig_game.game.player import Player
 from pig_game.game.computer import Computer
 
 
-class Shell(cmd.Cmd): # noqa : H601
+class Shell(cmd.Cmd):  # noqa : H601
     """Classes that handle most of the terminal's user inputs."""
 
-    intro = "Welcome to the PIG Game!. Type help or ? to list available commands." \
-            "\n\nTo start a game simply enter 'start'"
+    intro = (
+        "Welcome to the PIG Game!. Type help or ? to list available commands."
+        "\n\nTo start a game simply enter 'start'"
+    )
     prompt = "(🐷 Game): "
 
     def __init__(self):
@@ -51,8 +53,9 @@ class Shell(cmd.Cmd): # noqa : H601
         """
         msg = "Game Started! Start off by rolling the dice!"
         while True:
-            mode = input("Please enter amount of players! "
-                         "1 = Vs AI, 2 = 2 Player mode: ").strip()
+            mode = input(
+                "Please enter amount of players! " "1 = Vs AI, 2 = 2 Player mode: "
+            ).strip()
             if mode in ("1", "2"):
                 break
             print("Error please enter a valid amount of players (1 or 2)! 🐷")
@@ -75,12 +78,14 @@ class Shell(cmd.Cmd): # noqa : H601
 
             players.append(Player(username, userid))
         if int(mode) == 1:
-            print("Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. "
-                  "Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. "
-                  "Liam (Expert 😡)\n\n😈 --- Hardest --- 😈")
+            print(
+                "Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. "
+                "Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. "
+                "Liam (Expert 😡)\n\n😈 --- Hardest --- 😈"
+            )
             while Computer.difficulty < 1 or Computer.difficulty > 4:
                 try:
-                    Computer.difficulty = (int(input("Select your difficulty: ")))
+                    Computer.difficulty = int(input("Select your difficulty: "))
                 except ValueError:
                     print("Must be an integer!")
         else:
@@ -111,8 +116,9 @@ class Shell(cmd.Cmd): # noqa : H601
         if len(name_info) != 2:
             return  # Arguments were incorrect
 
-        self.game.turn_manager.data_handler.user_data.update_username(name_info[0],
-                                                                      name_info[1])
+        self.game.turn_manager.data_handler.user_data.update_username(
+            name_info[0], name_info[1]
+        )
 
         print("You change your name lul xd")
 

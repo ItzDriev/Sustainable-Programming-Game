@@ -1,7 +1,7 @@
 """GameUI module."""
 
 
-class GameUI():  # noqa: H601
+class GameUI:  # noqa: H601
     """Handles ui interaction during a game."""
 
     def __init__(self, emojis):
@@ -16,8 +16,10 @@ class GameUI():  # noqa: H601
         :param dice_values: List of dice values.
         :type dice_values: :py:obj:`list` [ :py:obj:`int` ]
         """
-        print(f"{player_name} rolled {dice_values[0]} and {dice_values[1]} "
-              f"{self.emojis[dice_values[0]-1]} {self.emojis[dice_values[1]-1]}")
+        print(
+            f"{player_name} rolled {dice_values[0]} and {dice_values[1]} "
+            f"{self.emojis[dice_values[0]-1]} {self.emojis[dice_values[1]-1]}"
+        )
 
     def prompt_next_action(self, username, score):
         """Promt player to choose next action.
@@ -27,9 +29,11 @@ class GameUI():  # noqa: H601
         :param score: Score of player.
         :type score: :py:obj:`int`
         """
-        return input(f"{username}'s " +
-                     f"Total score: {score}" +
-                     "\n\nContinue? 'y'/'n' or 'quit' to quit\n")
+        return input(
+            f"{username}'s "
+            + f"Total score: {score}"
+            + "\n\nContinue? 'y'/'n' or 'quit' to quit\n"
+        )
 
     def clear_terminal(self):
         """Clear the terminal."""
