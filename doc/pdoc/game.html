@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
 <title>game API documentation</title>
-<meta name="description" content="This module defines a game module in which the game is initialized from">
+<meta name="description" content="This module defines a game module in which the game is initialized from.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -36,7 +36,7 @@ el.replaceWith(d);
 <h1 class="title">Module <code>game</code></h1>
 </header>
 <section id="section-intro">
-<p>This module defines a game module in which the game is initialized from</p>
+<p>This module defines a game module in which the game is initialized from.</p>
 </section>
 <section>
 </section>
@@ -49,7 +49,7 @@ el.replaceWith(d);
 <dl>
 <dt id="game.Game"><code class="flex name class">
 <span>class <span class="ident">Game</span></span>
-<span>(</span><span>leaderboard=None, dir_path='./guess/GameData')</span>
+<span>(</span><span>dir_path='./pig_game/GameData')</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -57,476 +57,253 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Game:
-    &#34;&#34;&#34;Represents the game object&#34;&#34;&#34;
+    &#34;&#34;&#34;Represents the game object.&#34;&#34;&#34;
+
     cheat_mode = False
+    dice_emoji = &#39;\u2680\u2681\u2682\u2683\u2684\u2685&#39;
 
-    def __init__(self, leaderboard = None, dir_path=&#34;./guess/GameData&#34;):
-        &#34;&#34;&#34;Initialize the game object, player and npc resources&#34;&#34;&#34;
-        
-        self.data_handler = DataHandler(dir_path)
-        
-        self.ai = AiLogic()
-        self.npc_score = 0
-        self.npc_dice_hand = DiceHand()
+    def __init__(self, dir_path=&#34;./pig_game/GameData&#34;):
+        &#34;&#34;&#34;Initialize the game object, player and npc resources.
 
-        self.players = []
+        :param dir_path: Directory path, eg. &#39;./pig_game/GameData&#39;.
+        :type dir_path: :py:obj:`str`
+        &#34;&#34;&#34;
+        self.ai: Computer = Computer()
+
+        self.players: List[Player] = []
         self.dice_hand = DiceHand()
-        
+        self.turn_manager = TurnManager(dir_path, self.dice_emoji, self)
         self.game_over = False
-        
-    def npc_turn(self, difficulty):
-        
-        &#34;&#34;&#34;Npc takes turn, sends result to the intelligence class.&#34;&#34;&#34;
-        turn_score = 0
-        turn_history = &#34;🐷----------Turn History For: Computer-AI----------🐷\n&#34;
+        self.target_points = 100
 
-        while True:
-            for i in range(40):
-                print(&#34;&#34;)
-            print(turn_history)
-            player_score = self.players[0].score
-            
-            if self.ai.should_roll(self.npc_score, player_score, difficulty):
-                self.npc_dice_hand.roll_dice()
-                value = self.npc_dice_hand.get_last_roll()
-                print(f&#34;🤖 Mr AI rolled {self.npc_dice_hand.get_last_roll()[0]} and {self.npc_dice_hand.get_last_roll()[1]} {&#39;\u2680\u2681\u2682\u2683\u2684\u2685&#39;[value[0]-1]} {&#39;\u2680\u2681\u2682\u2683\u2684\u2685&#39;[value[1]-1]} !&#34;)
-            else:
-                break
+    def reset_game(self):
+        &#34;&#34;&#34;Ensure game is reset and has correct players when starting new game.&#34;&#34;&#34;
+        self.game_over = False
+        self.ai.score = 0
+        self.players = None
 
-            if not self.rolled_one(self.npc_dice_hand.get_last_roll()[0], self.npc_dice_hand.get_last_roll()[1]):
-                total_roll = sum(self.npc_dice_hand.get_last_roll())
-                self.npc_score += (total_roll)
-                turn_score += (total_roll) 
-                self.ai.increment_turn_score(total_roll)
+    def quit_game(self, player: Player):
+        &#34;&#34;&#34;Prompts quit message, returns to player_turn method.
 
-                if (self.npc_score &gt;= 100):
-                    print (&#34;🤖 Mr AI reached 100 points. Game over 🤖&#34;)
-                    self.game_over = True
-                    self.ai.reset_turn_score()
-                    break
+        :param player: Player quitting the game.
+        :type player: Player
+        &#34;&#34;&#34;
+        print(f&#34;\n😢 {player.get_username()}...Giving up already? 😢\n&#34;)
 
-                
-                print (f&#34;Mr AI&#39;s total score: {self.npc_score}&#34;)
-                turn_history+=f&#34;Rolled: {self.npc_dice_hand.get_last_roll()[0]} and {self.npc_dice_hand.get_last_roll()[1]}\n&#34;
-                sleep(1)
-                continue  # Placeholder for continue-logic
+        for y in range(11):
+            print(f&#34;\r⏳ Exiting to menu{&#39;.&#39; * y}&#34;, end=&#34;&#34;)
+            sleep(0.1)
+        print(&#34;\n&#34;)
+        self.game_over = True
 
-            elif(not self.rolled_two_ones(self.npc_dice_hand.get_last_roll()[0], self.npc_dice_hand.get_last_roll()[1])):
-                self.ai.reset_turn_score()
-                self.npc_score -= turn_score
-                print (f&#34;❌ Mr AI rolled 1. His score will be reset down to {self.npc_score} ❌&#34;)
-                sleep(2.5)
-                break
-            else:
-                self.npc_score = 0
-                print (f&#34;❌ Oh noooooo! Mr. AI rolled two 1&#39;s. Score will be reset down to {self.npc_score} ❌&#34;)
-                sleep(2.5)
-                break
+    def start(self, players, target_points, test_mode=False):
+        &#34;&#34;&#34;Decide which player starts first and keeps the game going.
 
-                  
-    def player_turn(self, player):
-        &#34;&#34;&#34;Player(s) takes turn rolling dice&#34;&#34;&#34;
-
-        if Game.cheat_mode:
-            player.score += 100
-
-        if self.game_over:
+        :param players: List of the current players of the game.
+        :type players: List[Player]
+        :param target_points: The ending amount of points for the game.
+        :type target_points: :py:obj:`int`
+        :param test_mode: Boolean indicating if game is started in test mode.
+        :type test_mode: :py:obj:`bool`
+        &#34;&#34;&#34;
+        if test_mode:
             return
-        
-        turn_score = 0
-        turn_history = f&#34;🐷----------Turn History For: {player.get_username()}----------🐷\n&#34;
 
-        while True: 
-            for i in range(40):
-                print(&#34;&#34;)
-            print(turn_history)
+        self.reset_game()
 
-            self.dice_hand.roll_dice()
-            self.ai.increment_turn_round_for_player()
-            value = self.dice_hand.get_last_roll()
-            print (f&#34;{player.get_username()} rolled {self.dice_hand.get_last_roll()[0]} and {self.dice_hand.get_last_roll()[1]} {&#39;\u2680\u2681\u2682\u2683\u2684\u2685&#39;[value[0]-1]} {&#39;\u2680\u2681\u2682\u2683\u2684\u2685&#39;[value[1]-1]} !&#34;)
-            
-            #Evaluate if any roll is 1
-            if (not self.rolled_one(self.dice_hand.get_last_roll()[0], self.dice_hand.get_last_roll()[1])):
-                total_roll = sum(self.dice_hand.get_last_roll())
-                player.score += (total_roll)
-                turn_score += (total_roll)
-                if  player.score &gt;= 100:
-                    print (f&#34;🎉 {player.get_username()} reached 100 points. {player.get_username()} wins! 🎉&#34;)
-                    self.game_over = True
-                    self.ai.reset_turn_score()
-                    break
-                
-                #Needs a quit method    
-                option = input (f&#34;{player.get_username()}&#39;s Total score: {player.score} \n\nContinue? &#39;y&#39;/&#39;n&#39; or &#39;quit&#39; to quit\n&#34;)
-                turn_history+=f&#34;Rolled: {self.dice_hand.get_last_roll()[0]} and {self.dice_hand.get_last_roll()[1]}\n&#34;
-                match option:
-                    case &#34;y&#34;:
-                        continue
-                    case &#34;n&#34;:
-                        break
-                    case &#34;quit&#34;:
-                        self.game_over = True # Temp Quit
-                    case &#34;q&#34;:
-                        self.game_over = True # Temp Quit
-            elif(not self.rolled_two_ones(self.dice_hand.get_last_roll()[0], self.dice_hand.get_last_roll()[1])):
-                self.ai.reset_turn_score()
-                player.score -= turn_score
-                print (f&#34;❌ Dang it! {player.get_username()} rolled 1. Score will be reset down to {player.score} ❌&#34;)
-                sleep(2.5)
-                break
-            else:
-                player.score = 0
-                print (f&#34;❌ Oh noooooo! {player.get_username()} rolled two 1&#39;s. Score will be reset down to {player.score} ❌&#34;)
-                sleep(2.5)
-                break
-    
-    def reset_game(self, players : Player):
-        &#34;&#34;&#34;Ensures game is reset and has correct players when starting new game&#34;&#34;&#34;
-        self.game_over = False
-        self.npc_score = 0
+        self.target_points = target_points
+        self.ai.difficulties.round_end_number = target_points
         self.players = players
-        
-        return
-                   
-    def start(self, players, difficulty, test_mode=False):
-        &#34;&#34;&#34;Decide which player starts first&#34;&#34;&#34;
-        
-        if (self.reset_game(players)):
-            who_starts = 0
 
-        if test_mode: 
-            return
-        
-        #Decide who starts in a singleplayer game 
-        if len(self.players) == 1: 
-            match random.randint(1,2):
-                case 1: 
-                    self.player_turn(self.players[0])
-                    who_starts = 1
-                case 2: 
-                    self.npc_turn(difficulty)
-                    who_starts = 2
-                    
-            match who_starts:
+        # Decide who starts in a singleplayer game
+        if len(self.players) == 1:
+            match random.randint(1, 2):
                 case 1:
                     while not self.game_over:
                         print(&#34;&#34;)
-                        self.npc_turn(difficulty)
+                        self.turn_manager.npc_turn(self.ai,
+                                                   self.dice_hand,
+                                                   self.players,
+                                                   self.target_points)
                         if self.game_over:
                             break
                         print(&#34;&#34;)
-                        self.player_turn(self.players[0])
+                        self.turn_manager.player_turn(self.players[0],
+                                                      self.dice_hand,
+                                                      self.ai,
+                                                      self.target_points,
+                                                      self.players,
+                                                      self.cheat_mode)
                 case 2:
                     while not self.game_over:
                         print(&#34;&#34;)
-                        self.player_turn(self.players[0])
+                        self.turn_manager.player_turn(self.players[0],
+                                                      self.dice_hand,
+                                                      self.ai,
+                                                      self.target_points,
+                                                      self.players,
+                                                      self.cheat_mode)
                         if self.game_over:
                             break
                         print(&#34;&#34;)
-                        self.npc_turn(difficulty)
-
-                
+                        self.turn_manager.npc_turn(self.ai,
+                                                   self.dice_hand,
+                                                   self.players,
+                                                   self.target_points)
         else:
-            match random.randint(1,2):
-                case 1: 
-                    self.player_turn(self.players[0])
-                    current_user_index = 0
-                case 2: 
-                    self.player_turn(self.players[1])
-                    current_user_index = 1
-
+            current_user_index = random.randint(0, 1)
             while not self.game_over:
-                if current_user_index == 0:
-                    current_user_index = 1
-                else:
-                    current_user_index = 0
+                current_user_index = 1 if current_user_index == 0 else 0
                 print(&#34;&#34;)
-                self.player_turn(self.players[current_user_index])
-                print(&#34;&#34;)
-
-    def rolled_one(self, value_one, value_two ):
-        &#34;&#34;&#34;Determine if player may continue or not&#34;&#34;&#34;
-        if value_one == 1 or value_two == 1:
-            return True
-        return False
-
-    def rolled_two_ones(self, value_one, value_two ):
-        &#34;&#34;&#34;Determine if player may continue or not&#34;&#34;&#34;
-        if value_one == 1 and value_two == 1:
-            return True
-        return False
-
-    def game_status(self):  
-        &#34;&#34;&#34;Monitor if game is finished or not&#34;&#34;&#34;
-        return self.game_over</code></pre>
+                self.turn_manager.player_turn(self.players[current_user_index],
+                                              self.dice_hand,
+                                              self.ai,
+                                              self.target_points,
+                                              self.players,
+                                              self.cheat_mode)
+                print(&#34;&#34;)</code></pre>
 </details>
-<div class="desc"><p>Represents the game object</p>
-<p>Initialize the game object, player and npc resources</p></div>
+<div class="desc"><p>Represents the game object.</p>
+<p>Initialize the game object, player and npc resources.</p>
+<p>:param dir_path: Directory path, eg. './pig_game/GameData'.
+:type dir_path: :py:obj:<code>str</code></p></div>
 <h3>Class variables</h3>
 <dl>
 <dt id="game.Game.cheat_mode"><code class="name">var <span class="ident">cheat_mode</span></code></dt>
 <dd>
 <div class="desc"><p>The type of the None singleton.</p></div>
 </dd>
+<dt id="game.Game.dice_emoji"><code class="name">var <span class="ident">dice_emoji</span></code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="game.Game.game_status"><code class="name flex">
-<span>def <span class="ident">game_status</span></span>(<span>self)</span>
+<dt id="game.Game.quit_game"><code class="name flex">
+<span>def <span class="ident">quit_game</span></span>(<span>self, player: pig_game.game.player.Player)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def game_status(self):  
-    &#34;&#34;&#34;Monitor if game is finished or not&#34;&#34;&#34;
-    return self.game_over</code></pre>
+<pre><code class="python">def quit_game(self, player: Player):
+    &#34;&#34;&#34;Prompts quit message, returns to player_turn method.
+
+    :param player: Player quitting the game.
+    :type player: Player
+    &#34;&#34;&#34;
+    print(f&#34;\n😢 {player.get_username()}...Giving up already? 😢\n&#34;)
+
+    for y in range(11):
+        print(f&#34;\r⏳ Exiting to menu{&#39;.&#39; * y}&#34;, end=&#34;&#34;)
+        sleep(0.1)
+    print(&#34;\n&#34;)
+    self.game_over = True</code></pre>
 </details>
-<div class="desc"><p>Monitor if game is finished or not</p></div>
-</dd>
-<dt id="game.Game.npc_turn"><code class="name flex">
-<span>def <span class="ident">npc_turn</span></span>(<span>self, difficulty)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def npc_turn(self, difficulty):
-    
-    &#34;&#34;&#34;Npc takes turn, sends result to the intelligence class.&#34;&#34;&#34;
-    turn_score = 0
-    turn_history = &#34;🐷----------Turn History For: Computer-AI----------🐷\n&#34;
-
-    while True:
-        for i in range(40):
-            print(&#34;&#34;)
-        print(turn_history)
-        player_score = self.players[0].score
-        
-        if self.ai.should_roll(self.npc_score, player_score, difficulty):
-            self.npc_dice_hand.roll_dice()
-            value = self.npc_dice_hand.get_last_roll()
-            print(f&#34;🤖 Mr AI rolled {self.npc_dice_hand.get_last_roll()[0]} and {self.npc_dice_hand.get_last_roll()[1]} {&#39;\u2680\u2681\u2682\u2683\u2684\u2685&#39;[value[0]-1]} {&#39;\u2680\u2681\u2682\u2683\u2684\u2685&#39;[value[1]-1]} !&#34;)
-        else:
-            break
-
-        if not self.rolled_one(self.npc_dice_hand.get_last_roll()[0], self.npc_dice_hand.get_last_roll()[1]):
-            total_roll = sum(self.npc_dice_hand.get_last_roll())
-            self.npc_score += (total_roll)
-            turn_score += (total_roll) 
-            self.ai.increment_turn_score(total_roll)
-
-            if (self.npc_score &gt;= 100):
-                print (&#34;🤖 Mr AI reached 100 points. Game over 🤖&#34;)
-                self.game_over = True
-                self.ai.reset_turn_score()
-                break
-
-            
-            print (f&#34;Mr AI&#39;s total score: {self.npc_score}&#34;)
-            turn_history+=f&#34;Rolled: {self.npc_dice_hand.get_last_roll()[0]} and {self.npc_dice_hand.get_last_roll()[1]}\n&#34;
-            sleep(1)
-            continue  # Placeholder for continue-logic
-
-        elif(not self.rolled_two_ones(self.npc_dice_hand.get_last_roll()[0], self.npc_dice_hand.get_last_roll()[1])):
-            self.ai.reset_turn_score()
-            self.npc_score -= turn_score
-            print (f&#34;❌ Mr AI rolled 1. His score will be reset down to {self.npc_score} ❌&#34;)
-            sleep(2.5)
-            break
-        else:
-            self.npc_score = 0
-            print (f&#34;❌ Oh noooooo! Mr. AI rolled two 1&#39;s. Score will be reset down to {self.npc_score} ❌&#34;)
-            sleep(2.5)
-            break</code></pre>
-</details>
-<div class="desc"><p>Npc takes turn, sends result to the intelligence class.</p></div>
-</dd>
-<dt id="game.Game.player_turn"><code class="name flex">
-<span>def <span class="ident">player_turn</span></span>(<span>self, player)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def player_turn(self, player):
-    &#34;&#34;&#34;Player(s) takes turn rolling dice&#34;&#34;&#34;
-
-    if Game.cheat_mode:
-        player.score += 100
-
-    if self.game_over:
-        return
-    
-    turn_score = 0
-    turn_history = f&#34;🐷----------Turn History For: {player.get_username()}----------🐷\n&#34;
-
-    while True: 
-        for i in range(40):
-            print(&#34;&#34;)
-        print(turn_history)
-
-        self.dice_hand.roll_dice()
-        self.ai.increment_turn_round_for_player()
-        value = self.dice_hand.get_last_roll()
-        print (f&#34;{player.get_username()} rolled {self.dice_hand.get_last_roll()[0]} and {self.dice_hand.get_last_roll()[1]} {&#39;\u2680\u2681\u2682\u2683\u2684\u2685&#39;[value[0]-1]} {&#39;\u2680\u2681\u2682\u2683\u2684\u2685&#39;[value[1]-1]} !&#34;)
-        
-        #Evaluate if any roll is 1
-        if (not self.rolled_one(self.dice_hand.get_last_roll()[0], self.dice_hand.get_last_roll()[1])):
-            total_roll = sum(self.dice_hand.get_last_roll())
-            player.score += (total_roll)
-            turn_score += (total_roll)
-            if  player.score &gt;= 100:
-                print (f&#34;🎉 {player.get_username()} reached 100 points. {player.get_username()} wins! 🎉&#34;)
-                self.game_over = True
-                self.ai.reset_turn_score()
-                break
-            
-            #Needs a quit method    
-            option = input (f&#34;{player.get_username()}&#39;s Total score: {player.score} \n\nContinue? &#39;y&#39;/&#39;n&#39; or &#39;quit&#39; to quit\n&#34;)
-            turn_history+=f&#34;Rolled: {self.dice_hand.get_last_roll()[0]} and {self.dice_hand.get_last_roll()[1]}\n&#34;
-            match option:
-                case &#34;y&#34;:
-                    continue
-                case &#34;n&#34;:
-                    break
-                case &#34;quit&#34;:
-                    self.game_over = True # Temp Quit
-                case &#34;q&#34;:
-                    self.game_over = True # Temp Quit
-        elif(not self.rolled_two_ones(self.dice_hand.get_last_roll()[0], self.dice_hand.get_last_roll()[1])):
-            self.ai.reset_turn_score()
-            player.score -= turn_score
-            print (f&#34;❌ Dang it! {player.get_username()} rolled 1. Score will be reset down to {player.score} ❌&#34;)
-            sleep(2.5)
-            break
-        else:
-            player.score = 0
-            print (f&#34;❌ Oh noooooo! {player.get_username()} rolled two 1&#39;s. Score will be reset down to {player.score} ❌&#34;)
-            sleep(2.5)
-            break</code></pre>
-</details>
-<div class="desc"><p>Player(s) takes turn rolling dice</p></div>
+<div class="desc"><p>Prompts quit message, returns to player_turn method.</p>
+<p>:param player: Player quitting the game.
+:type player: Player</p></div>
 </dd>
 <dt id="game.Game.reset_game"><code class="name flex">
-<span>def <span class="ident">reset_game</span></span>(<span>self, players: guess.player.Player)</span>
+<span>def <span class="ident">reset_game</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def reset_game(self, players : Player):
-    &#34;&#34;&#34;Ensures game is reset and has correct players when starting new game&#34;&#34;&#34;
+<pre><code class="python">def reset_game(self):
+    &#34;&#34;&#34;Ensure game is reset and has correct players when starting new game.&#34;&#34;&#34;
     self.game_over = False
-    self.npc_score = 0
-    self.players = players
-    
-    return</code></pre>
+    self.ai.score = 0
+    self.players = None</code></pre>
 </details>
-<div class="desc"><p>Ensures game is reset and has correct players when starting new game</p></div>
-</dd>
-<dt id="game.Game.rolled_one"><code class="name flex">
-<span>def <span class="ident">rolled_one</span></span>(<span>self, value_one, value_two)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rolled_one(self, value_one, value_two ):
-    &#34;&#34;&#34;Determine if player may continue or not&#34;&#34;&#34;
-    if value_one == 1 or value_two == 1:
-        return True
-    return False</code></pre>
-</details>
-<div class="desc"><p>Determine if player may continue or not</p></div>
-</dd>
-<dt id="game.Game.rolled_two_ones"><code class="name flex">
-<span>def <span class="ident">rolled_two_ones</span></span>(<span>self, value_one, value_two)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def rolled_two_ones(self, value_one, value_two ):
-    &#34;&#34;&#34;Determine if player may continue or not&#34;&#34;&#34;
-    if value_one == 1 and value_two == 1:
-        return True
-    return False</code></pre>
-</details>
-<div class="desc"><p>Determine if player may continue or not</p></div>
+<div class="desc"><p>Ensure game is reset and has correct players when starting new game.</p></div>
 </dd>
 <dt id="game.Game.start"><code class="name flex">
-<span>def <span class="ident">start</span></span>(<span>self, players, difficulty, test_mode=False)</span>
+<span>def <span class="ident">start</span></span>(<span>self, players, target_points, test_mode=False)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def start(self, players, difficulty, test_mode=False):
-    &#34;&#34;&#34;Decide which player starts first&#34;&#34;&#34;
-    
-    if (self.reset_game(players)):
-        who_starts = 0
+<pre><code class="python">def start(self, players, target_points, test_mode=False):
+    &#34;&#34;&#34;Decide which player starts first and keeps the game going.
 
-    if test_mode: 
+    :param players: List of the current players of the game.
+    :type players: List[Player]
+    :param target_points: The ending amount of points for the game.
+    :type target_points: :py:obj:`int`
+    :param test_mode: Boolean indicating if game is started in test mode.
+    :type test_mode: :py:obj:`bool`
+    &#34;&#34;&#34;
+    if test_mode:
         return
-    
-    #Decide who starts in a singleplayer game 
-    if len(self.players) == 1: 
-        match random.randint(1,2):
-            case 1: 
-                self.player_turn(self.players[0])
-                who_starts = 1
-            case 2: 
-                self.npc_turn(difficulty)
-                who_starts = 2
-                
-        match who_starts:
+
+    self.reset_game()
+
+    self.target_points = target_points
+    self.ai.difficulties.round_end_number = target_points
+    self.players = players
+
+    # Decide who starts in a singleplayer game
+    if len(self.players) == 1:
+        match random.randint(1, 2):
             case 1:
                 while not self.game_over:
                     print(&#34;&#34;)
-                    self.npc_turn(difficulty)
+                    self.turn_manager.npc_turn(self.ai,
+                                               self.dice_hand,
+                                               self.players,
+                                               self.target_points)
                     if self.game_over:
                         break
                     print(&#34;&#34;)
-                    self.player_turn(self.players[0])
+                    self.turn_manager.player_turn(self.players[0],
+                                                  self.dice_hand,
+                                                  self.ai,
+                                                  self.target_points,
+                                                  self.players,
+                                                  self.cheat_mode)
             case 2:
                 while not self.game_over:
                     print(&#34;&#34;)
-                    self.player_turn(self.players[0])
+                    self.turn_manager.player_turn(self.players[0],
+                                                  self.dice_hand,
+                                                  self.ai,
+                                                  self.target_points,
+                                                  self.players,
+                                                  self.cheat_mode)
                     if self.game_over:
                         break
                     print(&#34;&#34;)
-                    self.npc_turn(difficulty)
-
-            
+                    self.turn_manager.npc_turn(self.ai,
+                                               self.dice_hand,
+                                               self.players,
+                                               self.target_points)
     else:
-        match random.randint(1,2):
-            case 1: 
-                self.player_turn(self.players[0])
-                current_user_index = 0
-            case 2: 
-                self.player_turn(self.players[1])
-                current_user_index = 1
-
+        current_user_index = random.randint(0, 1)
         while not self.game_over:
-            if current_user_index == 0:
-                current_user_index = 1
-            else:
-                current_user_index = 0
+            current_user_index = 1 if current_user_index == 0 else 0
             print(&#34;&#34;)
-            self.player_turn(self.players[current_user_index])
+            self.turn_manager.player_turn(self.players[current_user_index],
+                                          self.dice_hand,
+                                          self.ai,
+                                          self.target_points,
+                                          self.players,
+                                          self.cheat_mode)
             print(&#34;&#34;)</code></pre>
 </details>
-<div class="desc"><p>Decide which player starts first</p></div>
+<div class="desc"><p>Decide which player starts first and keeps the game going.</p>
+<p>:param players: List of the current players of the game.
+:type players: List[Player]
+:param target_points: The ending amount of points for the game.
+:type target_points: :py:obj:<code>int</code>
+:param test_mode: Boolean indicating if game is started in test mode.
+:type test_mode: :py:obj:<code>bool</code></p></div>
 </dd>
 </dl>
 </dd>
@@ -542,14 +319,11 @@ el.replaceWith(d);
 <ul>
 <li>
 <h4><code><a title="game.Game" href="#game.Game">Game</a></code></h4>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="game.Game.cheat_mode" href="#game.Game.cheat_mode">cheat_mode</a></code></li>
-<li><code><a title="game.Game.game_status" href="#game.Game.game_status">game_status</a></code></li>
-<li><code><a title="game.Game.npc_turn" href="#game.Game.npc_turn">npc_turn</a></code></li>
-<li><code><a title="game.Game.player_turn" href="#game.Game.player_turn">player_turn</a></code></li>
+<li><code><a title="game.Game.dice_emoji" href="#game.Game.dice_emoji">dice_emoji</a></code></li>
+<li><code><a title="game.Game.quit_game" href="#game.Game.quit_game">quit_game</a></code></li>
 <li><code><a title="game.Game.reset_game" href="#game.Game.reset_game">reset_game</a></code></li>
-<li><code><a title="game.Game.rolled_one" href="#game.Game.rolled_one">rolled_one</a></code></li>
-<li><code><a title="game.Game.rolled_two_ones" href="#game.Game.rolled_two_ones">rolled_two_ones</a></code></li>
 <li><code><a title="game.Game.start" href="#game.Game.start">start</a></code></li>
 </ul>
 </li>
