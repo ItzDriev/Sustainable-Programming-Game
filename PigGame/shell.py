@@ -14,7 +14,7 @@ from PigGame.player import Player
 from PigGame.ai_logic import AiLogic
 
 
-class Shell(cmd.Cmd):
+class Shell(cmd.Cmd): # noqa : H601
     """Classes that handle most of the terminal's user inputs."""
 
     intro = "Welcome to the PIG Game!. Type help or ? to list available commands." \
@@ -28,7 +28,7 @@ class Shell(cmd.Cmd):
         :type game: :py:obj:`Game`
         """
         super().__init__()
-        self.game = Game()  # Game is a singleton persistant during "program" lifespan
+        self.game = Game()
 
     def do_start(self, _):
         """Start the game and takes three additional inputs.
