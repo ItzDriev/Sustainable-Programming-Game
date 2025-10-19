@@ -91,8 +91,16 @@ unittest:
 coverage:
 	@$(call MESSAGE,$@)
 	coverage run -m unittest discover
-	coverage html
+	coverage html -d doc/coverage_report
 	coverage report -m
+
+coverage-html:
+	@$(call MESSAGE,$@)
+	install -d doc/api/build/html/coverage_report
+	coverage run -m unittest discover
+	coverage html -d doc/coverage_report
+	cp doc/coverage_report/*.* doc/api/build/html/coverage_report
+#	mv doc/api/build/html/coverage_report/index.html doc/api/build/html/coverage_report/cover_index.html
 
 coverage-xml:
 	@$(call MESSAGE,$@)
@@ -109,12 +117,12 @@ test: lint coverage
 pydoc:
 	@$(call MESSAGE,$@)
 	install -d doc/pydoc
-	$(PYTHON) -m pydoc -w pig_game/*.py
+	$(PYTHON) -m pydoc -w pig_game/game/*.py
 	mv *.html doc/pydoc
 
 pdoc:
 	@$(call MESSAGE,$@)
-	pdoc --force --html --output-dir doc/pdoc pig_game/*.py
+	pdoc --force --html --output-dir doc/pdoc pig_game/game/*.py
 
 pyreverse:
 	@$(call MESSAGE,$@)
@@ -123,14 +131,16 @@ pyreverse:
 	dot -Tpng classes_pig_game.dot -o doc/pyreverse/classes.png
 	dot -Tpng packages_pig_game.dot -o doc/pyreverse/packages.png
 	rm -f classes_pig_game.dot packages_pig_game.dot
-	cp doc/pyreverse/classes.png docs/source
+	cp doc/pyreverse/classes.png doc/api
 
 sphinx:
 	@$(call MESSAGE,$@)
-	rm -f docs/source/pig_game*.rst
-	curl -L https://raw.githubusercontent.com/ItzDriev/Sustainable-Programming-Game/main/README.md -o docs/source/README.md
-	sphinx-apidoc -f -o docs/source ./pig_game --separate --no-toc --module-first
-	$(MAKE) -C docs html
+	coverage-html
+	install -d doc/api
+	rm -f doc/api/pig_game*.rst
+	curl -L https://raw.githubusercontent.com/ItzDriev/Sustainable-Programming-Game/main/README.md -o doc/api/README.md
+	sphinx-apidoc -f -o doc/api ./pig_game --separate --no-toc --module-first
+	$(MAKE) -C doc html
 
 doc: pdoc pyreverse sphinx
 
