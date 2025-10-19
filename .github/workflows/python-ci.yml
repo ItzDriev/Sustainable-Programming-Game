@@ -62,6 +62,7 @@ jobs:
 
       - name: Build docs
         run: |
+          make pyreverse
           make sphinx
 
       - name: Upload docs artifact

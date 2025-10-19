@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run pig_game.main",
+            "name": "Run pig_game.game.main",
             "type": "debugpy",
             "request": "launch",
-            "module": "pig_game.main",
+            "module": "pig_game.game.main",
             "cwd": "${workspaceFolder}",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}"
