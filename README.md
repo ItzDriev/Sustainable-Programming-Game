@@ -50,13 +50,13 @@ sudo apt-get update && sudo apt-get install -y graphviz
 
 Also visit project documentation page for installation intructions.
 <a href="https://itzdriev.github.io/Sustainable-Programming-Game/usage.html#installation">
-<img style="vertical-align: middle" alt="Installation Badge" src="https://img.shields.io/badge/Installation-Link-blue">
+<img style="vertical-align: middle; align: middle" alt="Installation Badge" src="https://img.shields.io/badge/Installation-Link-blue">
 </a>
 
 # Documentation
 
 <a href="https://itzdriev.github.io/Sustainable-Programming-Game/">
-  <img style="vertical-align: middle" alt="Static Badge" src="https://img.shields.io/badge/Documenation-Link-blue">
+  <img style="vertical-align: middle; align: middle" alt="Static Badge" src="https://img.shields.io/badge/Documenation-Link-blue">
 </a>
 
 # Contributors
