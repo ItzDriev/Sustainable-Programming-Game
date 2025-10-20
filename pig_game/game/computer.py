@@ -15,7 +15,14 @@ class Computer:
         self.score: int = 0
 
     def should_roll(self, player_score):
-        """Dice which difficulty function that should be played."""
+        """Choose difficulty strategy and decide whether to roll.
+
+        :param player_score: The human player's total score.
+        :type player_score: :py:obj:`int`
+        :return: ``True`` to roll, ``False`` to bank, or ``None`` if difficulty is
+        unknown.
+        :rtype: :py:obj:`bool` | :py:obj:`NoneType`
+        """
         match Computer.difficulty:
             case 1:
                 return self.difficulties.easy_mode(player_score, self.score)

@@ -11,20 +11,38 @@ from pig_game.utils.json_file_handler import JSONFileHandler
 from pig_game.game.player import Player
 
 
-class LeaderboardDataHandler(JSONFileHandler):  # noqa: H601
-    """Handle writing leaderboard data to JSON file."""
+class LeaderboardDataHandler(JSONFileHandler):
+    """Handle reading/writing leaderboard data to a JSON file."""
 
     def __init__(self, file_path, dir_path):
-        """Handle leaderboard data to JSON file."""
+        """Initialize the handler.
+
+        :param file_path: Filename of the leaderboard JSON.
+        :type file_path: str
+        :param dir_path: Directory containing the JSON file.
+        :type dir_path: str
+        """
         super().__init__(file_path, dir_path)
 
     def get_highscore(self, user_id):
-        """Return highscore of player based on user_id."""
+        """Return the highscore for a user.
+
+        :param user_id: ID of the user.
+        :type user_id: int | str
+        :return: The user's highscore.
+        :rtype: int
+        """
         data = self.read()
         return data[str(user_id)]
 
     def update_ppt_and_turns(self, player: Player, value):
-        """Update points per turn and total turns for players."""
+        """Update points-per-turn (ppt) and total turns for a player.
+
+        :param player: Player whose stats to update.
+        :type player: Player
+        :param value: Points gained this turn.
+        :type value: int | float
+        """
         uid = str(player.get_user_id())
 
         data = self.read()
@@ -35,7 +53,13 @@ class LeaderboardDataHandler(JSONFileHandler):  # noqa: H601
         self.write(data)
 
     def update_games_played(self, player_won, player: Player):
-        """Update wins and games played for players."""
+        """Update wins and games played.
+
+        :param player_won: Whether the player won the game.
+        :type player_won: bool
+        :param player: Player whose record to update.
+        :type player: Player
+        """
         data = self.read()
         if player_won:
             data[str(player.get_user_id())]["wins"] += 1
@@ -45,7 +69,11 @@ class LeaderboardDataHandler(JSONFileHandler):  # noqa: H601
         self.write(data)
 
     def add_new_player(self, user_id):
-        """Create leaderboard data for user."""
+        """Add a new user to the leaderboard if missing.
+
+        :param user_id: ID of the user to add.
+        :type user_id: int | str
+        """
         data = dict(self.read())
         if any(keys == str(user_id) for keys in data.keys()):
             return

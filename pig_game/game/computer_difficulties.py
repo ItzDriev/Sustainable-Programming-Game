@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """ComputerDifficulties module."""
 
 
@@ -5,7 +7,11 @@ class ComputerDifficulties:
     """Defines difficulty logics."""
 
     def __init__(self, computer):
-        """Declare variables."""
+        """Initialize state.
+
+        :param computer: Owning computer instance.
+        :type computer: object
+        """
         self.__turn_score = 0
         self.first_start_hand = 0
         self.enemy_total_rolls_this_round = 0
@@ -17,7 +23,15 @@ class ComputerDifficulties:
         self.computer = computer
 
     def easy_mode(self, player_score, computer_score):
-        """Logic for difficulty 1 (Rasmus difficulty)."""
+        """Difficulty easy mode.
+
+        :param player_score: Player's total score.
+        :type player_score: int
+        :param computer_score: Computer's total score.
+        :type computer_score: int
+        :return: Whether to roll.
+        :rtype: bool
+        """
         if self.first_time_rolling > 0:
             self.first_time_rolling -= 1
             return True
@@ -34,7 +48,15 @@ class ComputerDifficulties:
         return False
 
     def medium_mode(self, player_score, computer_score):
-        """Logic for difficulty 2 (Johans difficulty)."""
+        """Difficulty medium mode.
+
+        :param player_score: Player's total score.
+        :type player_score: int
+        :param computer_score: Computer's total score.
+        :type computer_score: int
+        :return: Whether to roll.
+        :rtype: bool
+        """
         self.first_start_hand += 1
 
         target_points_for_turn = 0
@@ -58,7 +80,15 @@ class ComputerDifficulties:
         return False
 
     def hard_mode(self, player_score, computer_score):
-        """Logic for difficulty 3 (Anton difficulty)."""
+        """Difficulty hard_mode.
+
+        :param player_score: Player's total score.
+        :type player_score: int
+        :param computer_score: Computer's total score.
+        :type computer_score: int
+        :return: Whether to roll.
+        :rtype: bool
+        """
         self.first_start_hand += 1
 
         target_points_for_turn = 0
@@ -88,7 +118,15 @@ class ComputerDifficulties:
         return False
 
     def extreme_mode(self, player_score, computer_score):
-        """Logic for difficulty 4 (Liam difficulty)."""
+        """Difficulty extreme mode.
+
+        :param player_score: Player's total score.
+        :type player_score: int
+        :param computer_score: Computer's total score.
+        :type computer_score: int
+        :return: Whether to roll.
+        :rtype: bool
+        """
         needed = self.round_end_number - computer_score
         diff = computer_score - player_score
 
@@ -131,7 +169,11 @@ class ComputerDifficulties:
         self.first_time_rolling = 2
 
     def increment_turn_score(self, score):
-        """Increment score for current turn."""
+        """Increase the current turn score.
+
+        :param score: Amount to add.
+        :type score: int
+        """
         self.__turn_score += score
 
     def increment_turn_round_for_player(self):
