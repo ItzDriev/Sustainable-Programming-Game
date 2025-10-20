@@ -10,17 +10,21 @@ from pig_game.game.computer_difficulties import ComputerDifficulties
 class TestComputerDifficulties(unittest.TestCase):
     """Tests for the AI turn logic across all difficulty levels and helpers."""
 
+    def setUp(self):
+        """Set up a object."""
+        self.computer = object()
+
     # ---------- RASMUS (1) ----------
     def test_rasmus_first_time_rolling_triggers_true_and_decrements(self):
         """When `first_time_rolling` > 0, returns True and decrements it."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         ai.first_time_rolling = 2
         self.assertTrue(ai.easy_mode(computer_score=0, player_score=0))
         self.assertEqual(ai.first_time_rolling, 1)
 
     def test_rasmus_player_leads_and_npc_has_rolled_less(self):
         """If player leads, NPC rolls and increments its roll counter."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         ai.enemy_total_rolls_this_round = 2
         ai.npc_total_rolls_this_round = 0
         res = ai.easy_mode(computer_score=10, player_score=20)
@@ -29,7 +33,7 @@ class TestComputerDifficulties(unittest.TestCase):
 
     def test_rasmus_player_leads_once_more_flag(self):
         """If player leads and 'hit once more' flag is set, return True."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         ai.enemy_total_rolls_this_round = 1
         ai.npc_total_rolls_this_round = 1
         ai.if_under_then_hit_once_more = True
@@ -39,7 +43,7 @@ class TestComputerDifficulties(unittest.TestCase):
 
     def test_rasmus_endgame_push(self):
         """Near the end (npc close to target), always return True to push."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         res = ai.easy_mode(
             computer_score=ai.round_end_number - ai.near_end_buffer + 1,
             player_score=0,
@@ -48,7 +52,7 @@ class TestComputerDifficulties(unittest.TestCase):
 
     def test_rasmus_otherwise_resets_and_returns_false(self):
         """When no condition to roll is met, returns False and calls reset."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         ai.first_time_rolling = 0
         ai.if_under_then_hit_once_more = False
         ai.enemy_total_rolls_this_round = 0
@@ -63,7 +67,7 @@ class TestComputerDifficulties(unittest.TestCase):
     # ---------- JOHAN (2) ----------
     def test_johan_sets_target_on_first_call_and_rolls_until_target(self):
         """Sets target on first call, rolls until reaching it, then banks (False)."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         self.assertTrue(ai.medium_mode(computer_score=0, player_score=0))
         ai.increment_turn_score(15)
         self.assertFalse(ai.medium_mode(computer_score=0, player_score=0))
@@ -72,32 +76,44 @@ class TestComputerDifficulties(unittest.TestCase):
 
     def test_johan_target_adjusts_when_far_ahead(self):
         """With a large lead, target is reduced by -3 (and by computer_score//25)."""
-        ai = ComputerDifficulties()
-        ai.medium_mode(computer_score=50, player_score=20)
-        self.assertEqual(ai._ComputerDifficulties__target, 10)
+        expected_target = 10
+
+        ai = ComputerDifficulties(self.computer)
+        ai._ComputerDifficulties__turn_score = expected_target - 1
+        self.assertTrue(ai.medium_mode(computer_score=50, player_score=20))
+
+        ai = ComputerDifficulties(self.computer)
+        ai._ComputerDifficulties__turn_score = expected_target
+        self.assertFalse(ai.medium_mode(computer_score=50, player_score=20))
 
     def test_johan_target_adjusts_when_far_behind(self):
         """When far behind, target increases by +5."""
-        ai = ComputerDifficulties()
-        ai.medium_mode(computer_score=0, player_score=30)
-        self.assertEqual(ai._ComputerDifficulties__target, 20)
+        expected_target = 20
+
+        ai = ComputerDifficulties(self.computer)
+        ai._ComputerDifficulties__turn_score = expected_target - 1
+        self.assertTrue(ai.medium_mode(computer_score=0, player_score=30))
+
+        ai = ComputerDifficulties(self.computer)
+        ai._ComputerDifficulties__turn_score = expected_target
+        self.assertFalse(ai.medium_mode(computer_score=0, player_score=30))
 
     def test_johan_target_reduction_capped_at_4(self):
         """computer_score//25 reduction is capped at 4 (min(...,4) branch)."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         ai.round_end_number = 1000
         ai.medium_mode(computer_score=200, player_score=200)
 
     def test_johan_endgame_always_true(self):
         """When NPC is near end threshold, always chooses to roll."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         near = ai.round_end_number - ai.near_end_buffer
         self.assertTrue(ai.medium_mode(computer_score=near, player_score=0))
 
     # ---------- ANTON (3) ----------
     def test_anton_rolls_until_target_then_banks(self):
         """Computes target on first call, rolls until target, then banks."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         self.assertTrue(ai.hard_mode(computer_score=0, player_score=0))
         ai.increment_turn_score(16)
         self.assertFalse(ai.hard_mode(computer_score=0, player_score=0))
@@ -106,36 +122,55 @@ class TestComputerDifficulties(unittest.TestCase):
 
     def test_anton_target_lead_near_end_and_clamp(self):
         """Big lead & near end -> reduced and clamped to >= 6."""
-        ai = ComputerDifficulties()
-        ai.hard_mode(computer_score=95, player_score=70)
-        self.assertEqual(ai._ComputerDifficulties__target, 6)
+        expected_target = 6
+
+        ai = ComputerDifficulties(self.computer)
+        ai._ComputerDifficulties__turn_score = expected_target - 1
+        self.assertTrue(ai.hard_mode(computer_score=95, player_score=70))
+
+        ai = ComputerDifficulties(self.computer)
+        ai._ComputerDifficulties__turn_score = expected_target
+        self.assertFalse(ai.hard_mode(computer_score=95, player_score=70))
 
     def test_anton_push_buffer_when_behind(self):
         """When behind, push_buffer=3; rolls until target+3 then banks."""
-        ai = ComputerDifficulties()
+        expected_target = 16
+        threshold = expected_target + 3
+
+        ai = ComputerDifficulties(self.computer)
         self.assertTrue(ai.hard_mode(computer_score=0, player_score=10))
-        target = ai._ComputerDifficulties__target
-        ai._ComputerDifficulties__turn_score = target + 2
+
+        ai = ComputerDifficulties(self.computer)
+        ai._ComputerDifficulties__turn_score = threshold - 1
         self.assertTrue(ai.hard_mode(computer_score=0, player_score=10))
-        ai._ComputerDifficulties__turn_score = target + 3
+
+        ai = ComputerDifficulties(self.computer)
+        ai._ComputerDifficulties__turn_score = threshold
         self.assertFalse(ai.hard_mode(computer_score=0, player_score=10))
         self.assertEqual(ai._ComputerDifficulties__turn_score, 0)
 
     def test_anton_target_increases_by_6_when_far_behind(self):
         """When far behind on the first call, Anton adds +6 to target."""
-        ai = ComputerDifficulties()
-        ai.hard_mode(computer_score=0, player_score=30)
-        self.assertEqual(ai._ComputerDifficulties__target, 22)
+        expected_target = 22
+        threshold = expected_target + 3
+
+        ai = ComputerDifficulties(self.computer)
+        ai._ComputerDifficulties__turn_score = threshold - 1
+        self.assertTrue(ai.hard_mode(computer_score=0, player_score=30))
+
+        ai = ComputerDifficulties(self.computer)
+        ai._ComputerDifficulties__turn_score = threshold
+        self.assertFalse(ai.hard_mode(computer_score=0, player_score=30))
 
     # ---------- LIAM (4) ----------
     def test_liam_typical_case_prefers_rolling(self):
         """With balanced scores and zero turn score, EV of rolling is positive."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         self.assertTrue(ai.extreme_mode(computer_score=50, player_score=50))
 
     def test_liam_bad_ev_paths_to_false_and_resets(self):
         """With large current turn score, EV becomes negative -> False and reset."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         ai.increment_turn_score(30)
         res = ai.extreme_mode(computer_score=50, player_score=10)
         self.assertFalse(res)
@@ -143,26 +178,26 @@ class TestComputerDifficulties(unittest.TestCase):
 
     def test_liam_early_true_when_can_finish_in_one_roll(self):
         """If `__turn_score + max_gain >= needed`, returns True immediately."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         self.assertTrue(ai.extreme_mode(computer_score=90, player_score=0))
 
     def test_liam_near_end_threshold_increase_branch(self):
         """Exercise 'needed <= near_end_buffer' branch (avoid early return)."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         ai._ComputerDifficulties__turn_score = -5
         result = ai.extreme_mode(computer_score=91, player_score=0)
         self.assertIsInstance(result, bool)
 
     def test_liam_threshold_decreases_when_player_near_end(self):
         """When the player is near the end, Liam applies threshold -= 0.3."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         res = ai.extreme_mode(computer_score=50, player_score=95)
         self.assertIsInstance(res, bool)
 
     # ---------- helpers ----------
     def test_reset_turn_score(self):
         """Zero turn vars and restores flags/counters to defaults."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         ai._ComputerDifficulties__turn_score = 9
         ai.first_start_hand = 3
         ai.npc_total_rolls_this_round = 4
@@ -179,14 +214,14 @@ class TestComputerDifficulties(unittest.TestCase):
 
     def test_increment_turn_score(self):
         """Adds to the private turn score."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         ai.increment_turn_score(5)
         ai.increment_turn_score(3)
         self.assertEqual(ai._ComputerDifficulties__turn_score, 8)
 
     def test_increment_turn_round_for_player(self):
         """Increments the enemy roll counter by one."""
-        ai = ComputerDifficulties()
+        ai = ComputerDifficulties(self.computer)
         self.assertEqual(ai.enemy_total_rolls_this_round, 0)
         ai.increment_turn_round_for_player()
         self.assertEqual(ai.enemy_total_rolls_this_round, 1)
