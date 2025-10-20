@@ -79,9 +79,9 @@ class Shell(cmd.Cmd):  # noqa : H601
             players.append(Player(username, userid))
         if int(mode) == 1:
             print(
-                "Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. "
-                "Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. "
-                "Liam (Expert 😡)\n\n😈 --- Hardest --- 😈"
+                "Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Easy 😃\n2. "
+                "Medium 😊\n3. Hard 😠\n4. "
+                "Expert 😡\n\n😈 --- Hardest --- 😈"
             )
             while Computer.difficulty < 1 or Computer.difficulty > 4:
                 try:
