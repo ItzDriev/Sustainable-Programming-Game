@@ -26,6 +26,9 @@ class Game:
         """
         self.ai: Computer = Computer()
 
+        self.players = Player(
+            "", 0
+        )  # Purpose of this line, pyreverse connection to class.
         self.players: List[Player] = []
         self.dice_hand = DiceHand()
         self.turn_manager = TurnManager(dir_path, self.dice_emoji, self)

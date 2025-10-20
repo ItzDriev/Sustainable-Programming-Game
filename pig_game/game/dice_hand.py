@@ -11,6 +11,7 @@ class DiceHand:
 
     def __init__(self):
         """Initialize the dice hand object."""
+        self.dice = Dice()  # Purpose of this line, pyreverse connection to class.
         self.dice = [Dice(), Dice()]
         self.roll_history = []
         self.last_roll = []
