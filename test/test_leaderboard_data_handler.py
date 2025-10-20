@@ -123,7 +123,9 @@ class TestDataHandlerPrintLeaderboard(unittest.TestCase):
         self.lb = LeaderboardDataHandler(self.lb_file, self.dir_path)
         self.lb.write(deepcopy(self.base))
         self.dh = DataHandler(dir_path=self.dir_path)
-        self.dh.user_data.get_username = lambda uid: {0: "Alice", 1: "Bob", 3: "Carol"}[uid]
+        self.dh.user_data.get_username = (
+            lambda uid: {0: "Alice", 1: "Bob", 3: "Carol"}[uid]
+        )
 
     def tearDown(self):
         """Remove temporary test artifacts."""

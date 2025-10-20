@@ -68,10 +68,6 @@ class AiLogic:
         if self.first_start_hand == 1:
             self.__target = 16
             self.__target -= max(min(npc_score // 20, 4), 0)
-            # Comment just in case AI doesnt work properly
-            # like this although I dont see a reason why it would break
-            # diff=npc_score - player score used to be here,
-            # moved it out of if statement
 
             if diff >= 20:
                 self.__target -= 4
@@ -96,9 +92,6 @@ class AiLogic:
         needed = self.round_end_number - npc_score
         diff = npc_score - player_score
 
-        # safe (no 1s) = 25/36, mean safe gain ≈ 8
-        # single 1 (turn bust) = 10/36  -> lose current turn score
-        # double 1 (wipe total) = 1/36  -> lose current turn score + total score
         p_safe = 25 / 36
         p_bust = 10 / 36
         p_wipe = 1 / 36
@@ -108,14 +101,13 @@ class AiLogic:
         if self.__turn_score + max_gain >= needed:
             return True
 
-        # Expected value of one more roll vs banking now
         ev_next = (
             p_safe * safe_mean_gain
             - p_bust * self.__turn_score
             - p_wipe * (self.__turn_score + npc_score)
         )
 
-        threshold = 0.02 * diff  # +0.4 at +20 lead, -0.4 at -20 behind
+        threshold = 0.02 * diff
 
         if needed <= self.near_end_buffer:
             threshold += 0.2
