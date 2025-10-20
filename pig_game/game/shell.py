@@ -96,6 +96,10 @@ class Shell(cmd.Cmd):  # noqa : H601
         print(msg)
         self.game.start(players, target_points)
 
+    def help_start(self):
+        """Provide syntax for start command."""
+        print("Usage: start")
+
     def do_cheat(self, _):
         """Activates cheating for testing purposes.
 
@@ -103,6 +107,10 @@ class Shell(cmd.Cmd):  # noqa : H601
         """
         Game.cheat_mode = True
         print("Cheat Mode Activated - You're a god daddy")
+
+    def help_cheat(self):
+        """Provide syntax for cheat command."""
+        print("Usage: cheat")
 
     def do_namechange(self, args):
         """Will perform a namechange.
@@ -123,7 +131,7 @@ class Shell(cmd.Cmd):  # noqa : H601
         print("You change your name lul xd")
 
     def help_namechange(self):
-        """Provide help for namechange syntax."""
+        """Provide syntax for namechange command."""
         print("Usage: namechange <currentUsername> <newUsername>")
 
     def do_rules(self, _):
@@ -139,8 +147,24 @@ class Shell(cmd.Cmd):  # noqa : H601
         """
         print(rules)
 
-    # Below are all ways to exit the game: exit, quite, q and EOF
+    def help_rules(self):
+        """Provide syntax for help command."""
+        print("Usage: help")
 
+    def do_leaderboard(self, arg):
+        """Show leaderboard.
+
+        :param arg: Argument for number of top players to display
+                    (ex. "leaderboard 50" shows Top 50)
+        :type arg: :py:obj:`str`
+        """
+        self.game.turn_manager.data_handler.print_leaderboard(arg)
+
+    def help_leaderboard(self):
+        """Provide syntax for help command."""
+        print("Usage: leaderboard <amount>")
+
+    # Below are all ways to exit the game: exit, quite, q and EOF
     def do_exit(self, _):
         """Leave the game.
 
@@ -150,6 +174,10 @@ class Shell(cmd.Cmd):  # noqa : H601
         print("Game Exited! Cya around!")
         return True
 
+    def help_exit(self):
+        """Provide syntax for exit command."""
+        print("Usage: exit")
+
     def do_quit(self, arg):
         """Leave the game.
 
@@ -158,6 +186,10 @@ class Shell(cmd.Cmd):  # noqa : H601
         """
         return self.do_exit(arg)
 
+    def help_quit(self):
+        """Provide syntax for exit command."""
+        print("Usage: quit")
+
     def do_q(self, arg):
         """Leave the game.
 
@@ -165,6 +197,10 @@ class Shell(cmd.Cmd):  # noqa : H601
         :rtype: :py:obj:`bool`
         """
         return self.do_exit(arg)
+
+    def help_q(self):
+        """Provide syntax for exit command."""
+        print("Usage: q")
 
     def do_EOF(self, arg):
         # pylint: disable=invalid-name
@@ -175,11 +211,6 @@ class Shell(cmd.Cmd):  # noqa : H601
         """
         return self.do_exit(arg)
 
-    def do_leaderboard(self, arg):
-        """Show leaderboard.
-
-        :param arg: Argument for number of top players to display
-                    (ex. "leaderboard 50" shows Top 50)
-        :type arg: :py:obj:`str`
-        """
-        self.game.turn_manager.data_handler.print_leaderboard(arg)
+    def help_EOF(self):
+        """Provide syntax for EOF command."""
+        print("Usage: EOF")
