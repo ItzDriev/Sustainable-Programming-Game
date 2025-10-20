@@ -65,11 +65,14 @@ el.replaceWith(d);
         self.__last_roll = None
 
     def roll_dice(self):
-        &#34;&#34;&#34;Roll the dice and generate a random integer
-        between 1 and the number of sides.&#34;&#34;&#34;
+        &#34;&#34;&#34;
+        Roll the dice.
+
+        Generate a random integer between 1 and the number of sides.
+        &#34;&#34;&#34;
         self.__last_roll = random.randint(1, self.__sides)
-        return self.__last_roll #Testing purpose
-    
+        return self.__last_roll  # Testing purpose
+
     def get_last_roll(self):
         &#34;&#34;&#34;Return the value of the last roll.&#34;&#34;&#34;
         return self.__last_roll</code></pre>
@@ -101,13 +104,16 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def roll_dice(self):
-    &#34;&#34;&#34;Roll the dice and generate a random integer
-    between 1 and the number of sides.&#34;&#34;&#34;
+    &#34;&#34;&#34;
+    Roll the dice.
+
+    Generate a random integer between 1 and the number of sides.
+    &#34;&#34;&#34;
     self.__last_roll = random.randint(1, self.__sides)
-    return self.__last_roll #Testing purpose</code></pre>
+    return self.__last_roll  # Testing purpose</code></pre>
 </details>
-<div class="desc"><p>Roll the dice and generate a random integer
-between 1 and the number of sides.</p></div>
+<div class="desc"><p>Roll the dice.</p>
+<p>Generate a random integer between 1 and the number of sides.</p></div>
 </dd>
 </dl>
 </dd>

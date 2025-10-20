@@ -56,29 +56,51 @@ el.replaceWith(d);
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Player:
+<pre><code class="python">class Player:  # noqa : H601
     &#34;&#34;&#34;Represent a player in the game.&#34;&#34;&#34;
 
     def __init__(self, username, user_id):
-        &#34;&#34;&#34;Initialize the player object.&#34;&#34;&#34;
+        &#34;&#34;&#34;Initialize the player object.
+
+        :param username: Name of the player.
+        :type username: :py:obj:`str`
+        :param user_id: Id of player.
+        :type user_id: :py:obj:`int`
+        &#34;&#34;&#34;
         self.score = 0
         self.__user_id = user_id
         self.__username = username
 
     def set_username(self, new_username):
-        &#34;&#34;&#34;Set the player&#39;s username.&#34;&#34;&#34;
+        &#34;&#34;&#34;Set the player&#39;s username.
+
+        :param new_username: New username.
+        :type new_username: :py:obj:`str`
+        &#34;&#34;&#34;
         self.__username = new_username
 
     def get_username(self):
-        &#34;&#34;&#34;Return the player&#39;s username.&#34;&#34;&#34;
+        &#34;&#34;&#34;Return the player&#39;s username.
+
+        :return: The username of the player.
+        :rtype: :py:obj:`str`
+        &#34;&#34;&#34;
         return self.__username
 
     def get_user_id(self):
-        &#34;&#34;&#34;Return the player&#39;s user ID.&#34;&#34;&#34;
+        &#34;&#34;&#34;Return the player&#39;s user ID.
+
+        :return: The id of the player.
+        :rtype: :py:obj:`int`
+        &#34;&#34;&#34;
         return self.__user_id</code></pre>
 </details>
 <div class="desc"><p>Represent a player in the game.</p>
-<p>Initialize the player object.</p></div>
+<p>Initialize the player object.</p>
+<p>:param username: Name of the player.
+:type username: :py:obj:<code>str</code>
+:param user_id: Id of player.
+:type user_id: :py:obj:<code>int</code></p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="player.Player.get_user_id"><code class="name flex">
@@ -90,10 +112,16 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_user_id(self):
-    &#34;&#34;&#34;Return the player&#39;s user ID.&#34;&#34;&#34;
+    &#34;&#34;&#34;Return the player&#39;s user ID.
+
+    :return: The id of the player.
+    :rtype: :py:obj:`int`
+    &#34;&#34;&#34;
     return self.__user_id</code></pre>
 </details>
-<div class="desc"><p>Return the player's user ID.</p></div>
+<div class="desc"><p>Return the player's user ID.</p>
+<p>:return: The id of the player.
+:rtype: :py:obj:<code>int</code></p></div>
 </dd>
 <dt id="player.Player.get_username"><code class="name flex">
 <span>def <span class="ident">get_username</span></span>(<span>self)</span>
@@ -104,10 +132,16 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_username(self):
-    &#34;&#34;&#34;Return the player&#39;s username.&#34;&#34;&#34;
+    &#34;&#34;&#34;Return the player&#39;s username.
+
+    :return: The username of the player.
+    :rtype: :py:obj:`str`
+    &#34;&#34;&#34;
     return self.__username</code></pre>
 </details>
-<div class="desc"><p>Return the player's username.</p></div>
+<div class="desc"><p>Return the player's username.</p>
+<p>:return: The username of the player.
+:rtype: :py:obj:<code>str</code></p></div>
 </dd>
 <dt id="player.Player.set_username"><code class="name flex">
 <span>def <span class="ident">set_username</span></span>(<span>self, new_username)</span>
@@ -118,10 +152,16 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def set_username(self, new_username):
-    &#34;&#34;&#34;Set the player&#39;s username.&#34;&#34;&#34;
+    &#34;&#34;&#34;Set the player&#39;s username.
+
+    :param new_username: New username.
+    :type new_username: :py:obj:`str`
+    &#34;&#34;&#34;
     self.__username = new_username</code></pre>
 </details>
-<div class="desc"><p>Set the player's username.</p></div>
+<div class="desc"><p>Set the player's username.</p>
+<p>:param new_username: New username.
+:type new_username: :py:obj:<code>str</code></p></div>
 </dd>
 </dl>
 </dd>

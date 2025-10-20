@@ -62,7 +62,7 @@ clean-all: clean clean-doc
 #
 pylint:
 	@$(call MESSAGE,$@)
-	-cd PigGame && $(PYTHON) -m pylint *.py
+	-cd pig_game && $(PYTHON) -m pylint */*.py
 
 flake8:
 	@$(call MESSAGE,$@)
@@ -76,7 +76,7 @@ lint: flake8 pylint
 #
 black:
 	@$(call MESSAGE,$@)
-	 $(PYTHON) -m black PigGame/ test/
+	 $(PYTHON) -m black pig_game/ test/
 
 codestyle: black
 
@@ -91,8 +91,16 @@ unittest:
 coverage:
 	@$(call MESSAGE,$@)
 	coverage run -m unittest discover
-	coverage html
+	coverage html -d doc/coverage_report
 	coverage report -m
+
+coverage-html:
+	@$(call MESSAGE,$@)
+	install -d doc/api/build/html/coverage_report
+	coverage run -m unittest discover
+	coverage html -d doc/coverage_report
+	cp doc/coverage_report/*.* doc/api/build/html/coverage_report
+#	mv doc/api/build/html/coverage_report/index.html doc/api/build/html/coverage_report/cover_index.html
 
 coverage-xml:
 	@$(call MESSAGE,$@)
@@ -109,27 +117,29 @@ test: lint coverage
 pydoc:
 	@$(call MESSAGE,$@)
 	install -d doc/pydoc
-	$(PYTHON) -m pydoc -w PigGame/*.py
+	$(PYTHON) -m pydoc -w pig_game/game/*.py
 	mv *.html doc/pydoc
 
 pdoc:
 	@$(call MESSAGE,$@)
-	pdoc --force --html --output-dir doc/pdoc PigGame/*.py
+	pdoc --force --html --output-dir doc/pdoc pig_game/game/*.py
 
 pyreverse:
 	@$(call MESSAGE,$@)
 	install -d doc/pyreverse
-	pyreverse PigGame/*.py
-	dot -Tpng classes.dot -o doc/pyreverse/classes.png
-	dot -Tpng packages.dot -o doc/pyreverse/packages.png
-	rm -f classes.dot packages.dot
+	pyreverse -o dot -p pig_game pig_game
+	dot -Tpng classes_pig_game.dot -o doc/pyreverse/classes.png
+	dot -Tpng packages_pig_game.dot -o doc/pyreverse/packages.png
+	rm -f classes_pig_game.dot packages_pig_game.dot
+	cp doc/pyreverse/classes.png doc/api
 
 sphinx:
 	@$(call MESSAGE,$@)
-	rm -f docs/source/PigGame.rst
-	curl -L https://raw.githubusercontent.com/ItzDriev/Sustainable-Programming-Game/main/README.md -o docs/source/README.md
-	sphinx-apidoc -o docs/source PigGame
-	$(MAKE) -C docs html
+	install -d doc/api
+	rm -f doc/api/pig_game*.rst
+	curl -L https://raw.githubusercontent.com/ItzDriev/Sustainable-Programming-Game/main/README.md -o doc/api/README.md
+	sphinx-apidoc -f -o doc/api ./pig_game --separate --no-toc --module-first
+	$(MAKE) -C doc html
 
 doc: pdoc pyreverse sphinx
 
@@ -140,23 +150,23 @@ doc: pdoc pyreverse sphinx
 #
 radon-cc:
 	@$(call MESSAGE,$@)
-	radon cc --show-complexity --average PigGame
+	radon cc --show-complexity --average pig_game
 
 radon-mi:
 	@$(call MESSAGE,$@)
-	radon mi --show PigGame
+	radon mi --show pig_game
 
 radon-raw:
 	@$(call MESSAGE,$@)
-	radon raw PigGame
+	radon raw pig_game
 
 radon-hal:
 	@$(call MESSAGE,$@)
-	radon hal PigGame
+	radon hal pig_game
 
 cohesion:
 	@$(call MESSAGE,$@)
-	cohesion --directory PigGame
+	cohesion --directory pig_game
 
 metrics: radon-cc radon-mi radon-raw radon-hal cohesion
 
@@ -167,4 +177,4 @@ metrics: radon-cc radon-mi radon-raw radon-hal cohesion
 #
 bandit:
 	@$(call MESSAGE,$@)
-	bandit --recursive PigGame
+	bandit --recursive pig_game

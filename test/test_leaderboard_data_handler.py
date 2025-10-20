@@ -10,8 +10,8 @@ from io import StringIO
 import contextlib
 from copy import deepcopy
 
-from PigGame.leaderboard_data_handler import LeaderboardDataHandler
-from PigGame.data_handler import DataHandler
+from pig_game.utils.leaderboard_data_handler import LeaderboardDataHandler
+from pig_game.utils.data_handler import DataHandler
 
 
 class DummyPlayer:
@@ -37,9 +37,9 @@ class TestLeaderBoardDataHandlerClass(unittest.TestCase):
         self.user_file = self.dir_path / "UserData.json"
         self.lb = LeaderboardDataHandler(self.lb_file, self.dir_path)
         self.base = {
-            '0': {'wins': 1, 'games_played': 1, 'ppt': 13.5, 'total_turns': 4},
-            '1': {'wins': 0, 'games_played': 1, 'ppt': 9.75, 'total_turns': 4},
-            '3': {'wins': 1, 'games_played': 1, 'ppt': 1.0, 'total_turns': 1},
+            "0": {"wins": 1, "games_played": 1, "ppt": 13.5, "total_turns": 4},
+            "1": {"wins": 0, "games_played": 1, "ppt": 9.75, "total_turns": 4},
+            "3": {"wins": 1, "games_played": 1, "ppt": 1.0, "total_turns": 1},
         }
         self.lb.write(deepcopy(self.base))
 
@@ -49,50 +49,50 @@ class TestLeaderBoardDataHandlerClass(unittest.TestCase):
 
     def test_get_highscore(self):
         """Get_highscore returns dict for a given user_id."""
-        self.assertEqual(self.lb.get_highscore(0), self.base['0'])
-        self.assertEqual(self.lb.get_highscore('3')['ppt'], 1.0)
+        self.assertEqual(self.lb.get_highscore(0), self.base["0"])
+        self.assertEqual(self.lb.get_highscore("3")["ppt"], 1.0)
 
     def test_update_ppt_and_turns(self):
         """Update_ppt_and_turns increments turns and updates running average ppt."""
         player = DummyPlayer(user_id=1)
         data_before = self.lb.read()
-        old_turns = data_before['1']['total_turns']
-        old_ppt = data_before['1']['ppt']
+        old_turns = data_before["1"]["total_turns"]
+        old_ppt = data_before["1"]["ppt"]
         value = 11.0
         expected_turns = old_turns + 1
         expected_ppt = (old_ppt * old_turns + value) / expected_turns
         self.lb.update_ppt_and_turns(player, value)
         data_after = self.lb.read()
-        self.assertEqual(data_after['1']['total_turns'], expected_turns)
-        self.assertAlmostEqual(data_after['1']['ppt'], expected_ppt, places=7)
+        self.assertEqual(data_after["1"]["total_turns"], expected_turns)
+        self.assertAlmostEqual(data_after["1"]["ppt"], expected_ppt, places=7)
 
     def test_update_games_played_won(self):
         """Test for win path in update_games_played."""
         player = DummyPlayer(user_id=0)
         data_before = self.lb.read()
-        wins_before = data_before['0']['wins']
-        games_before = data_before['0']['games_played']
+        wins_before = data_before["0"]["wins"]
+        games_before = data_before["0"]["games_played"]
         self.lb.update_games_played(True, player)
         data_after = self.lb.read()
-        self.assertEqual(data_after['0']['wins'], wins_before + 1)
-        self.assertEqual(data_after['0']['games_played'], games_before + 1)
+        self.assertEqual(data_after["0"]["wins"], wins_before + 1)
+        self.assertEqual(data_after["0"]["games_played"], games_before + 1)
 
     def test_update_games_played_lost(self):
         """Test for loss path in update_games_played."""
         player = DummyPlayer(user_id=1)
         data_before = self.lb.read()
-        wins_before = data_before['1']['wins']
-        games_before = data_before['1']['games_played']
+        wins_before = data_before["1"]["wins"]
+        games_before = data_before["1"]["games_played"]
         self.lb.update_games_played(False, player)
         data_after = self.lb.read()
-        self.assertEqual(data_after['1']['wins'], wins_before)
-        self.assertEqual(data_after['1']['games_played'], games_before + 1)
+        self.assertEqual(data_after["1"]["wins"], wins_before)
+        self.assertEqual(data_after["1"]["games_played"], games_before + 1)
 
     def test_add_new_player_exists(self):
         """Check if player already have stats."""
         self.lb.add_new_player(0)
         data = self.lb.read()
-        self.assertEqual(data['0'], self.base['0'])
+        self.assertEqual(data["0"], self.base["0"])
 
     def test_add_new_player_missing(self):
         """Check if player have no stats."""
@@ -102,7 +102,7 @@ class TestLeaderBoardDataHandlerClass(unittest.TestCase):
         self.assertIn(str(new_id), data)
         self.assertEqual(
             data[str(new_id)],
-            {"wins": 0, "games_played": 0, "ppt": 0, "total_turns": 0}
+            {"wins": 0, "games_played": 0, "ppt": 0, "total_turns": 0},
         )
 
 
@@ -116,9 +116,9 @@ class TestDataHandlerPrintLeaderboard(unittest.TestCase):
         self.lb_file = self.dir_path / "LeaderboardData.json"
         self.user_file = self.dir_path / "UserData.json"
         self.base = {
-            '0': {'wins': 1, 'games_played': 1, 'ppt': 13.5, 'total_turns': 4},
-            '1': {'wins': 0, 'games_played': 1, 'ppt': 9.75, 'total_turns': 4},
-            '3': {'wins': 1, 'games_played': 1, 'ppt': 1.0, 'total_turns': 1},
+            "0": {"wins": 1, "games_played": 1, "ppt": 13.5, "total_turns": 4},
+            "1": {"wins": 0, "games_played": 1, "ppt": 9.75, "total_turns": 4},
+            "3": {"wins": 1, "games_played": 1, "ppt": 1.0, "total_turns": 1},
         }
         self.lb = LeaderboardDataHandler(self.lb_file, self.dir_path)
         self.lb.write(deepcopy(self.base))

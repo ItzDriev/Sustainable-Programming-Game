@@ -6,7 +6,7 @@
 
 import unittest
 import os
-from PigGame.data_handler import DataHandler
+from pig_game.utils.data_handler import DataHandler
 
 
 class TestDataHandlerClass(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestDataHandlerClass(unittest.TestCase):
 
     def test_init_default_object(self):
         """Instantiate an object and check its properties."""
-        self.test_dir = "./PigGame/TestGameData"
+        self.test_dir = "./pig_game/TestGameData"
         res = DataHandler(self.test_dir)
         exp = DataHandler
         self.assertIsInstance(res, exp)

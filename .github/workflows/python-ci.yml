@@ -60,14 +60,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install Graphviz
+        run: sudo apt-get update && sudo apt-get install -y graphviz
+
       - name: Build docs
         run: |
+          make coverage-html
+          make pyreverse
           make sphinx
 
       - name: Upload docs artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: docs/build/html
+          path: doc/api/build/html
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4

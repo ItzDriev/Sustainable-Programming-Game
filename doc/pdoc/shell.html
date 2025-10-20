@@ -58,115 +58,174 @@ cmd — support for line-oriented command interpreters
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Shell(cmd.Cmd):
-    &#34;&#34;&#34;Classes that handle the terminal&#39;s user inputs&#34;&#34;&#34;
+<pre><code class="python">class Shell(cmd.Cmd): # noqa : H601
+    &#34;&#34;&#34;Classes that handle most of the terminal&#39;s user inputs.&#34;&#34;&#34;
 
-    intro = &#34;Welcome to the PIG Game!. Type help or ? to list available commands.\n&#34;
-    prompt = &#34;(Game) &#34;
+    intro = &#34;Welcome to the PIG Game!. Type help or ? to list available commands.&#34; \
+            &#34;\n\nTo start a game simply enter &#39;start&#39;&#34;
+    prompt = &#34;(🐷 Game): &#34;
 
     def __init__(self):
-        &#34;&#34;&#34;Init the object. &#34;&#34;&#34;
+        &#34;&#34;&#34;Init the object.
+
+        :param game: singleton instance of the game.
+        :type game: :py:obj:`Game`
+        &#34;&#34;&#34;
         super().__init__()
-        self.game = Game() # Game is a singleton persistant during &#34;program&#34; lifespan
-    def do_start(self, mode):
-        # 50/50 if computer goes first or if the human playing goes first?
+        self.game = Game()
 
-        &#34;&#34;&#34;Start a game versus the computer&#34;&#34;&#34;
-        msg = (&#34;Game Started! Start off by rolling the dice!&#34;)
+    def do_start(self, _):
+        &#34;&#34;&#34;Start the game and takes three additional inputs.
 
+        :param _: Placeholder argument.
+        :type _: :py:obj:`None`
+
+        :param mode: Input variable for game mode selection —
+                     &#34;1&#34; for Player vs AI, &#34;2&#34; for 2-player mode.
+        :type mode: :py:obj:`str`
+
+        :param target_points: Input variable for the target score required
+                              to win the game.
+        :type target_points: :py:obj:`int`
+
+        :param username: Input variable representing each player&#39;s username.
+        :type username: :py:obj:`str`
+
+        :raises LookupError: If a player UserID cannot be found in user data.
+        &#34;&#34;&#34;
+        msg = &#34;Game Started! Start off by rolling the dice!&#34;
+        while True:
+            mode = input(&#34;Please enter amount of players! &#34;
+                         &#34;1 = Vs AI, 2 = 2 Player mode: &#34;).strip()
+            if mode in (&#34;1&#34;, &#34;2&#34;):
+                break
+            print(&#34;Error please enter a valid amount of players (1 or 2)! 🐷&#34;)
+
+        while True:
+            target_points = input(&#34;Enter the target points for the game! 🐷: &#34;).strip()
+            if target_points.isdigit() is False:
+                print(&#34;Please enter a valid number, any positive number!&#34;)
+            else:
+                target_points = int(target_points)
+                break
         players = []
-        for n in range(int(mode)):
+        for _ in range(int(mode)):
             username = input(&#34;Enter username: &#34;)
-            self.game.data_handler.user_data.add_user(username)
-
-            
-            userid = self.game.data_handler.user_data.get_user_id(username)
-            if userid == None:
-                raise Exception(&#34;UserID Not Found!&#34;)
+            self.game.turn_manager.data_handler.user_data.add_user(username)
+            userid = self.game.turn_manager.data_handler.user_data.get_user_id(username)
+            self.game.turn_manager.data_handler.leaderboard_data.add_new_player(userid)
+            if userid is None:
+                raise LookupError(&#34;UserID Not Found!&#34;)
 
             players.append(Player(username, userid))
-        if int(mode)==1:
-            print(&#34;Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. Liam (Expert 😡)\n\n😈 --- Hardest --- 😈&#34;)
-            difficulty = int(input(&#34;Select Preferred Difficulty: &#34;))
+        if int(mode) == 1:
+            print(&#34;Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. &#34;
+                  &#34;Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. &#34;
+                  &#34;Liam (Expert 😡)\n\n😈 --- Hardest --- 😈&#34;)
+            while Computer.difficulty &lt; 1 or Computer.difficulty &gt; 4:
+                try:
+                    Computer.difficulty = (int(input(&#34;Select your difficulty: &#34;)))
+                except ValueError:
+                    print(&#34;Must be an integer!&#34;)
+        else:
+            Computer.difficulty = None
 
-        #Prompted to select 2 player mode or VS AI
-        #Prompted to input name for player player 2 respectively
+        # Prompted to select 2 player mode or VS AI
+        # Prompted to input name for player player 2 respectively
         print(msg)
-        self.game.start(players, difficulty)
-        
+        self.game.start(players, target_points)
 
     def do_cheat(self, _):
-        &#34;&#34;&#34;This will cheat the game towards the end of it for testing purposes&#34;&#34;&#34;
+        &#34;&#34;&#34;Activates cheating for testing purposes.
+
+        Immediately goes to the end of the game.
+        &#34;&#34;&#34;
         Game.cheat_mode = True
         print(&#34;Cheat Mode Activated - You&#39;re a god daddy&#34;)
 
-    def do_roll(self, _):
-        &#34;&#34;&#34;Decide to to roll the dice&#34;&#34;&#34;
-        #Guess this will call a dice class, roll the dice and add the points to the current dice hand or something 
-
-        print(&#34;You roll the dice!&#34;)
-
-
-    #Potentially add do_namechange
     def do_namechange(self, args):
-        &#34;&#34;&#34;Will perform a namechange&#34;&#34;&#34;
+        &#34;&#34;&#34;Will perform a namechange.
 
+        :param args: Arguments separated by spaces representing
+                     current and new usernames.
+        :type args: str
+        &#34;&#34;&#34;
         name_info = args.split()
 
-        if(len(name_info)!=2):
-            return #Arguments were incorrect
+        if len(name_info) != 2:
+            return  # Arguments were incorrect
 
-        self.game.data_handler.user_data.update_username(current_username = name_info[0], new_username=name_info[1])
+        self.game.turn_manager.data_handler.user_data.update_username(name_info[0],
+                                                                      name_info[1])
 
         print(&#34;You change your name lul xd&#34;)
-    
-    
+
     def help_namechange(self):
+        &#34;&#34;&#34;Provide help for namechange syntax.&#34;&#34;&#34;
         print(&#34;Usage: namechange &lt;currentUsername&gt; &lt;newUsername&gt;&#34;)
 
     def do_rules(self, _):
-        &#34;&#34;&#34;Will explain the rules once again&#34;&#34;&#34;
-
+        &#34;&#34;&#34;Will explain the rules once again.&#34;&#34;&#34;
         rules = &#34;&#34;&#34;
-        Your goal is to beat the opposing player 
+        Your goal is to beat the opposing player
         by reaching the target points before them!
 
-        During your turn, you can roll the dice as many times as you&#39;d like, 
-        however, if exactly ONE of your dice roll a &#39;1&#39;, all your points during that turn are lost. 
-        If you happen to roll two &#39;1&#39;s&#39;, all of you points will be reset to 0, 
-        including points acquired from previous turns.
+        During your turn, you can roll the dice as many times as you&#39;d like,
+        however, if exactly ONE of your dice roll a &#39;1&#39;, all your points
+        during that turn are lost. If you happen to roll two &#39;1&#39;s&#39;, all of
+        you points will be reset to 0, including points acquired from previous turns.
         &#34;&#34;&#34;
         print(rules)
 
-    #Below are all ways to exit the game: exit, quite, q and EOF
+    # Below are all ways to exit the game: exit, quite, q and EOF
 
     def do_exit(self, _):
-        # pylint: disable=no-self-use
-        &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
+        &#34;&#34;&#34;Leave the game.
+
+        :return: True, indicating game exit
+        :rtype: :py:obj:`bool`
+        &#34;&#34;&#34;
         print(&#34;Game Exited! Cya around!&#34;)
         return True
 
     def do_quit(self, arg):
-        &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
+        &#34;&#34;&#34;Leave the game.
+
+        :return: True, indicating game exit
+        :rtype: :py:obj:`bool`
+        &#34;&#34;&#34;
         return self.do_exit(arg)
 
     def do_q(self, arg):
-        &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
+        &#34;&#34;&#34;Leave the game.
+
+        :return: True, indicating game exit
+        :rtype: :py:obj:`bool`
+        &#34;&#34;&#34;
         return self.do_exit(arg)
 
     def do_EOF(self, arg):
         # pylint: disable=invalid-name
-        &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
+        &#34;&#34;&#34;Leave the game.
+
+        :return: True, indicating game exit
+        :rtype: :py:obj:`bool`
+        &#34;&#34;&#34;
         return self.do_exit(arg)
-    
+
     def do_leaderboard(self, arg):
-        self.game.data_handler.print_leaderboard()
-        #parameters = arg.split()
-        #self.game.data_handler.leaderboard_data.register_highscore(parameters[0], parameters[1])
-        #print(self.game.data_handler.leaderboard_data.get_highscore(parameters[0]))</code></pre>
+        &#34;&#34;&#34;Show leaderboard.
+
+        :param arg: Argument for number of top players to display
+                    (ex. &#34;leaderboard 50&#34; shows Top 50)
+        :type arg: :py:obj:`str`
+        &#34;&#34;&#34;
+        self.game.turn_manager.data_handler.print_leaderboard(arg)</code></pre>
 </details>
-<div class="desc"><p>Classes that handle the terminal's user inputs</p>
-<p>Init the object.</p></div>
+<div class="desc"><p>Classes that handle most of the terminal's user inputs.</p>
+<p>Init the object.</p>
+<p>:param game: singleton instance of the game.
+:type game: :py:obj:<code>Game</code></p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>cmd.Cmd</li>
@@ -194,10 +253,16 @@ cmd — support for line-oriented command interpreters
 </summary>
 <pre><code class="python">def do_EOF(self, arg):
     # pylint: disable=invalid-name
-    &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
+    &#34;&#34;&#34;Leave the game.
+
+    :return: True, indicating game exit
+    :rtype: :py:obj:`bool`
+    &#34;&#34;&#34;
     return self.do_exit(arg)</code></pre>
 </details>
-<div class="desc"><p>Leave the game.</p></div>
+<div class="desc"><p>Leave the game.</p>
+<p>:return: True, indicating game exit
+:rtype: :py:obj:<code>bool</code></p></div>
 </dd>
 <dt id="shell.Shell.do_cheat"><code class="name flex">
 <span>def <span class="ident">do_cheat</span></span>(<span>self, _)</span>
@@ -208,11 +273,15 @@ cmd — support for line-oriented command interpreters
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def do_cheat(self, _):
-    &#34;&#34;&#34;This will cheat the game towards the end of it for testing purposes&#34;&#34;&#34;
+    &#34;&#34;&#34;Activates cheating for testing purposes.
+
+    Immediately goes to the end of the game.
+    &#34;&#34;&#34;
     Game.cheat_mode = True
     print(&#34;Cheat Mode Activated - You&#39;re a god daddy&#34;)</code></pre>
 </details>
-<div class="desc"><p>This will cheat the game towards the end of it for testing purposes</p></div>
+<div class="desc"><p>Activates cheating for testing purposes.</p>
+<p>Immediately goes to the end of the game.</p></div>
 </dd>
 <dt id="shell.Shell.do_exit"><code class="name flex">
 <span>def <span class="ident">do_exit</span></span>(<span>self, _)</span>
@@ -223,12 +292,17 @@ cmd — support for line-oriented command interpreters
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def do_exit(self, _):
-    # pylint: disable=no-self-use
-    &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
+    &#34;&#34;&#34;Leave the game.
+
+    :return: True, indicating game exit
+    :rtype: :py:obj:`bool`
+    &#34;&#34;&#34;
     print(&#34;Game Exited! Cya around!&#34;)
     return True</code></pre>
 </details>
-<div class="desc"><p>Leave the game.</p></div>
+<div class="desc"><p>Leave the game.</p>
+<p>:return: True, indicating game exit
+:rtype: :py:obj:<code>bool</code></p></div>
 </dd>
 <dt id="shell.Shell.do_leaderboard"><code class="name flex">
 <span>def <span class="ident">do_leaderboard</span></span>(<span>self, arg)</span>
@@ -239,12 +313,18 @@ cmd — support for line-oriented command interpreters
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def do_leaderboard(self, arg):
-    self.game.data_handler.print_leaderboard()
-    #parameters = arg.split()
-    #self.game.data_handler.leaderboard_data.register_highscore(parameters[0], parameters[1])
-    #print(self.game.data_handler.leaderboard_data.get_highscore(parameters[0]))</code></pre>
+    &#34;&#34;&#34;Show leaderboard.
+
+    :param arg: Argument for number of top players to display
+                (ex. &#34;leaderboard 50&#34; shows Top 50)
+    :type arg: :py:obj:`str`
+    &#34;&#34;&#34;
+    self.game.turn_manager.data_handler.print_leaderboard(arg)</code></pre>
 </details>
-<div class="desc"></div>
+<div class="desc"><p>Show leaderboard.</p>
+<p>:param arg: Argument for number of top players to display
+(ex. "leaderboard 50" shows Top 50)
+:type arg: :py:obj:<code>str</code></p></div>
 </dd>
 <dt id="shell.Shell.do_namechange"><code class="name flex">
 <span>def <span class="ident">do_namechange</span></span>(<span>self, args)</span>
@@ -255,18 +335,26 @@ cmd — support for line-oriented command interpreters
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def do_namechange(self, args):
-    &#34;&#34;&#34;Will perform a namechange&#34;&#34;&#34;
+    &#34;&#34;&#34;Will perform a namechange.
 
+    :param args: Arguments separated by spaces representing
+                 current and new usernames.
+    :type args: str
+    &#34;&#34;&#34;
     name_info = args.split()
 
-    if(len(name_info)!=2):
-        return #Arguments were incorrect
+    if len(name_info) != 2:
+        return  # Arguments were incorrect
 
-    self.game.data_handler.user_data.update_username(current_username = name_info[0], new_username=name_info[1])
+    self.game.turn_manager.data_handler.user_data.update_username(name_info[0],
+                                                                  name_info[1])
 
     print(&#34;You change your name lul xd&#34;)</code></pre>
 </details>
-<div class="desc"><p>Will perform a namechange</p></div>
+<div class="desc"><p>Will perform a namechange.</p>
+<p>:param args: Arguments separated by spaces representing
+current and new usernames.
+:type args: str</p></div>
 </dd>
 <dt id="shell.Shell.do_q"><code class="name flex">
 <span>def <span class="ident">do_q</span></span>(<span>self, arg)</span>
@@ -277,10 +365,16 @@ cmd — support for line-oriented command interpreters
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def do_q(self, arg):
-    &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
+    &#34;&#34;&#34;Leave the game.
+
+    :return: True, indicating game exit
+    :rtype: :py:obj:`bool`
+    &#34;&#34;&#34;
     return self.do_exit(arg)</code></pre>
 </details>
-<div class="desc"><p>Leave the game.</p></div>
+<div class="desc"><p>Leave the game.</p>
+<p>:return: True, indicating game exit
+:rtype: :py:obj:<code>bool</code></p></div>
 </dd>
 <dt id="shell.Shell.do_quit"><code class="name flex">
 <span>def <span class="ident">do_quit</span></span>(<span>self, arg)</span>
@@ -291,26 +385,16 @@ cmd — support for line-oriented command interpreters
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def do_quit(self, arg):
-    &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
+    &#34;&#34;&#34;Leave the game.
+
+    :return: True, indicating game exit
+    :rtype: :py:obj:`bool`
+    &#34;&#34;&#34;
     return self.do_exit(arg)</code></pre>
 </details>
-<div class="desc"><p>Leave the game.</p></div>
-</dd>
-<dt id="shell.Shell.do_roll"><code class="name flex">
-<span>def <span class="ident">do_roll</span></span>(<span>self, _)</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def do_roll(self, _):
-    &#34;&#34;&#34;Decide to to roll the dice&#34;&#34;&#34;
-    #Guess this will call a dice class, roll the dice and add the points to the current dice hand or something 
-
-    print(&#34;You roll the dice!&#34;)</code></pre>
-</details>
-<div class="desc"><p>Decide to to roll the dice</p></div>
+<div class="desc"><p>Leave the game.</p>
+<p>:return: True, indicating game exit
+:rtype: :py:obj:<code>bool</code></p></div>
 </dd>
 <dt id="shell.Shell.do_rules"><code class="name flex">
 <span>def <span class="ident">do_rules</span></span>(<span>self, _)</span>
@@ -321,56 +405,101 @@ cmd — support for line-oriented command interpreters
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def do_rules(self, _):
-    &#34;&#34;&#34;Will explain the rules once again&#34;&#34;&#34;
-
+    &#34;&#34;&#34;Will explain the rules once again.&#34;&#34;&#34;
     rules = &#34;&#34;&#34;
-    Your goal is to beat the opposing player 
+    Your goal is to beat the opposing player
     by reaching the target points before them!
 
-    During your turn, you can roll the dice as many times as you&#39;d like, 
-    however, if exactly ONE of your dice roll a &#39;1&#39;, all your points during that turn are lost. 
-    If you happen to roll two &#39;1&#39;s&#39;, all of you points will be reset to 0, 
-    including points acquired from previous turns.
+    During your turn, you can roll the dice as many times as you&#39;d like,
+    however, if exactly ONE of your dice roll a &#39;1&#39;, all your points
+    during that turn are lost. If you happen to roll two &#39;1&#39;s&#39;, all of
+    you points will be reset to 0, including points acquired from previous turns.
     &#34;&#34;&#34;
     print(rules)</code></pre>
 </details>
-<div class="desc"><p>Will explain the rules once again</p></div>
+<div class="desc"><p>Will explain the rules once again.</p></div>
 </dd>
 <dt id="shell.Shell.do_start"><code class="name flex">
-<span>def <span class="ident">do_start</span></span>(<span>self, mode)</span>
+<span>def <span class="ident">do_start</span></span>(<span>self, _)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def do_start(self, mode):
-    # 50/50 if computer goes first or if the human playing goes first?
+<pre><code class="python">def do_start(self, _):
+    &#34;&#34;&#34;Start the game and takes three additional inputs.
 
-    &#34;&#34;&#34;Start a game versus the computer&#34;&#34;&#34;
-    msg = (&#34;Game Started! Start off by rolling the dice!&#34;)
+    :param _: Placeholder argument.
+    :type _: :py:obj:`None`
 
+    :param mode: Input variable for game mode selection —
+                 &#34;1&#34; for Player vs AI, &#34;2&#34; for 2-player mode.
+    :type mode: :py:obj:`str`
+
+    :param target_points: Input variable for the target score required
+                          to win the game.
+    :type target_points: :py:obj:`int`
+
+    :param username: Input variable representing each player&#39;s username.
+    :type username: :py:obj:`str`
+
+    :raises LookupError: If a player UserID cannot be found in user data.
+    &#34;&#34;&#34;
+    msg = &#34;Game Started! Start off by rolling the dice!&#34;
+    while True:
+        mode = input(&#34;Please enter amount of players! &#34;
+                     &#34;1 = Vs AI, 2 = 2 Player mode: &#34;).strip()
+        if mode in (&#34;1&#34;, &#34;2&#34;):
+            break
+        print(&#34;Error please enter a valid amount of players (1 or 2)! 🐷&#34;)
+
+    while True:
+        target_points = input(&#34;Enter the target points for the game! 🐷: &#34;).strip()
+        if target_points.isdigit() is False:
+            print(&#34;Please enter a valid number, any positive number!&#34;)
+        else:
+            target_points = int(target_points)
+            break
     players = []
-    for n in range(int(mode)):
+    for _ in range(int(mode)):
         username = input(&#34;Enter username: &#34;)
-        self.game.data_handler.user_data.add_user(username)
-
-        
-        userid = self.game.data_handler.user_data.get_user_id(username)
-        if userid == None:
-            raise Exception(&#34;UserID Not Found!&#34;)
+        self.game.turn_manager.data_handler.user_data.add_user(username)
+        userid = self.game.turn_manager.data_handler.user_data.get_user_id(username)
+        self.game.turn_manager.data_handler.leaderboard_data.add_new_player(userid)
+        if userid is None:
+            raise LookupError(&#34;UserID Not Found!&#34;)
 
         players.append(Player(username, userid))
-    if int(mode)==1:
-        print(&#34;Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. Liam (Expert 😡)\n\n😈 --- Hardest --- 😈&#34;)
-        difficulty = int(input(&#34;Select Preferred Difficulty: &#34;))
+    if int(mode) == 1:
+        print(&#34;Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Rasmus (Easy 😃)\n2. &#34;
+              &#34;Johan (Medium 😊)\n3. Anton (Hard 😠)\n4. &#34;
+              &#34;Liam (Expert 😡)\n\n😈 --- Hardest --- 😈&#34;)
+        while Computer.difficulty &lt; 1 or Computer.difficulty &gt; 4:
+            try:
+                Computer.difficulty = (int(input(&#34;Select your difficulty: &#34;)))
+            except ValueError:
+                print(&#34;Must be an integer!&#34;)
+    else:
+        Computer.difficulty = None
 
-    #Prompted to select 2 player mode or VS AI
-    #Prompted to input name for player player 2 respectively
+    # Prompted to select 2 player mode or VS AI
+    # Prompted to input name for player player 2 respectively
     print(msg)
-    self.game.start(players, difficulty)</code></pre>
+    self.game.start(players, target_points)</code></pre>
 </details>
-<div class="desc"><p>Start a game versus the computer</p></div>
+<div class="desc"><p>Start the game and takes three additional inputs.</p>
+<p>:param <em>: Placeholder argument.
+:type </em>: :py:obj:<code>None</code></p>
+<p>:param mode: Input variable for game mode selection —
+"1" for Player vs AI, "2" for 2-player mode.
+:type mode: :py:obj:<code>str</code></p>
+<p>:param target_points: Input variable for the target score required
+to win the game.
+:type target_points: :py:obj:<code>int</code></p>
+<p>:param username: Input variable representing each player's username.
+:type username: :py:obj:<code>str</code></p>
+<p>:raises LookupError: If a player UserID cannot be found in user data.</p></div>
 </dd>
 <dt id="shell.Shell.help_namechange"><code class="name flex">
 <span>def <span class="ident">help_namechange</span></span>(<span>self)</span>
@@ -381,9 +510,10 @@ cmd — support for line-oriented command interpreters
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def help_namechange(self):
+    &#34;&#34;&#34;Provide help for namechange syntax.&#34;&#34;&#34;
     print(&#34;Usage: namechange &lt;currentUsername&gt; &lt;newUsername&gt;&#34;)</code></pre>
 </details>
-<div class="desc"></div>
+<div class="desc"><p>Provide help for namechange syntax.</p></div>
 </dd>
 </dl>
 </dd>
@@ -407,7 +537,6 @@ cmd — support for line-oriented command interpreters
 <li><code><a title="shell.Shell.do_namechange" href="#shell.Shell.do_namechange">do_namechange</a></code></li>
 <li><code><a title="shell.Shell.do_q" href="#shell.Shell.do_q">do_q</a></code></li>
 <li><code><a title="shell.Shell.do_quit" href="#shell.Shell.do_quit">do_quit</a></code></li>
-<li><code><a title="shell.Shell.do_roll" href="#shell.Shell.do_roll">do_roll</a></code></li>
 <li><code><a title="shell.Shell.do_rules" href="#shell.Shell.do_rules">do_rules</a></code></li>
 <li><code><a title="shell.Shell.do_start" href="#shell.Shell.do_start">do_start</a></code></li>
 <li><code><a title="shell.Shell.help_namechange" href="#shell.Shell.help_namechange">help_namechange</a></code></li>
