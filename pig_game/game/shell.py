@@ -24,11 +24,7 @@ class Shell(cmd.Cmd):  # noqa : H601
     prompt = "(🐷 Game): "
 
     def __init__(self):
-        """Init the object.
-
-        :param game: singleton instance of the game.
-        :type game: :py:obj:`Game`
-        """
+        """Init the object."""
         super().__init__()
         self.game = Game()
 
@@ -38,20 +34,11 @@ class Shell(cmd.Cmd):  # noqa : H601
         :param _: Placeholder argument.
         :type _: :py:obj:`None`
 
-        :param mode: Input variable for game mode selection —
-                     "1" for Player vs AI, "2" for 2-player mode.
-        :type mode: :py:obj:`str`
-
-        :param target_points: Input variable for the target score required
-                              to win the game.
-        :type target_points: :py:obj:`int`
-
-        :param username: Input variable representing each player's username.
-        :type username: :py:obj:`str`
-
         :raises LookupError: If a player UserID cannot be found in user data.
         """
         msg = "Game Started! Start off by rolling the dice!"
+
+        # Try to get amount of players for game until valid number.
         while True:
             mode = input(
                 "Please enter amount of players! 1 = Vs AI, 2 = 2 Player mode: "
@@ -60,6 +47,7 @@ class Shell(cmd.Cmd):  # noqa : H601
                 break
             print("Error please enter a valid amount of players (1 or 2)! 🐷")
 
+        # Try to get target points for game until valid number.
         while True:
             target_points = input("Enter the target points for the game! 🐷: ").strip()
             if target_points.isdigit() is False:
@@ -68,6 +56,9 @@ class Shell(cmd.Cmd):  # noqa : H601
                 target_points = int(target_points)
                 break
         players = []
+
+        # Ask for username, create user in data if not present,
+        # add user to leaderboard data i not present.
         for _ in range(int(mode)):
             username = input("Enter username: ")
             self.game.turn_manager.data_handler.user_data.add_user(username)
@@ -77,6 +68,8 @@ class Shell(cmd.Cmd):  # noqa : H601
                 raise LookupError("UserID Not Found!")
 
             players.append(Player(username, userid))
+
+        # Ask for Computer difficulty until valid number, only for 1 player mode.
         if int(mode) == 1:
             print(
                 "Difficulties (1-4):\n😇 --- Easiest --- 😇\n\n1. Easy 😃\n2. "
@@ -91,8 +84,6 @@ class Shell(cmd.Cmd):  # noqa : H601
         else:
             Computer.difficulty = None
 
-        # Prompted to select 2 player mode or VS AI
-        # Prompted to input name for player player 2 respectively
         print(msg)
         self.game.start(players, target_points)
 
