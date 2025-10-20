@@ -1,6 +1,19 @@
 {
-    "terminal.integrated.env.windows": {
-        "PYTHONPATH": "${workspaceFolder}"
+    "python.envFile": "${workspaceFolder}/.env",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
     },
-    "python.envFile": "${workspaceFolder}/.env"
+    "editor.formatOnSave": true,
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": true,
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./test",
+        "-p",
+        "test*.py"
+    ]
 }

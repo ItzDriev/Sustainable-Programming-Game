@@ -54,7 +54,7 @@ class Shell(cmd.Cmd):  # noqa : H601
         msg = "Game Started! Start off by rolling the dice!"
         while True:
             mode = input(
-                "Please enter amount of players! " "1 = Vs AI, 2 = 2 Player mode: "
+                "Please enter amount of players! 1 = Vs AI, 2 = 2 Player mode: "
             ).strip()
             if mode in ("1", "2"):
                 break

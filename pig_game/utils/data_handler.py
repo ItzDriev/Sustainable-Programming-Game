@@ -13,7 +13,7 @@ from pig_game.utils.user_data_handler import UserDataHandler
 from pig_game.utils.leaderboard_data_handler import LeaderboardDataHandler
 
 
-class DataHandler:  # pylint: disable=too-few-public-methods
+class DataHandler:  # pylint: disable=too-few-public-methods, disable=line-too-long
     """Handles game's data."""
 
     def __init__(self, dir_path="./pig_game/GameData"):
@@ -40,8 +40,8 @@ class DataHandler:  # pylint: disable=too-few-public-methods
         top_leader = 0
         print("-" * 88)
         print(
-            f"|{'Top ' + str(arg if arg != "" else 10) + ':':<15}{'Name:':<15}{'Games played:':<20}{'Winrate:':<15}{'Avr score per turn:':<21}|"
-        )  # noqa : H601  # pylint: disable=line-too-long
+            f"|{'Top ' + str(arg if arg != "" else 10) + ':':<15}{'Name:':<15}{'Games played:':<20}{'Winrate:':<15}{'Avr score per turn:':<21}|"  # noqa: E501
+        )
         print("-" * 88)
 
         for user_id, stats in sorted_data.items():
@@ -52,8 +52,8 @@ class DataHandler:  # pylint: disable=too-few-public-methods
             top_leader += 1
 
             print(
-                f"|{top_leader:<15}{str(self.user_data.get_username(int(user_id))):<15}{stats['games_played']:<20}{f'{winrate}%':<15}{stats['ppt']:<21.2f}|"
-            )  # noqa : H601  # pylint: disable=line-too-long
+                f"|{top_leader:<15}{str(self.user_data.get_username(int(user_id))):<15}{stats['games_played']:<20}{f'{winrate}%':<15}{stats['ppt']:<21.2f}|"  # noqa: E501
+            )
             print("-" * 88)
             if arg == "":
                 if top_leader == 10:
