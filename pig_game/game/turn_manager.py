@@ -101,7 +101,7 @@ class TurnManager:
                         player.get_username(), player.score
                     )
                 else:
-                    option = "quit"
+                    option = "n"
 
                 turn_history += (
                     f"Rolled: {dice_hand.get_last_roll()[0]}"

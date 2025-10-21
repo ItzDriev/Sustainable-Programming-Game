@@ -55,7 +55,9 @@ class Game:
         print("\n")
         self.game_over = True
 
-    def start(self, players, target_points, test_mode=False):
+    def start(
+        self, players, target_points, test_mode=False, start_index=1, end_index=2
+    ):
         """Decide which player starts first and keeps the game going.
 
         :param players: List of the current players of the game.
@@ -73,7 +75,7 @@ class Game:
 
         # Decide who starts in a singleplayer game
         if len(self.players) == 1:
-            match random.randint(1, 2):
+            match random.randint(start_index, end_index):
                 case 1:
                     while not self.game_over:
                         print("")
