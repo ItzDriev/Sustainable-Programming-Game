@@ -33,7 +33,7 @@ class TestDataHandlerClass(unittest.TestCase):
             userid = data_handler.user_data.get_user_id(f"test_name{x}")
             data_handler.leaderboard_data.add_new_player(userid)
 
-        data_handler.print_leaderboard("")
+        data_handler.print_leaderboard("", True)
         shutil.rmtree(self.test_dir)
 
 

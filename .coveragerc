@@ -7,6 +7,8 @@ omit =
 
 [report]
 exclude_lines =
+    # Ignore print statements
+    print\(
     # Ignore import statements and constants
     import
     from

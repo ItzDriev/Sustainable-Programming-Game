@@ -24,11 +24,13 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
         self.test_dir = "./pig_game/TestGameData"
         the_game = Game(dir_path=self.test_dir)
         the_game.turn_manager.data_handler.user_data.add_user("testuser")
+        uid = the_game.turn_manager.data_handler.user_data.get_user_id("testuser")
+        the_game.turn_manager.data_handler.leaderboard_data.add_new_player(uid)
         players = []
         players.append(
             Player(
                 "testuser",
-                the_game.turn_manager.data_handler.user_data.get_user_id("testuser"),
+                uid,
             )
         )
         the_game.start(players, 100, True)
@@ -41,7 +43,7 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
         self.test_dir = "./pig_game/TestGameData"
         test_game = Game(dir_path=self.test_dir)
         self.assertFalse(test_game.game_over)
-        test_game.quit_game(Player("test_player", 1))
+        test_game.quit_game(Player("test_player", 1), True)
         self.assertTrue(test_game.game_over)
         shutil.rmtree(self.test_dir)
 
@@ -49,10 +51,19 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
         """Tests if the game resets properly."""
         self.test_dir = "./pig_game/TestGameData"
         test_game = Game(dir_path=self.test_dir)
-        test_game.start([Player("test_player", 1)], 100, True)
+        test_game.turn_manager.data_handler.user_data.add_user("testuser")
+        uid = test_game.turn_manager.data_handler.user_data.get_user_id("testuser")
+        test_game.turn_manager.data_handler.leaderboard_data.add_new_player(uid)
+        players = []
+        players.append(
+            Player(
+                "testuser",
+                uid,
+            )
+        )
+        test_game.start(players, 100, True)
         test_game.computer.score = 10
         self.assertEqual(10, test_game.computer.score)
-        self.assertFalse(test_game.game_over)
         self.assertIsNotNone(test_game.players)
         test_game.game_over = True
         test_game.reset_game()

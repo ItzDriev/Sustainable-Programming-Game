@@ -41,18 +41,19 @@ class Game:
         self.computer.score = 0
         self.players = None
 
-    def quit_game(self, player: Player):
+    def quit_game(self, player: Player, test_mode):
         """Prompts quit message, returns to player_turn method.
 
         :param player: Player quitting the game.
         :type player: Player
         """
-        print(f"\n😢 {player.get_username()}...Giving up already? 😢\n")
+        if not test_mode:
+            print(f"\n😢 {player.get_username()}...Giving up already? 😢\n")
 
-        for y in range(11):
-            print(f"\r⏳ Exiting to menu{'.' * y}", end="")
-            sleep(0.1)
-        print("\n")
+            for y in range(11):
+                print(f"\r⏳ Exiting to menu{'.' * y}", end="")
+                sleep(0.1)
+            print("\n")
         self.game_over = True
 
     def start(self, players, target_points, test_mode=False):
@@ -65,9 +66,6 @@ class Game:
         :param test_mode: Boolean indicating if game is started in test mode.
         :type test_mode: :py:obj:`bool`
         """
-        if test_mode:
-            return
-
         self.reset_game()
 
         self.target_points = target_points
@@ -85,6 +83,7 @@ class Game:
                             self.dice_hand,
                             self.players,
                             self.target_points,
+                            test_mode,
                         )
                         if self.game_over:
                             break
@@ -96,6 +95,7 @@ class Game:
                             self.target_points,
                             self.players,
                             self.cheat_mode,
+                            test_mode,
                         )
                 case 2:
                     while not self.game_over:
@@ -107,6 +107,7 @@ class Game:
                             self.target_points,
                             self.players,
                             self.cheat_mode,
+                            test_mode,
                         )
                         if self.game_over:
                             break
@@ -116,6 +117,7 @@ class Game:
                             self.dice_hand,
                             self.players,
                             self.target_points,
+                            test_mode,
                         )
         else:
             current_user_index = random.randint(0, 1)
@@ -129,5 +131,6 @@ class Game:
                     self.target_points,
                     self.players,
                     self.cheat_mode,
+                    test_mode,
                 )
                 print("")
