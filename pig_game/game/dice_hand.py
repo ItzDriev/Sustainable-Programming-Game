@@ -17,7 +17,11 @@ class DiceHand:
         self.last_roll = []
 
     def roll_dice(self):
-        """Roll the dice in hand."""
+        """Roll the dice in hand.
+
+        :return: The value of the dice roll.
+        :rtype: :py:obj:`int`
+        """
         self.last_roll.clear()
 
         for die in self.dice:
@@ -28,9 +32,17 @@ class DiceHand:
         return self.last_roll  # Testing purpose
 
     def get_last_roll(self):
-        """Return the value of the last die throw."""
+        """Return the value of the last die throw.
+        
+        :return: The value of the last dice roll.
+        :rtype: :py:obj:`int`
+        """
         return self.last_roll
 
     def get_roll_history(self):
-        """Return all rolls from current session."""
+        """Return all rolls from current session.
+
+        :return: All previous rolls from the dice.
+        :rtype: :py:obj:`list` [:py:obj:`int`]
+        """
         return self.roll_history
