@@ -9,6 +9,7 @@ through interactive gameplay.
 - [Installation](#installation)
   - [Prerequisites](#prerequisites)
 - [Project Setup](#project-setup)
+- [Run Game](#run-game)
 - [Documentation](#documentation)
 - [Contributors](#contributors)
 
@@ -97,6 +98,22 @@ Also visit project documentation page for installation intructions.
 <img align="top" alt="Installation Badge" src="https://img.shields.io/badge/Installation-Link-blue">
 </a>
 
+# Run Game
+
+**Launching the game**:
+
+Using make command:
+
+```
+(.venv) $ make game
+```
+
+Using python command:
+
+```
+(.venv) $ python -m pig_game.game.main
+```
+
 # Testing
 
 This project uses linters and unittests.
@@ -109,7 +126,7 @@ This project uses linters and unittests.
 
 **Run unittests**:
 
-Runs unittests, generates a coverage, html report and in terminal.
+Runs unittests, generates a coverage, html report and report in terminal.
 
 ```bash
 (.venv) make coverage
@@ -136,18 +153,22 @@ Runs pylint.
 The project provides tools for generating complete documentation of code, coverage and UML diagram.
 
 ```bash
-(.venv) make coverage-html
-(.venv) make pyreverse
-(.venv) make sphinx
+(.venv) make doc
 ```
 
-Documentation output is stored in './doc/api/build/html', open `index.html`.
+Code documentation output is stored in `./doc/api/build/html`, open `index.html`.
+
+UML diagram output is stored in `./doc/pyreverse`.
+
+Coverage report is stored in `./doc/coverage_report`.
 
 # Documentation
 
 <a href="https://itzdriev.github.io/Sustainable-Programming-Game/">
   <img align="top" alt="Static Badge" src="https://img.shields.io/badge/Documenation-Link-blue">
 </a>
+
+<br>
 
 # Contributors
 

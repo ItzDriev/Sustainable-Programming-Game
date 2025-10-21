@@ -94,14 +94,6 @@ coverage:
 	coverage html -d doc/coverage_report
 	coverage report -m
 
-coverage-html:
-	@$(call MESSAGE,$@)
-	install -d doc/api/build/html/coverage_report
-	coverage run -m unittest discover
-	coverage html -d doc/coverage_report
-	cp doc/coverage_report/*.* doc/api/build/html/coverage_report
-#	mv doc/api/build/html/coverage_report/index.html doc/api/build/html/coverage_report/cover_index.html
-
 coverage-xml:
 	@$(call MESSAGE,$@)
 	coverage run -m unittest discover
@@ -124,6 +116,13 @@ pdoc:
 	@$(call MESSAGE,$@)
 	pdoc --force --html --output-dir doc/pdoc pig_game/game/*.py
 
+coverage-html:
+	@$(call MESSAGE,$@)
+	install -d doc/api/build/html/coverage_report
+	coverage run -m unittest discover
+	coverage html -d doc/coverage_report
+	cp doc/coverage_report/*.* doc/api/build/html/coverage_report
+
 pyreverse:
 	@$(call MESSAGE,$@)
 	install -d doc/pyreverse
@@ -141,7 +140,7 @@ sphinx:
 	sphinx-apidoc -f -o doc/api ./pig_game --separate --no-toc --module-first
 	$(MAKE) -C doc html
 
-doc: pdoc pyreverse sphinx
+doc: coverage-html pyreverse sphinx
 
 
 
@@ -178,3 +177,7 @@ metrics: radon-cc radon-mi radon-raw radon-hal cohesion
 bandit:
 	@$(call MESSAGE,$@)
 	bandit --recursive pig_game
+
+game:
+	@$(call MESSAGE,$@)
+	$(PYTHON) -m pig_game.game.main
