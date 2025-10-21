@@ -19,7 +19,7 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
         exp = Game
         self.assertIsInstance(res, exp)
 
-    def test_start_the_game(self):
+    def test_start_the_game_one_player(self):
         """Roll a dice and check value is in bounds."""
         self.test_dir = "./pig_game/TestGameData"
         the_game = Game(dir_path=self.test_dir)
@@ -38,12 +38,40 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
         self.assertTrue(True)
         shutil.rmtree(self.test_dir)
 
+    def test_start_the_game_two_player(self):
+        """Roll a dice and check value is in bounds."""
+        self.test_dir = "./pig_game/TestGameData"
+        the_game = Game(dir_path=self.test_dir)
+        the_game.turn_manager.data_handler.user_data.add_user("testuser")
+        uid = the_game.turn_manager.data_handler.user_data.get_user_id("testuser")
+        the_game.turn_manager.data_handler.leaderboard_data.add_new_player(uid)
+        the_game.turn_manager.data_handler.user_data.add_user("testuser2")
+        uid2 = the_game.turn_manager.data_handler.user_data.get_user_id("testuser2")
+        the_game.turn_manager.data_handler.leaderboard_data.add_new_player(uid2)
+        players = []
+        players.append(
+            Player(
+                "testuser",
+                uid,
+            )
+        )
+        players.append(
+            Player(
+                "testuser2",
+                uid2,
+            )
+        )
+        the_game.start(players, 100, True)
+
+        self.assertTrue(True)
+        shutil.rmtree(self.test_dir)
+
     def test_quit_game(self):
         """Test if the game quits properly."""
         self.test_dir = "./pig_game/TestGameData"
         test_game = Game(dir_path=self.test_dir)
         self.assertFalse(test_game.game_over)
-        test_game.quit_game(Player("test_player", 1), True)
+        test_game.quit_game(Player("test_player", 1))
         self.assertTrue(test_game.game_over)
         shutil.rmtree(self.test_dir)
 
