@@ -31,7 +31,11 @@ class DataHandler:  # pylint: disable=too-few-public-methods, disable=line-too-l
         )
 
     def print_leaderboard(self, arg):
-        """Print leaderboard."""
+        """Print leaderboard.
+
+        :param arg: Argument specifying Top <arg> listed running `leaderboard` command.
+        :type arg: :py:obj:`str`
+        """
         leaderboard = dict(self.leaderboard_data.read())
         sorted_data = dict(
             sorted(leaderboard.items(), key=lambda item: item[1]["ppt"], reverse=True)

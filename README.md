@@ -8,7 +8,7 @@ through interactive gameplay.
 
 - [Installation](#installation)
   - [Prerequisites](#prerequisites)
-- [Project Setup](#project-setup)
+  - [Project Setup](#project-setup)
 - [Run Game](#run-game)
 - [Documentation](#documentation)
 - [Contributors](#contributors)
