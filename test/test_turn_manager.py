@@ -5,6 +5,7 @@
 
 import shutil
 import unittest
+from unittest.mock import patch
 from pig_game.game.turn_manager import TurnManager
 from pig_game.game.game import Game
 from pig_game.game.player import Player
@@ -22,7 +23,8 @@ class TestTurnManagerClass(unittest.TestCase):
         self.assertIsInstance(res, exp)
         shutil.rmtree(self.test_dir)
 
-    def test_npc_turn(self):
+    @patch("builtins.print")
+    def test_npc_turn(self, mock_print):
         """Tests if npc hand rolls correctly."""
         self.test_dir = "./pig_game/TestGameData"
         game = Game(dir_path=self.test_dir)
