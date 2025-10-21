@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Lets play a game of "PIG, the Dice Game 🐷.
+Lets play a game of PIG, the Dice Game 🐷.
 
 Your goal is to beat the opposing player
 by reaching the target points before them!
@@ -15,7 +15,6 @@ including points acquired from previous turns.
 
 🐷 Play carefully, and don't be a PIG! 🐷  ⚀
 """
-
 from pig_game.game.shell import Shell
 
 
