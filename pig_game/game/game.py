@@ -24,7 +24,7 @@ class Game:
         :param dir_path: Directory path, eg. './pig_game/GameData'.
         :type dir_path: :py:obj:`str`
         """
-        self.ai: Computer = Computer()
+        self.computer: Computer = Computer()
 
         self.players = Player(
             "", 0
@@ -38,7 +38,7 @@ class Game:
     def reset_game(self):
         """Ensure game is reset and has correct players when starting new game."""
         self.game_over = False
-        self.ai.score = 0
+        self.computer.score = 0
         self.players = None
 
     def quit_game(self, player: Player):
@@ -71,7 +71,7 @@ class Game:
         self.reset_game()
 
         self.target_points = target_points
-        self.ai.difficulties.round_end_number = target_points
+        self.computer.difficulties.round_end_number = target_points
         self.players = players
 
         # Decide who starts in a singleplayer game
@@ -81,7 +81,10 @@ class Game:
                     while not self.game_over:
                         print("")
                         self.turn_manager.npc_turn(
-                            self.ai, self.dice_hand, self.players, self.target_points
+                            self.computer,
+                            self.dice_hand,
+                            self.players,
+                            self.target_points,
                         )
                         if self.game_over:
                             break
@@ -89,7 +92,7 @@ class Game:
                         self.turn_manager.player_turn(
                             self.players[0],
                             self.dice_hand,
-                            self.ai,
+                            self.computer,
                             self.target_points,
                             self.players,
                             self.cheat_mode,
@@ -100,7 +103,7 @@ class Game:
                         self.turn_manager.player_turn(
                             self.players[0],
                             self.dice_hand,
-                            self.ai,
+                            self.computer,
                             self.target_points,
                             self.players,
                             self.cheat_mode,
@@ -109,7 +112,10 @@ class Game:
                             break
                         print("")
                         self.turn_manager.npc_turn(
-                            self.ai, self.dice_hand, self.players, self.target_points
+                            self.computer,
+                            self.dice_hand,
+                            self.players,
+                            self.target_points,
                         )
         else:
             current_user_index = random.randint(0, 1)
@@ -119,7 +125,7 @@ class Game:
                 self.turn_manager.player_turn(
                     self.players[current_user_index],
                     self.dice_hand,
-                    self.ai,
+                    self.computer,
                     self.target_points,
                     self.players,
                     self.cheat_mode,
