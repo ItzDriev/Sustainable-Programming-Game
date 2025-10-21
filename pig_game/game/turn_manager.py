@@ -169,7 +169,7 @@ class TurnManager:
                 dice_hand.roll_dice()
                 self.game_ui.show_roll("🤖 Mr AI", dice_hand.get_last_roll())
             else:
-                break
+                return False
 
             if not DiceEvaluator.rolled_one(
                 dice_hand.get_last_roll()[0], dice_hand.get_last_roll()[1]

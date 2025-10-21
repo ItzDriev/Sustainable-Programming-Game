@@ -2,11 +2,12 @@
 """Module for difficulty testing."""
 
 
+import shutil
 import unittest
 from pig_game.game.computer import Computer
 
 
-class TestComputerShouldRoll(unittest.TestCase):
+class TestComputerClass(unittest.TestCase):
     """Tests for player choice of difficulty."""
 
     def test_match_dispatch(self):
@@ -40,6 +41,15 @@ class TestComputerShouldRoll(unittest.TestCase):
             self.assertIsNone(c.should_roll(player_score=7))
         finally:
             Computer.difficulty = original
+
+    def test_computer_should_roll(self, player_score=2):
+        """Tests if npc turn declines and score remain unchanged."""
+        self.test_dir = "./pig_game/TestGameData"
+        computer = Computer()
+        computer.score = 1
+        Computer.difficulty = 1
+
+        computer.should_roll(player_score)
 
 
 if __name__ == "__main__":

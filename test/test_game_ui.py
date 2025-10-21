@@ -18,6 +18,24 @@ class TestGameUIClass(unittest.TestCase):  # noqa: H601
         )
         self.assertEqual(result, "input")
 
+    @patch("builtins.print")
+    def test_show_roll(self, mock_print):
+        """Test."""
+        game_ui = GameUI("\u2680\u2681\u2682\u2683\u2684\u2685")
+
+        game_ui.show_roll("User", [1, 2])
+
+        mock_print.assert_called_once_with("User rolled 1 and 2 \u2680 \u2681")
+
+    @patch("builtins.print")
+    def test_clear_terminal(self, mock_print):
+        """Test."""
+        game_ui = GameUI("\u2680\u2681\u2682\u2683\u2684\u2685")
+
+        game_ui.clear_terminal()
+
+        mock_print.assert_called_once_with("\n" * 40)
+
 
 if __name__ == "__main__":
     unittest.main()
