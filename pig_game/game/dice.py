@@ -10,19 +10,28 @@ class Dice:
     """Represents a dice object that can be rolled."""
 
     def __init__(self, sides=6):
-        """Initialize the dice object."""
+        """Initialize the dice object.
+
+        :param sides: The amount of sides of the instantiated dice.
+        :type sides: :py:obj:`int`
+        """
         self.__sides = sides
         self.__last_roll = None
 
     def roll_dice(self):
         """
-        Roll the dice.
+        Roll the dice and generate a random integer between 1-6.
 
-        Generate a random integer between 1 and the number of sides.
+        :return: The latest roll value of the dice.
+        :rtype: :py:obj`int`
         """
         self.__last_roll = random.randint(1, self.__sides)
         return self.__last_roll  # Testing purpose
 
     def get_last_roll(self):
-        """Return the value of the last roll."""
+        """Return the value of the last roll.
+
+        :return: The latest roll value of the dice.
+        :rtype: :py:obj`int`
+        """
         return self.__last_roll
