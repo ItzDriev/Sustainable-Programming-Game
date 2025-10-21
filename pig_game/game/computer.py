@@ -20,7 +20,7 @@ class Computer:
         :param player_score: The human player's total score.
         :type player_score: :py:obj:`int`
         :return: ``True`` to roll, ``False`` to bank, or ``None`` if difficulty is
-        unknown.
+                   unknown.
         :rtype: :py:obj:`bool` | :py:obj:`NoneType`
         """
         match Computer.difficulty:

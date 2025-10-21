@@ -1,5 +1,5 @@
 Documenation
-=====
+==============
 
 .. _Diagrams and Reports:
 
@@ -26,8 +26,9 @@ UML diagram for :py:mod:`pig_game.game`:
                   "
                   onclick="window.open('./_images/classes.png', '_blank')">OPEN DIAGRAM</button>
    </div>
+
 Coverage report
-------------
+------------------
 
 **Coverage**
 
@@ -48,6 +49,3 @@ Coverage report for for :py:mod:`pig_game`:
                   "
                   onclick="window.open('./coverage_report/index.html', '_blank')">OPEN COVERAGE REPORT</button>
    </div>
-
-
-

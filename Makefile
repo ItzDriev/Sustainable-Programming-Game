@@ -46,11 +46,12 @@ clean:
 	@$(call MESSAGE,$@)
 	rm -f .coverage *.pyc
 	rm -rf __pycache__
-	rm -rf htmlcov
 
 clean-doc: clean
 	@$(call MESSAGE,$@)
-	rm -rf doc
+	rm -f doc/coverage_report/*.*
+	rm -f doc/pyreverse/*.*
+	rm -rf doc/api/build/
 
 clean-all: clean clean-doc
 	@$(call MESSAGE,$@)
@@ -136,7 +137,7 @@ sphinx:
 	@$(call MESSAGE,$@)
 	install -d doc/api
 	rm -f doc/api/pig_game*.rst
-	curl -L https://raw.githubusercontent.com/ItzDriev/Sustainable-Programming-Game/main/README.md -o doc/api/README.md
+#	curl -L https://raw.githubusercontent.com/ItzDriev/Sustainable-Programming-Game/main/README.md -o doc/api/README.md
 	sphinx-apidoc -f -o doc/api ./pig_game --separate --no-toc --module-first
 	$(MAKE) -C doc html
 
