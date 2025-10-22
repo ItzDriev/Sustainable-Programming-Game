@@ -4,6 +4,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from pig_game.game.shell import Shell
 from pig_game.game.game import Game
+from pig_game.game.computer import Computer
 
 
 class TestShell(unittest.TestCase):
@@ -13,6 +14,8 @@ class TestShell(unittest.TestCase):
         """Create a Shell instance and replace its game object with a dummy."""
         self.shell = Shell()
         self.shell.game = MagicMock()
+        # Reset difficulty
+        Computer.difficulty = 0
 
     # Patch replaces the input with a mock and side_effect are used as the paramters
     @patch("builtins.input", side_effect=["1", "50", "player1", "1"])
@@ -47,6 +50,18 @@ class TestShell(unittest.TestCase):
             self.shell.do_start(None)
 
         self.assertEqual(str(context.exception), "UserID Not Found!")
+
+    @patch("builtins.input", side_effect=["1", "50", "Player1", "abc", "5", "3"])
+    def test_computer_difficulty_input_loop(self, _dummy_input):
+        """Test the computer difficulty selection loop including invalid inputs."""
+        self.shell.game.turn_manager.data_handler.user_data = MagicMock()
+        self.shell.game.turn_manager.data_handler.user_data.get_user_id.return_value = 1
+        self.shell.game.turn_manager.data_handler.leaderboard_data = MagicMock()
+        self.shell.game.start = MagicMock()
+
+        self.shell.do_start(None)
+
+        self.assertEqual(Computer.difficulty, 3)
 
     @patch("builtins.print")
     def test_do_cheat(self, dummy_print):
