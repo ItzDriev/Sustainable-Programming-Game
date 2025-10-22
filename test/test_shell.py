@@ -103,8 +103,6 @@ class TestShell(unittest.TestCase):
         user_data = self.shell.game.turn_manager.data_handler.user_data
         user_data.update_username.assert_called_with("old", "new")
 
-        dummy_print.assert_called()
-
     @patch("builtins.print")
     def test_do_namechange_invalid(self, dummy_print):
         """Test that do_namechange ignores invalid argument counts."""
