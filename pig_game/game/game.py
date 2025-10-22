@@ -66,6 +66,10 @@ class Game:
         :type target_points: :py:obj:`int`
         :param test_mode: Boolean indicating if game is started in test mode.
         :type test_mode: :py:obj:`bool`
+        :param start_index: Bottom index for randomly deciding who starts
+        :type start_index: :py:obj:`int`
+        :param end_index: Top index for randomly deciding who starts
+        :type end_index: :py:obj:`int`
         """
         self.reset_game()
 

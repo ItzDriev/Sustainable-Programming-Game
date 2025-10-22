@@ -111,7 +111,7 @@ class Shell(cmd.Cmd):  # noqa : H601
 
         :param args: Arguments separated by spaces representing
                      current and new usernames.
-        :type args: str
+        :type args: :py:obj:`str`
         """
         name_info = args.split()
 
