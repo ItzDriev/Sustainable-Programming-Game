@@ -201,7 +201,3 @@ class Shell(cmd.Cmd):  # noqa : H601
         :rtype: :py:obj:`bool`
         """
         return self.do_exit(arg)
-
-    def help_EOF(self):
-        """Provide syntax for EOF command."""
-        print("Usage: EOF")
