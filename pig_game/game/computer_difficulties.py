@@ -10,7 +10,7 @@ class ComputerDifficulties:
         """Initialize state.
 
         :param computer: Owning computer instance.
-        :type computer: object
+        :type computer: Computer
         """
         self.__turn_score = 0
         self.first_start_hand = 0

@@ -91,7 +91,7 @@ unittest:
 
 coverage:
 	@$(call MESSAGE,$@)
-	coverage run -m unittest discover
+	coverage run -m unittest discover -b
 	coverage html -d doc/coverage_report
 	coverage report -m
 
@@ -140,6 +140,8 @@ sphinx:
 #	curl -L https://raw.githubusercontent.com/ItzDriev/Sustainable-Programming-Game/main/README.md -o doc/api/README.md
 	sphinx-apidoc -f -o doc/api ./pig_game --separate --no-toc --module-first
 	$(MAKE) -C doc html
+
+uml: pyreverse
 
 doc: coverage-html pyreverse sphinx
 

@@ -41,22 +41,23 @@ class Game:
         self.computer.score = 0
         self.players = None
 
-    def quit_game(self, player: Player, test_mode):
+    def quit_game(self, player: Player):
         """Prompts quit message, returns to player_turn method.
 
         :param player: Player quitting the game.
         :type player: Player
         """
-        if not test_mode:
-            print(f"\n😢 {player.get_username()}...Giving up already? 😢\n")
+        print(f"\n😢 {player.get_username()}...Giving up already? 😢\n")
 
-            for y in range(11):
-                print(f"\r⏳ Exiting to menu{'.' * y}", end="")
-                sleep(0.1)
-            print("\n")
+        for y in range(11):
+            print(f"\r⏳ Exiting to menu{'.' * y}", end="")
+            sleep(0.1)
+        print("\n")
         self.game_over = True
 
-    def start(self, players, target_points, test_mode=False):
+    def start(
+        self, players, target_points, test_mode=False, start_index=1, end_index=2
+    ):
         """Decide which player starts first and keeps the game going.
 
         :param players: List of the current players of the game.
@@ -74,7 +75,7 @@ class Game:
 
         # Decide who starts in a singleplayer game
         if len(self.players) == 1:
-            match random.randint(1, 2):
+            match random.randint(start_index, end_index):
                 case 1:
                     while not self.game_over:
                         print("")
@@ -83,7 +84,6 @@ class Game:
                             self.dice_hand,
                             self.players,
                             self.target_points,
-                            test_mode,
                         )
                         if self.game_over:
                             break
@@ -117,7 +117,6 @@ class Game:
                             self.dice_hand,
                             self.players,
                             self.target_points,
-                            test_mode,
                         )
         else:
             current_user_index = random.randint(0, 1)

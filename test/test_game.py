@@ -5,6 +5,7 @@
 
 import shutil
 import unittest
+from unittest.mock import patch
 from pig_game.game.game import Game
 from pig_game.game.player import Player
 
@@ -19,13 +20,52 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
         exp = Game
         self.assertIsInstance(res, exp)
 
-    def test_start_the_game(self):
+    def test_start_the_game_case_1(self):
+        """"""
+        self.test_dir = "./pig_game/TestGameData"
+        the_game = Game(dir_path=self.test_dir)
+        the_game.turn_manager.data_handler.user_data.add_user("testuser")
+        uid = the_game.turn_manager.data_handler.user_data.get_user_id("testuser")
+        the_game.turn_manager.data_handler.leaderboard_data.add_new_player(uid)
+        players = [Player("testuser", uid)]
+
+        self.assertFalse(the_game.game_over)
+        the_game.start(players, 0, True, 1, 1)
+        self.assertTrue(the_game.game_over)
+        self.assertTrue(the_game.game_over)
+        the_game.start(players, 30, True, 1, 1)
+        self.assertTrue(the_game.game_over)
+
+        shutil.rmtree(self.test_dir)
+
+    def test_start_the_game_case_2(self):
+        """"""
+        self.test_dir = "./pig_game/TestGameData"
+        the_game = Game(dir_path=self.test_dir)
+        the_game.turn_manager.data_handler.user_data.add_user("testuser")
+        uid = the_game.turn_manager.data_handler.user_data.get_user_id("testuser")
+        the_game.turn_manager.data_handler.leaderboard_data.add_new_player(uid)
+        players = [Player("testuser", uid)]
+
+        self.assertFalse(the_game.game_over)
+        the_game.start(players, 0, True, 2, 2)
+        self.assertTrue(the_game.game_over)
+        the_game.game_over = False
+        the_game.start(players, 13, True, 2, 2)
+        self.assertTrue(the_game.game_over)
+
+        shutil.rmtree(self.test_dir)
+
+    def test_start_the_game_two_player(self):
         """Roll a dice and check value is in bounds."""
         self.test_dir = "./pig_game/TestGameData"
         the_game = Game(dir_path=self.test_dir)
         the_game.turn_manager.data_handler.user_data.add_user("testuser")
         uid = the_game.turn_manager.data_handler.user_data.get_user_id("testuser")
         the_game.turn_manager.data_handler.leaderboard_data.add_new_player(uid)
+        the_game.turn_manager.data_handler.user_data.add_user("testuser2")
+        uid2 = the_game.turn_manager.data_handler.user_data.get_user_id("testuser2")
+        the_game.turn_manager.data_handler.leaderboard_data.add_new_player(uid2)
         players = []
         players.append(
             Player(
@@ -33,9 +73,16 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
                 uid,
             )
         )
-        the_game.start(players, 100, True)
+        players.append(
+            Player(
+                "testuser2",
+                uid2,
+            )
+        )
+        self.assertFalse(the_game.game_over)
+        the_game.start(players, 15, True)
 
-        self.assertTrue(True)
+        self.assertTrue(the_game.game_over)
         shutil.rmtree(self.test_dir)
 
     def test_quit_game(self):
@@ -43,7 +90,7 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
         self.test_dir = "./pig_game/TestGameData"
         test_game = Game(dir_path=self.test_dir)
         self.assertFalse(test_game.game_over)
-        test_game.quit_game(Player("test_player", 1), True)
+        test_game.quit_game(Player("test_player", 1))
         self.assertTrue(test_game.game_over)
         shutil.rmtree(self.test_dir)
 
@@ -61,7 +108,7 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
                 uid,
             )
         )
-        test_game.start(players, 100, True)
+        test_game.start(players, 0, True)
         test_game.computer.score = 10
         self.assertEqual(10, test_game.computer.score)
         self.assertIsNotNone(test_game.players)

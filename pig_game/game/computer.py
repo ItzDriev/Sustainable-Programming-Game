@@ -19,9 +19,10 @@ class Computer:
 
         :param player_score: The human player's total score.
         :type player_score: :py:obj:`int`
-        :return: ``True`` to roll, ``False`` to bank, or ``None`` if difficulty is
-                   unknown.
-        :rtype: :py:obj:`bool` | :py:obj:`NoneType`
+        :return: True if should roll, False if should not continue.
+        :rtype: :py:obj:`bool` | :py:obj:`None`
+        :raises ValueError: If the difficulty variable is out of range or
+                            incorrect data type.
         """
         match Computer.difficulty:
             case 1:
@@ -32,3 +33,5 @@ class Computer:
                 return self.difficulties.hard_mode(player_score, self.score)
             case 4:
                 return self.difficulties.extreme_mode(player_score, self.score)
+            case _:
+                raise ValueError("Difficulty is out of range!")

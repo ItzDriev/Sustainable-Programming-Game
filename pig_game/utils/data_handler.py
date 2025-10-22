@@ -30,7 +30,7 @@ class DataHandler:  # pylint: disable=too-few-public-methods, disable=line-too-l
             self.__dir_path / "LeaderboardData.json", self.__dir_path
         )
 
-    def print_leaderboard(self, arg, test_mode=False):
+    def print_leaderboard(self, arg):
         """Print leaderboard.
 
         :param arg: Argument specifying Top <arg> listed running `leaderboard` command.
@@ -43,12 +43,11 @@ class DataHandler:  # pylint: disable=too-few-public-methods, disable=line-too-l
 
         top_leader = 0
 
-        if not test_mode:
-            print("-" * 88)
-            print(
-                f"|{'Top ' + str(arg if arg != "" else 10) + ':':<15}{'Name:':<15}{'Games played:':<20}{'Winrate:':<15}{'Avr score per turn:':<21}|"  # noqa: E501
-            )
-            print("-" * 88)
+        print("-" * 88)
+        print(
+            f"|{'Top ' + str(arg if arg != "" else 10) + ':':<15}{'Name:':<15}{'Games played:':<20}{'Winrate:':<15}{'Avr score per turn:':<21}|"  # noqa: E501
+        )
+        print("-" * 88)
 
         for user_id, stats in sorted_data.items():
             if stats["wins"] != 0:
@@ -57,11 +56,10 @@ class DataHandler:  # pylint: disable=too-few-public-methods, disable=line-too-l
                 winrate = 0
             top_leader += 1
 
-            if not test_mode:
-                print(
-                    f"|{top_leader:<15}{str(self.user_data.get_username(int(user_id))):<15}{stats['games_played']:<20}{f'{winrate}%':<15}{stats['ppt']:<21.2f}|"  # noqa: E501
-                )
-                print("-" * 88)
+            print(
+                f"|{top_leader:<15}{str(self.user_data.get_username(int(user_id))):<15}{stats['games_played']:<20}{f'{winrate}%':<15}{stats['ppt']:<21.2f}|"  # noqa: E501
+            )
+            print("-" * 88)
             if arg == "":
                 if top_leader == 10:
                     break

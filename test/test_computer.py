@@ -38,7 +38,7 @@ class TestComputerClass(unittest.TestCase):
                 self.assertEqual(called["args"], (7, 10))
 
             Computer.difficulty = 0
-            self.assertIsNone(c.should_roll(player_score=7))
+            self.assertRaises(ValueError, c.should_roll, player_score=7)
         finally:
             Computer.difficulty = original
 

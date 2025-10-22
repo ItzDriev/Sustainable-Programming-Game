@@ -33,7 +33,7 @@ class DiceHand:
 
     def get_last_roll(self):
         """Return the value of the last die throw.
-        
+
         :return: The value of the last dice roll.
         :rtype: :py:obj:`int`
         """
