@@ -51,6 +51,8 @@ class TurnManager:
         :type players: List[Player]
         :param cheat_mode: Boolean indicating if cheat mode is active.
         :type cheat_mode: :py:obj:`bool`
+        :param test_mode: Boolean indicating if test mode is active.
+        :type test_mode: :py:obj:`bool`
         """
         if cheat_mode:
             player.score += target_points

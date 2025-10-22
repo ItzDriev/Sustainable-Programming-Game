@@ -23,7 +23,7 @@ class Dice:
         Roll the dice and generate a random integer between 1-6.
 
         :return: The latest roll value of the dice.
-        :rtype: :py:obj`int`
+        :rtype: :py:obj:`int`
         """
         self.__last_roll = random.randint(1, self.__sides)
         return self.__last_roll  # Testing purpose
@@ -32,6 +32,6 @@ class Dice:
         """Return the value of the last roll.
 
         :return: The latest roll value of the dice.
-        :rtype: :py:obj`int`
+        :rtype: :py:obj:`int`
         """
         return self.__last_roll
