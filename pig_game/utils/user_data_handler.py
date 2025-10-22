@@ -73,8 +73,10 @@ class UserDataHandler(JSONFileHandler):  # noqa: H601
         if any(info.get("username") == new_username for info in data.values()):
             return False
         if str(self.get_user_id(current_username)) not in data:
+            print("User does not exist")
             return False
         data[str(self.get_user_id(current_username))]["username"] = new_username
+        print('Name succesfully changed')
         self.write(data)
         return True
 

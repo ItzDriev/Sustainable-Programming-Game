@@ -88,30 +88,40 @@ class TurnManager:
                                 )
                             )
                     break
-                if not test_mode:
-                    option = self.game_ui.prompt_next_action(
-                        player.get_username(), player.score
-                    )
-                else:
-                    option = "n"
 
                 turn_history += (
                     f"Rolled: {dice_hand.get_last_roll()[0]}"
                     + f" and {dice_hand.get_last_roll()[1]}\n"
                 )
-                match option:
-                    case "y":
-                        continue
-                    case "n":
-                        (
-                            self.data_handler.leaderboard_data.update_ppt_and_turns(
-                                player, turn_score
+
+                option = ""
+                while option not in ["y", "n", "quit"]:
+                    if not test_mode:
+                        option = (
+                            self.game_ui.prompt_next_action(
+                                player.get_username(), player.score
                             )
+                            .strip()
+                            .lower()
                         )
-                        break
-                    case "quit":
-                        self.game.quit_game(player)  # Prompts quit message
-                        break  # Breaks loop and returns to start()
+                    else:
+                        option = "n"
+                    match option:
+                        case "y":
+                            break
+                        case "n":
+                            (
+                                self.data_handler.leaderboard_data.update_ppt_and_turns(
+                                    player, turn_score
+                                )
+                            )
+                            return
+                        case "quit":
+                            self.game.quit_game(player)  # Prompts quit message
+                            return  # Breaks loop and returns to start()
+
+                    self.game_ui.clear_terminal()
+                    print(turn_history)
 
             elif not DiceEvaluator.rolled_two_ones(
                 dice_hand.get_last_roll()[0], dice_hand.get_last_roll()[1]

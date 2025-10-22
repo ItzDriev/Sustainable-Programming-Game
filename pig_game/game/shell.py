@@ -126,8 +126,6 @@ class Shell(cmd.Cmd):  # noqa : H601
             name_info[0], name_info[1]
         )
 
-        print("You change your name lul xd")
-
     def help_namechange(self):
         """Provide syntax for namechange command."""
         print("Usage: namechange <currentUsername> <newUsername>")
