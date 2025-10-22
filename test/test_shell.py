@@ -20,7 +20,7 @@ class TestShell(unittest.TestCase):
     # Patch replaces the input with a mock and side_effect are used as the paramters
     @patch("builtins.input", side_effect=["1", "50", "player1", "1"])
     def test_do_start_single_player(self, dummy_input):
-        """Simulate a single-player game start with dummy inputs."""
+        """Simulate a singleplayer game start with dummy inputs."""
         self.shell.game.turn_manager.data_handler.user_data = MagicMock()
         self.shell.game.turn_manager.data_handler.user_data.get_user_id.return_value = (
             123

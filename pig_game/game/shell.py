@@ -94,6 +94,9 @@ class Shell(cmd.Cmd):  # noqa : H601
     def do_cheat(self, _):
         """Activates cheating for testing purposes.
 
+        :param _: Placeholder argument.
+        :type _: :py:obj:`None`
+
         Immediately goes to the end of the game.
         """
         Game.cheat_mode = True
@@ -126,7 +129,12 @@ class Shell(cmd.Cmd):  # noqa : H601
         print("Usage: namechange <currentUsername> <newUsername>")
 
     def do_rules(self, _):
-        """Will explain the rules once again."""
+        """
+        Will explain the rules once again.
+
+        :param _: Placeholder argument.
+        :type _: :py:obj:`None`
+        """
         rules = """
         Your goal is to beat the opposing player
         by reaching the target points before them!
@@ -158,6 +166,9 @@ class Shell(cmd.Cmd):  # noqa : H601
     # Below are all ways to exit the game: exit, quite, q and EOF
     def do_exit(self, _):
         """Leave the game.
+
+        :param _: Placeholder argument.
+        :type _: :py:obj:`None`
 
         :return: True, indicating game exit
         :rtype: :py:obj:`bool`
