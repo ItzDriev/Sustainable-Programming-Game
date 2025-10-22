@@ -8,11 +8,20 @@ through interactive gameplay.
 .. .. include:: README.md
 ..    :parser: myst
 
---------
+
+About the project and implementation
+----------------------------------------
+----------------------------------------
+
+
+
+
+Contents:
+-----------
+------------
 
 .. toctree::
    :maxdepth: 3
-   :caption: Contents:
 
    usage
    pig_game

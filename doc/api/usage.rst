@@ -6,39 +6,101 @@ Usage
 Installation
 ------------
 
-**Virtual Environtment setup**
+Prerequisites:
+^^^^^^^^^^^^^^^
 
-Set up a venv in the root directory.:
+* :ref:`chocolatey` (Windows)
+* :ref:`gnu-make` (Windows)
+* :ref:`graphviz`
 
-.. code-block:: console
 
-   $ make venv
+.. _chocolatey:
 
-**Virtual Environtment activation**
+Chocolatey
+^^^^^^^^^^^
 
-Activate venv:
+**Windows**:
 
-* On Unix and Mac, do:
-   * . .venv/bin/activate
-* On Windows (bash terminal), do:
-   * . .venv/Scripts/activate
+`Link to chocolatey website <https://chocolatey.org/install>`_.
 
-.. code-block:: console
+.. _gnu-make:
 
-   Windows:
-   $ . .venv/Scripts/activate
-   Unix:
-   $ . .venv/bin/activate
-   Mac:
-   $ . .venv/bin/activate
+GNU Make
+^^^^^^^^^^^
 
-To ensure the project contains all packages, first install the requirements using pip:
+`Link to GNU Make installation website <https://community.chocolatey.org/packages/make>`_.
 
-.. code-block:: console
+.. code-block:: powershell
 
-   (.venv) $ pip install -r requirements.txt
+   PS choco install make
 
-Running the game
+Ensure make is installed:
+
+.. code-block:: powershell
+
+   make --version
+
+
+.. _graphviz:
+
+Graphviz
+^^^^^^^^^^^
+
+**Windows**:
+
+`Link to Graphviz website <https://graphviz.org/download/>`_.
+
+.. code-block:: powershell
+
+   PS choco install graphviz
+
+**Other**:
+
+.. code-block:: powershell
+
+   sudo apt-get update && sudo apt-get install -y graphviz
+
+.. _project-setup:
+
+Project setup
+-------------
+
+**Virtual Environtment setup**:
+
+   1. Create venv, execute in project root:
+
+   .. code-block:: bash
+
+      $ make venv
+
+   2. Activate venv, execute in project root:
+
+   .. code-block:: bash
+
+      Windows:
+      $ . .venv/Scripts/activate
+      Unix:
+      $ . .venv/bin/activate
+      Mac:
+      $ . .venv/bin/activate
+
+   3. Ensure venv is used:
+
+   .. code-block:: bash
+
+      $ which python
+      /Sustainable-Programming-Game/.venv/*/python
+
+**Install requirements**:
+
+.. code-block:: bash
+
+   (.venv) $ make install
+
+
+.. _run-game:
+
+Run Game
 ----------------
 
 To run the game, use the ``pig_game.game.main.main()`` function:
@@ -51,27 +113,60 @@ For example:
 >>> import pig_game
 >>> pig_game.game.main.main()
 
-Tests
+**Launching the game**:
+
+Using make command:
+
+.. code-block:: bash
+
+   (.venv) $ make game
+
+Using python command:
+
+.. code-block:: bash
+
+   (.venv) $ python -m pig_game.game.main
+
+
+.. _testing:
+
+Testing
 ------------
 
+This project uses linters and unittests.
 
-Run all tests:
+**Run all tests**:
 
 .. code-block:: console
 
    (.venv) $ make test
 
-Run unittests:
+**Run unittests**:
+
+Runs unittests, generates a coverage, html report and report in terminal.
 
 .. code-block:: console
 
-   (.venv) $ make covarage
+   (.venv) $ make coverage
 
-Run flake8:
+**Run linters**:
+
+Runs linters (flake8, pylint).
+
+.. code-block:: console
+
+   (.venv) $ make lint
+
+
+* **Run flake8**:
+
+Runs flake8.
 
 .. code-block:: console
 
    (.venv) $ make flake8
+
+* **Run pylint**:
 
 Run pylint:
 
@@ -79,18 +174,47 @@ Run pylint:
 
    (.venv) $ make pylint
 
+.. _documentation-generation:
+
 Documenation generation
 ------------------------
 
-**Generating html documentation**
-
-To generate the html documentation:
+The project provides tools for generating complete documentation of code, coverage and UML diagrams.
 
 .. code-block:: console
 
-   $ make sphinx
+   (.venv) $ make doc
 
-See our documentation in :ref:`Diagrams and Reports`.
+Code documentation output is stored in `./doc/api/build/html`, open `index.html`.
 
+UML diagrams output is stored in `./doc/pyreverse`.
 
+Coverage report is stored in `./doc/coverage_report`, open `index.html`.
 
+**Code documentation**:
+
+Code documentation requires UML diagram and coverage report, therefore is run the same way was mentioned earlier.
+
+.. code-block:: console
+
+   (.venv) $ make doc
+
+**UML Diagrams**:
+
+Generates UML Diagrams of the game.
+
+.. code-block:: console
+
+   (.venv) $ make uml
+
+UML diagrams output is stored in `./doc/pyreverse`.
+
+**Coverage report**:
+
+Generate coverage report.
+
+.. code-block:: console
+
+   (.venv) $ make coverage-html
+
+Coverage report is stored in `./doc/coverage_report`, open `index.html`.

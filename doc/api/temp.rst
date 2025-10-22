@@ -6,8 +6,6 @@ Documenation
 UML Diagram
 ------------
 
-**UML**
-
 UML diagram for :py:mod:`pig_game.game`:
 
 .. image:: /classes.png
@@ -30,8 +28,6 @@ UML diagram for :py:mod:`pig_game.game`:
 Coverage report
 ------------------
 
-**Coverage**
-
 Coverage report for for :py:mod:`pig_game`:
 
 .. raw:: html
@@ -44,8 +40,8 @@ Coverage report for for :py:mod:`pig_game`:
                   border-radius: 2rem;
                   border: 0;background-color: #2980b9;
                   color: white;
-                  margin: .3rem 0 .3rem 0;
-                  justify-self: center
+                  margin: .3rem 0 1rem 0;
+                  justify-self: left
                   "
                   onclick="window.open('./coverage_report/index.html', '_blank')">OPEN COVERAGE REPORT</button>
    </div>
