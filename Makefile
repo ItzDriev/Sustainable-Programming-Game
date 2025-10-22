@@ -141,6 +141,8 @@ sphinx:
 	sphinx-apidoc -f -o doc/api ./pig_game --separate --no-toc --module-first
 	$(MAKE) -C doc html
 
+uml: pyreverse
+
 doc: coverage-html pyreverse sphinx
 
 

@@ -10,6 +10,8 @@ through interactive gameplay.
   - [Prerequisites](#prerequisites)
   - [Project Setup](#project-setup)
 - [Run Game](#run-game)
+- [Testing](#testing)
+- [Documentation Generation](#documentation-generation)
 - [Documentation](#documentation)
 - [Contributors](#contributors)
 
@@ -132,25 +134,33 @@ Runs unittests, generates a coverage, html report and report in terminal.
 (.venv) make coverage
 ```
 
-**Run flake8**:
+**Run linters**:
 
-Runs flake8.
-
-```bash
-(.venv) make flake8
-```
-
-**Run pylint**:
-
-Runs pylint.
+Runs linters (flake8, pylint).
 
 ```bash
-(.venv) make pylint
+(.venv) make lint
 ```
+
+- **Run flake8**:
+
+  Runs flake8.
+
+  ```bash
+  (.venv) make flake8
+  ```
+
+- **Run pylint**:
+
+  Runs pylint.
+
+  ```bash
+  (.venv) make pylint
+  ```
 
 # Documentation generation
 
-The project provides tools for generating complete documentation of code, coverage and UML diagram.
+The project provides tools for generating complete documentation of code, coverage and UML diagrams.
 
 ```bash
 (.venv) make doc
@@ -158,9 +168,37 @@ The project provides tools for generating complete documentation of code, covera
 
 Code documentation output is stored in `./doc/api/build/html`, open `index.html`.
 
-UML diagram output is stored in `./doc/pyreverse`.
+UML diagrams output is stored in `./doc/pyreverse`.
 
-Coverage report is stored in `./doc/coverage_report`.
+Coverage report is stored in `./doc/coverage_report`, open `index.html`.
+
+**Code documentation**:
+
+Code documentation requires UML diagram and coverage report, therefore is run the same way was mentioned earlier.
+
+```bash
+(.venv) make doc
+```
+
+**UML Diagrams**:
+
+Generates UML Diagrams of the game.
+
+```bash
+(.venv) make uml
+```
+
+UML diagrams output is stored in `./doc/pyreverse`.
+
+**Coverage report**:
+
+Generate coverage report.
+
+```bash
+(.venv) make coverage-html
+```
+
+Coverage report is stored in `./doc/coverage_report`, open `index.html`.
 
 # Documentation
 
