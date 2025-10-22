@@ -35,6 +35,7 @@ class Shell(cmd.Cmd):  # noqa : H601
         :type _: :py:obj:`None`
 
         :raises LookupError: If a player UserID cannot be found in user data.
+        :raises ValueError: If a player inputs a value outside the scope [1,4]
         """
         msg = "Game Started! Start off by rolling the dice!"
 
