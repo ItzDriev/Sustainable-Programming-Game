@@ -58,5 +58,47 @@
         "games_played": 1,
         "ppt": 0,
         "total_turns": 0
+    },
+    "10": {
+        "wins": 0,
+        "games_played": 0,
+        "ppt": 1.1428571428571428,
+        "total_turns": 7
+    },
+    "11": {
+        "wins": 0,
+        "games_played": 0,
+        "ppt": 0.0,
+        "total_turns": 1
+    },
+    "12": {
+        "wins": 0,
+        "games_played": 0,
+        "ppt": 0.0,
+        "total_turns": 1
+    },
+    "13": {
+        "wins": 0,
+        "games_played": 0,
+        "ppt": 0,
+        "total_turns": 0
+    },
+    "14": {
+        "wins": 0,
+        "games_played": 0,
+        "ppt": 0,
+        "total_turns": 0
+    },
+    "15": {
+        "wins": 1,
+        "games_played": 1,
+        "ppt": 9.0,
+        "total_turns": 1
+    },
+    "16": {
+        "wins": 0,
+        "games_played": 1,
+        "ppt": 0.0,
+        "total_turns": 1
     }
 }

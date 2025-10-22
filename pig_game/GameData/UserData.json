@@ -38,5 +38,33 @@
     "9": {
         "user_id": 9,
         "username": "TestUser5"
+    },
+    "10": {
+        "user_id": 10,
+        "username": "30434"
+    },
+    "11": {
+        "user_id": 11,
+        "username": "Niklas"
+    },
+    "12": {
+        "user_id": 12,
+        "username": "Peter"
+    },
+    "13": {
+        "user_id": 13,
+        "username": "lisa"
+    },
+    "14": {
+        "user_id": 14,
+        "username": "peter"
+    },
+    "15": {
+        "user_id": 15,
+        "username": "p\u00e4ron"
+    },
+    "16": {
+        "user_id": 16,
+        "username": "dill"
     }
 }
