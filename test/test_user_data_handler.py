@@ -108,8 +108,13 @@ class TestUserDataHandlerClass(unittest.TestCase):
         user_data = UserDataHandler(
             self.test_dir + "/UserData.json", dir_path=self.test_dir
         )
-        self.assertIsNone(user_data.get_username(99999999))
 
+        user_data.add_user("test")
+
+        self.assertIsNone(user_data.get_username(99999999))
+        self.assertIsInstance(
+            user_data.get_username(user_data.get_user_id("test")), str
+        )
         # Cleanup directory
         os.remove(self.test_dir + "/UserData.json")
         os.rmdir(self.test_dir)
