@@ -65,9 +65,7 @@ jobs:
 
       - name: Build docs
         run: |
-          make coverage-html
-          make pyreverse
-          make sphinx
+          make doc
 
       - name: Upload docs artifact
         uses: actions/upload-pages-artifact@v4
