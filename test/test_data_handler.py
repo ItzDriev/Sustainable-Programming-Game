@@ -3,8 +3,6 @@
 
 """Unit testing."""
 
-
-import os
 import shutil
 import unittest
 from pig_game.utils.data_handler import DataHandler
