@@ -6,6 +6,7 @@ through interactive gameplay.
 
 ## Table of content:
 
+- [About the project and implementation](#about-the-project-and-implementation)
 - [Installation](#installation)
   - [Prerequisites](#prerequisites)
   - [Project Setup](#project-setup)
