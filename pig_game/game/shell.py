@@ -35,6 +35,7 @@ class Shell(cmd.Cmd):  # noqa : H601
         :type _: :py:obj:`None`
 
         :raises LookupError: If a player UserID cannot be found in user data.
+        :raises ValueError: If a player inputs a value outside the scope [1,4]
         """
         msg = "Game Started! Start off by rolling the dice!"
 
@@ -94,6 +95,9 @@ class Shell(cmd.Cmd):  # noqa : H601
     def do_cheat(self, _):
         """Activates cheating for testing purposes.
 
+        :param _: Placeholder argument.
+        :type _: :py:obj:`None`
+
         Immediately goes to the end of the game.
         """
         Game.cheat_mode = True
@@ -107,8 +111,11 @@ class Shell(cmd.Cmd):  # noqa : H601
         """Will perform a namechange.
 
         :param args: Arguments separated by spaces representing
-                     current and new usernames.
-        :type args: str
+                         current and new usernames.
+        :type args: :py:obj:`str`
+
+        :return: None if the arguments are incorrect when attempting namechange
+        :rtype: :py:obj:`None`
         """
         name_info = args.split()
 
@@ -126,7 +133,12 @@ class Shell(cmd.Cmd):  # noqa : H601
         print("Usage: namechange <currentUsername> <newUsername>")
 
     def do_rules(self, _):
-        """Will explain the rules once again."""
+        """
+        Will explain the rules once again.
+
+        :param _: Placeholder argument.
+        :type _: :py:obj:`None`
+        """
         rules = """
         Your goal is to beat the opposing player
         by reaching the target points before them!
@@ -158,6 +170,9 @@ class Shell(cmd.Cmd):  # noqa : H601
     # Below are all ways to exit the game: exit, quite, q and EOF
     def do_exit(self, _):
         """Leave the game.
+
+        :param _: Placeholder argument.
+        :type _: :py:obj:`None`
 
         :return: True, indicating game exit
         :rtype: :py:obj:`bool`
@@ -201,7 +216,3 @@ class Shell(cmd.Cmd):  # noqa : H601
         :rtype: :py:obj:`bool`
         """
         return self.do_exit(arg)
-
-    def help_EOF(self):
-        """Provide syntax for EOF command."""
-        print("Usage: EOF")

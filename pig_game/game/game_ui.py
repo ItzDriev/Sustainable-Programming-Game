@@ -5,7 +5,12 @@ class GameUI:  # noqa: H601
     """Handles ui interaction during a game."""
 
     def __init__(self, emojis):
-        """Inititializes the GameUI object."""
+        """
+        Inititializes the GameUI object.
+
+        :param emojis: Reference to the dice emojis
+        :type emojis: :py:obj:`str`
+        """
         self.emojis = emojis
 
     def show_roll(self, player_name, dice_values):
