@@ -111,8 +111,11 @@ class Shell(cmd.Cmd):  # noqa : H601
         """Will perform a namechange.
 
         :param args: Arguments separated by spaces representing
-                     current and new usernames.
+                         current and new usernames.
         :type args: :py:obj:`str`
+
+        :return: None if the arguments are incorrect when attempting namechange
+        :rtype: :py:obj:`None`
         """
         name_info = args.split()
 
