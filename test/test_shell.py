@@ -63,6 +63,28 @@ class TestShell(unittest.TestCase):
 
         self.assertEqual(Computer.difficulty, 3)
 
+    @patch("builtins.input", side_effect=["2", "50", "Player1", "Player2"])
+    def test_do_start_two_player_sets_computer_difficulty_none(self, _dummy_input):
+        """Test the else branch in do_start."""
+        self.shell.game.turn_manager.data_handler.user_data = MagicMock()
+        self.shell.game.turn_manager.data_handler.user_data.get_user_id.side_effect = [
+            1,
+            2,
+        ]
+        self.shell.game.turn_manager.data_handler.leaderboard_data = MagicMock()
+        self.shell.game.start = MagicMock()
+
+        self.shell.do_start(None)
+
+        self.assertIsNone(Computer.difficulty)
+
+    def test_do_leaderboard_calls_print(self):
+        """Test that do_leaderboard calls print_leaderboard."""
+        arg = "10"
+        self.shell.do_leaderboard(arg)
+        data_handler = self.shell.game.turn_manager.data_handler
+        data_handler.print_leaderboard.assert_called_once_with(arg)
+
     @patch("builtins.print")
     def test_do_cheat(self, dummy_print):
         """Test that do_cheat activates cheat mode."""
