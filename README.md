@@ -15,6 +15,8 @@ through interactive gameplay.
 - [Documentation](#documentation)
 - [Contributors](#contributors)
 
+## About the project and implementation
+
 ## Installation
 
 ### Prerequisites:
@@ -100,7 +102,7 @@ Also visit project documentation page for installation intructions.
 <img align="top" alt="Installation Badge" src="https://img.shields.io/badge/Installation-Link-blue">
 </a>
 
-# Run Game
+## Run Game
 
 **Launching the game**:
 
@@ -116,7 +118,7 @@ Using python command:
 (.venv) $ python -m pig_game.game.main
 ```
 
-# Testing
+## Testing
 
 This project uses linters and unittests.
 
@@ -158,7 +160,7 @@ Runs linters (flake8, pylint).
   (.venv) make pylint
   ```
 
-# Documentation generation
+## Documentation generation
 
 The project provides tools for generating complete documentation of code, coverage and UML diagrams.
 
@@ -200,7 +202,7 @@ Generate coverage report.
 
 Coverage report is stored in `./doc/coverage_report`, open `index.html`.
 
-# Documentation
+## Documentation
 
 <a href="https://itzdriev.github.io/Sustainable-Programming-Game/">
   <img align="top" alt="Static Badge" src="https://img.shields.io/badge/Documenation-Link-blue">
@@ -208,7 +210,7 @@ Coverage report is stored in `./doc/coverage_report`, open `index.html`.
 
 <br>
 
-# Contributors
+## Contributors
 
 <a href="https://github.com/Flurry2005/Brogress/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Flurry2005/Brogress" />
