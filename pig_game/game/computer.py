@@ -4,7 +4,7 @@
 from pig_game.game.computer_difficulties import ComputerDifficulties
 
 
-class Computer:
+class Computer:  # pylint: disable=too-few-public-methods
     """Handles how the AI thinks."""
 
     difficulty = 0

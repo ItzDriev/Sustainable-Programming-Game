@@ -55,9 +55,7 @@ class Game:
         print("\n")
         self.game_over = True
 
-    def start(
-        self, players, target_points, test_mode=False, start_index=1, end_index=2
-    ):
+    def start(self, players, target_points, test_mode=False, range_index=None):
         """Decide which player starts first and keeps the game going.
 
         :param players: List of the current players of the game.
@@ -66,11 +64,11 @@ class Game:
         :type target_points: :py:obj:`int`
         :param test_mode: Boolean indicating if game is started in test mode.
         :type test_mode: :py:obj:`bool`
-        :param start_index: Bottom index for randomly deciding who starts
-        :type start_index: :py:obj:`int`
-        :param end_index: Top index for randomly deciding who starts
-        :type end_index: :py:obj:`int`
+        :param range_index: List containting integers.
+        :type range_index: :py:obj:`List` [ :py:obj:`int` ]
         """
+        range_index = [1, 2] if range_index is None else range_index
+
         self.reset_game()
 
         self.target_points = target_points
@@ -79,16 +77,11 @@ class Game:
 
         # Decide who starts in a singleplayer game
         if len(self.players) == 1:
-            match random.randint(start_index, end_index):
+            match random.randint(range_index[0], range_index[1]):
                 case 1:
                     while not self.game_over:
                         print("")
-                        self.turn_manager.npc_turn(
-                            self.computer,
-                            self.dice_hand,
-                            self.players,
-                            self.target_points,
-                        )
+                        self.turn_manager.npc_turn(self.computer, self.dice_hand)
                         if self.game_over:
                             break
                         print("")
@@ -96,9 +89,6 @@ class Game:
                             self.players[0],
                             self.dice_hand,
                             self.computer,
-                            self.target_points,
-                            self.players,
-                            self.cheat_mode,
                             test_mode,
                         )
                 case 2:
@@ -108,9 +98,6 @@ class Game:
                             self.players[0],
                             self.dice_hand,
                             self.computer,
-                            self.target_points,
-                            self.players,
-                            self.cheat_mode,
                             test_mode,
                         )
                         if self.game_over:
@@ -119,8 +106,6 @@ class Game:
                         self.turn_manager.npc_turn(
                             self.computer,
                             self.dice_hand,
-                            self.players,
-                            self.target_points,
                         )
         else:
             current_user_index = random.randint(0, 1)
@@ -131,9 +116,6 @@ class Game:
                     self.players[current_user_index],
                     self.dice_hand,
                     self.computer,
-                    self.target_points,
-                    self.players,
-                    self.cheat_mode,
                     test_mode,
                 )
                 print("")

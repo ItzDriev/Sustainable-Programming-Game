@@ -29,10 +29,10 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
         players = [Player("testuser", uid)]
 
         self.assertFalse(the_game.game_over)
-        the_game.start(players, 0, True, 1, 1)
+        the_game.start(players, 0, True, [1, 1])
         self.assertTrue(the_game.game_over)
         self.assertTrue(the_game.game_over)
-        the_game.start(players, 30, True, 1, 1)
+        the_game.start(players, 30, True, [1, 1])
         self.assertTrue(the_game.game_over)
 
         shutil.rmtree(self.test_dir)
@@ -47,10 +47,10 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
         players = [Player("testuser", uid)]
 
         self.assertFalse(the_game.game_over)
-        the_game.start(players, 0, True, 2, 2)
+        the_game.start(players, 0, True, [2, 2])
         self.assertTrue(the_game.game_over)
         the_game.game_over = False
-        the_game.start(players, 13, True, 2, 2)
+        the_game.start(players, 13, True, [2, 2])
         self.assertTrue(the_game.game_over)
 
         shutil.rmtree(self.test_dir)

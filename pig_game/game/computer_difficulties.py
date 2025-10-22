@@ -6,6 +6,9 @@
 class ComputerDifficulties:
     """Defines difficulty logics."""
 
+    round_end_number = 100
+    near_end_buffer = 10
+
     def __init__(self, computer):
         """Initialize state.
 
@@ -18,8 +21,6 @@ class ComputerDifficulties:
         self.npc_total_rolls_this_round = 0
         self.if_under_then_hit_once_more = True
         self.first_time_rolling = 0
-        self.round_end_number = 100
-        self.near_end_buffer = 10
         self.computer = computer
 
     def easy_mode(self, player_score, computer_score):

@@ -1,7 +1,6 @@
 """TurnManager module handles turns during the game."""
 
 from time import sleep
-from typing import List
 from pig_game.game.player import Player
 from pig_game.utils.data_handler import DataHandler
 from pig_game.game.game_ui import GameUI
@@ -32,9 +31,6 @@ class TurnManager:
         player: Player,
         dice_hand: DiceHand,
         computer: Computer,
-        target_points,
-        players,
-        cheat_mode,
         test_mode,
     ):
         """Player(s) takes turn rolling dice.
@@ -45,17 +41,11 @@ class TurnManager:
         :type dice_hand: DiceHand
         :param computer: Computer, the player is playing against.
         :type computer: Computer
-        :param target_points: The ending amount of points for the game.
-        :type target_points: :py:obj:`int`
-        :param players: List of the current players of the game.
-        :type players: List[Player]
-        :param cheat_mode: Boolean indicating if cheat mode is active.
-        :type cheat_mode: :py:obj:`bool`
         :param test_mode: Boolean indicating if test mode is active.
         :type test_mode: :py:obj:`bool`
         """
-        if cheat_mode:
-            player.score += target_points
+        if self.game.cheat_mode:
+            player.score += self.game.target_points
         turn_score = 0
         turn_history = (
             "🐷----------Turn History For:" + f"{player.get_username()}----------🐷\n"
@@ -77,10 +67,10 @@ class TurnManager:
                 total_points = sum(dice_points)
                 player.score += total_points
                 turn_score += total_points
-                if player.score >= target_points:
+                if player.score >= self.game.target_points:
                     print(
                         f"🎉 {player.get_username()} reached"
-                        f" {target_points} points. "
+                        f" {self.game.target_points} points. "
                         f"{player.get_username()} wins! 🎉\n"
                     )
                     self.game.game_over = True
@@ -90,7 +80,7 @@ class TurnManager:
                     )
                     self.data_handler.leaderboard_data.update_games_played(True, player)
 
-                    for p in players:
+                    for p in self.game.players:
                         if p != player:
                             (
                                 self.data_handler.leaderboard_data.update_games_played(
@@ -145,23 +135,13 @@ class TurnManager:
                 sleep(2.5)
                 break
 
-    def npc_turn(
-        self,
-        computer: Computer,
-        dice_hand: DiceHand,
-        players: List[Player],
-        target_points,
-    ):
+    def npc_turn(self, computer: Computer, dice_hand: DiceHand):
         """Npc takes turn, sends result to the intelligence class.
 
         :param computer: Computer, the player is playing against.
         :type computer: Computer
         :param dice_hand: Dice hand, handling rolling the dice.
         :type dice_hand: DiceHand
-        :param players: List of the current players of the game.
-        :type players: List[Player]
-        :param target_points: The ending amount of points for the game.
-        :type target_points: :py:obj:`int`
         """
         turn_score = 0
         turn_history = "🐷----------Turn History For: Computer-AI----------🐷\n"
@@ -169,7 +149,7 @@ class TurnManager:
         while True:
             self.game_ui.clear_terminal()
             print(turn_history)
-            player_score = players[0].score
+            player_score = self.game.players[0].score
             if computer.should_roll(player_score):
                 dice_hand.roll_dice()
                 self.game_ui.show_roll("🤖 Mr AI", dice_hand.get_last_roll())
@@ -184,12 +164,15 @@ class TurnManager:
                 turn_score += total_roll
                 computer.difficulties.increment_turn_score(total_roll)
 
-                if computer.score >= target_points:
-                    print(f"🤖 Mr AI reached {target_points} points. Game over 🤖\n")
+                if computer.score >= self.game.target_points:
+                    print(
+                        f"🤖 Mr AI reached {self.game.target_points} points. "
+                        f"Game over 🤖\n"
+                    )
                     self.game.game_over = True
                     computer.difficulties.reset_turn_score()
                     self.data_handler.leaderboard_data.update_games_played(
-                        False, players[0]
+                        False, self.game.players[0]
                     )
                     break
                 print(f"Mr AI's total score: {computer.score}")
@@ -218,3 +201,4 @@ class TurnManager:
                 )
                 sleep(2.5)
                 break
+        return True
