@@ -1,8 +1,6 @@
 # test/test_computer_should_roll.py
 """Module for difficulty testing."""
 
-
-import shutil
 import unittest
 from pig_game.game.computer import Computer
 

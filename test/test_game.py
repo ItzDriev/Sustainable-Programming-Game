@@ -5,7 +5,6 @@
 
 import shutil
 import unittest
-from unittest.mock import patch
 from pig_game.game.game import Game
 from pig_game.game.player import Player
 
@@ -21,7 +20,7 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
         self.assertIsInstance(res, exp)
 
     def test_start_the_game_case_1(self):
-        """"""
+        """Test."""
         self.test_dir = "./pig_game/TestGameData"
         the_game = Game(dir_path=self.test_dir)
         the_game.turn_manager.data_handler.user_data.add_user("testuser")
@@ -39,7 +38,7 @@ class TestGameClass(unittest.TestCase):  # noqa : H601
         shutil.rmtree(self.test_dir)
 
     def test_start_the_game_case_2(self):
-        """"""
+        """Test."""
         self.test_dir = "./pig_game/TestGameData"
         the_game = Game(dir_path=self.test_dir)
         the_game.turn_manager.data_handler.user_data.add_user("testuser")

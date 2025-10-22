@@ -9,10 +9,10 @@ from unittest.mock import patch
 from pig_game.game.turn_manager import TurnManager
 from pig_game.game.game import Game
 from pig_game.game.player import Player
-from test.test_computer import TestComputerClass
 
 
 class TestTurnManagerClass(unittest.TestCase):
+    """Test Turn Manager."""
 
     def test_init_default_object(self):
         """Instantiate an object and check its properties."""
