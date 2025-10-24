@@ -79,7 +79,7 @@ sudo apt-get update && sudo apt-get install -y graphviz
 
 ### Project Setup
 
-**Clone project**
+**Clone project**:
 
 ```bash
 git clone https://github.com/ItzDriev/Sustainable-Programming-Game.git
