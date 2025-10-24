@@ -1,28 +1,9 @@
-Release history
-========================
+# Release history
 
-Decide on a way how to handled your relaeases and version numbers. Document it here.
+## v1.1.9 (2025-10-24)
 
-For example like this...
+- Second release.
 
+## v1.1.8 (2025-10-23)
 
-
-v2.0.0 (2022-02-05)
-------------------------
-
-* Moved to a new location.
-
-
-
-v1.1.0 (2021-02-12)
-------------------------
-
-* Enabling generating documentation from comments using pdoc and pydoc.
-* Enabling UML documentation using pyreverse.
-
-
-
-v1.0.0 (2021-02-12)
-------------------------
-
-* First release, extracted from course material and further developed.
+- First release.
