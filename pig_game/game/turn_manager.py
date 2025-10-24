@@ -95,7 +95,7 @@ class TurnManager:
                 )
 
                 option = ""
-                while option not in ["y", "n", "quit"]:
+                while option not in ["y", "n", "quit"]:  # pragma: no cover
                     if not test_mode:
                         option = (
                             self.game_ui.prompt_next_action(

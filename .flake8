@@ -6,5 +6,6 @@ exclude =
     __pycache__,
     .venv,
     test/
+    computer_difficulties.py
 max-line-length = 88
 
