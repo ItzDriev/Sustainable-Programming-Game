@@ -65,6 +65,13 @@ Graphviz
 Project setup
 -------------
 
+**Clone project**:
+
+   .. code-block:: bash
+
+      $ git clone https://github.com/ItzDriev/Sustainable-Programming-Game.git
+
+
 **Virtual Environtment setup**:
 
    1. Create venv, execute in project root:
